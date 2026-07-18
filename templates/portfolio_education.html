@@ -1,52 +1,58 @@
 {% extends "portfolio_base.html" %}
 
-{# v1.7 (2026-06-03): collapsible education timeline.
+{# v3 (2026-07-17): visual vertical timeline.
 
-   Recruiters / admission readers see VMI + CU Boulder + Royal Thai Army cadet
-   default-open in the first 5 seconds. Pre-cadet history (AFAPS + Satit
-   Patumwan + Bangkok Christian) renders as collapsed <details> blocks so
-   readers who care can expand, and the recruiter who doesn't simply scrolls
-   past. Native HTML elements -- no JS, no a11y rebuild, prints cleanly.
-
-   `_DEFAULT_OPEN_COUNT = 3` -- the first three education[] entries (VMI,
-   CU Boulder, Chulachomklao) are default-open. Indices 3+ are collapsed. #}
-{% set _open_count = 3 %}
+   Replaces the v1.7 <details> + JSON-literal <pre> blocks (which read like a
+   raw API dump) with a scannable timeline a non-technical reader can follow:
+   gold via-marker per school on a vertical spine, dates as muted mono
+   markers, institution as the bold accent heading, milestones as short
+   lines. Standout wins (GPA, Tau Beta Pi, IEEE SoutheastCon, #1-of-348,
+   honors scholarship) are auto-flagged by keyword and get a gold star +
+   bold ivory. All content still flows from p.education in portfolio.json --
+   nothing is hardcoded here except the highlight keywords (presentation
+   logic, not data). #}
 
 {% block main %}
   <h2 class="filesep">Education <span class="fs-crumb">การศึกษา</span></h2>
+
+  <p class="edu-lede">
+    From a Bangkok classroom to an honors engineering program in Virginia --
+    six schools, two countries, one through-line: finish first, then go further.
+  </p>
 
   {# Legacy anchor IDs ('vmi', 'cu-boulder', 'rta-cadet') are preserved for
      back-compat with deep links + tests. Index 0 = VMI, 1 = CU Boulder,
      2 = Royal Thai Army Cadet (Chulachomklao). Indices 3+ get auto-slug. #}
   {% set _legacy_ids = ['vmi', 'cu-boulder', 'rta-cadet'] %}
 
-  {% for ed in p.education %}
-    {% set _open = loop.index0 < _open_count %}
-    {% set _legacy = _legacy_ids[loop.index0] if loop.index0 < _legacy_ids | length else None %}
-    {% set _sid = _legacy if _legacy else ('edu-' ~ loop.index) %}
-    <section id="{{ _sid }}" data-tab="education/">
-      <details class="edu-card"{% if _open %} open{% endif %}>
-        <summary class="edu-summary">
-          <span class="edu-summary-institution">{{ ed.institution }}</span>
-          <span class="edu-summary-dates">{{ ed.dates }}</span>
-          {% if not _open %}
-            <span class="edu-summary-hint">[expand]</span>
+  {# Milestone lines containing any of these substrings render as highlighted
+     "wins" (gold star + bold). Presentation-only heuristic. #}
+  {% set _win_keys = ['Overall GPA', 'Tau Beta Pi', 'IEEE SoutheastCon',
+                      '#1 of 348', 'Honors Program', 'Honors scholarship'] %}
+
+  <ol class="edu-timeline">
+    {% for ed in p.education %}
+      {% set _legacy = _legacy_ids[loop.index0] if loop.index0 < _legacy_ids | length else None %}
+      {% set _sid = _legacy if _legacy else ('edu-' ~ loop.index) %}
+      <li class="edu-node{% if loop.first %} edu-node-current{% endif %}" id="{{ _sid }}" data-tab="education/">
+        <span class="edu-node-marker" aria-hidden="true"></span>
+        <span class="edu-node-dates">{{ ed.dates }}</span>
+        <div class="edu-node-card">
+          <h3 class="edu-node-institution">{{ ed.institution }}</h3>
+          <p class="edu-node-program">{{ ed.degree_or_program }}
+            <span class="edu-node-loc">&middot; {{ ed.location }}</span></p>
+          {% if ed.details %}
+            <ul class="edu-milestones">
+              {% for d in ed.details %}
+                {% set _is_win = _win_keys | select('in', d) | list | length > 0 %}
+                <li class="edu-milestone{% if _is_win %} edu-win{% endif %}">{{ d }}</li>
+              {% endfor %}
+            </ul>
           {% endif %}
-        </summary>
-        <pre class="code"><code>{
-  "institution": "{{ ed.institution }}",
-  "location":    "{{ ed.location }}",
-  "program":     "{{ ed.degree_or_program }}",
-  "dates":       "{{ ed.dates }}"{% if ed.details %},
-  "details": [
-{%- for d in ed.details %}
-    "{{ d }}"{% if not loop.last %},{% endif %}
-{%- endfor %}
-  ]{% endif %}
-}</code></pre>
-      </details>
-    </section>
-  {% endfor %}
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
 
   {% if p.awards %}
   <div class="gc-divider" role="separator"></div>

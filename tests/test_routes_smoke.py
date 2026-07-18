@@ -31,8 +31,10 @@ def _routes() -> list[str]:
 
 
 ALL = _routes()
-HTML = [p for p in ALL if not p.endswith((".json", ".pdf"))]
-JSONR = [p for p in ALL if p.endswith(".json")]
+# /healthz (Render health check, added at public deploy) speaks JSON but has
+# no .json suffix — classify it with the JSON routes, not the HTML pages.
+HTML = [p for p in ALL if not p.endswith((".json", ".pdf")) and p != "/healthz"]
+JSONR = [p for p in ALL if p.endswith(".json") or p == "/healthz"]
 PDF = [p for p in ALL if p.endswith(".pdf")]
 
 

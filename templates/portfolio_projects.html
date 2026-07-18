@@ -1,7 +1,16 @@
 {% extends "portfolio_base.html" %}
+{% import "_partials/proj_thumbs.html" as thumbs %}
 
 {% block main %}
   <h2 class="filesep">Projects <span class="fs-crumb">ผลงาน</span></h2>
+
+  {# Polish pass 2026-07-17: warm orientation line so a non-technical visitor
+     knows what they are looking at within five seconds. #}
+  <p class="gc-page-lede">Eight real, running systems — built nights and weekends
+  around cadet life. Every card opens in plain words first (what it is, why it
+  matters), then goes technical for the engineers.
+  <span class="th">อ่านง่ายก่อน แล้วค่อยลงลึกแบบวิศวกร</span></p>
+
   {% for proj in p.projects %}
     {# Compute anchor ID per spec decision 15: #dashboard, #line-bot, #quant.
        proj.__id is "proj-dashboard" / "proj-linebot" / "proj-quant"; strip
@@ -11,18 +20,15 @@
     <section id="{{ _anchor }}" data-tab="projects" class="portfolio-project-card">
       <div class="proj-block">
         <span class="corner" aria-hidden="true"></span>
-        {# v1.3 B5: per-project SVG illustration, top of card. #}
-        {% if proj.svg_illustration %}
-          {# v1.6 Wave A: loading=lazy on all but the first card (perf),
-             decoding=async (perf). Width+height already locked to prevent CLS. #}
-          <img class="proj-card-illustration"
-               src="{{ proj.svg_illustration }}"
-               alt="{{ proj.title }} illustration"
-               width="600" height="320"
-               loading="{{ 'eager' if loop.first else 'lazy' }}"
-               decoding="async">
-        {% endif %}
+        {# Polish pass 2026-07-17: crafted inline-SVG thumbnail per project
+           (replaces the removed PNG paths — zero requests, zero 404 risk). #}
+        {{ thumbs.thumb(proj.__id) }}
         <h3 class="proj-title">{{ proj.title }}</h3>
+        {# Plain-language line FIRST (everyday analogy for any visitor),
+           technical summary second. Data-driven via portfolio.json "plain". #}
+        {% if proj.plain %}
+          <p class="proj-plain"><span class="pp-mark" aria-hidden="true">&#10022;</span>{{ proj.plain }}</p>
+        {% endif %}
         <p class="proj-summary">{{ proj.summary | safe }}</p>
         <div class="chips">
           {% for s in proj.stack %}<span class="chip">{{ s }}</span>{% endfor %}

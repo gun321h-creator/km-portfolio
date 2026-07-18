@@ -1,0 +1,201 @@
+{# portfolio_resume.html — clean, ATS-friendly 2-page résumé + project showcase.
+   Rendered headless to data/portfolio.pdf (the "Download as PDF" target).
+   Standalone: context is ONLY {build, p}. NO chrome / money context.
+   Single-column, web-safe fonts, text-based (not a webpage screenshot). #}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ p.name }} — Résumé</title>
+<style>
+  /* US Letter portrait, 0.5in margins — Chrome --print-to-pdf honours @page. */
+  @page { size: letter portrait; margin: 0.5in; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #1a1a1a;
+    font-size: 10.2pt;
+    line-height: 1.38;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* One restrained accent — deep slate. Kept minimal for ATS + recruiter scan. */
+  :root { --ink:#1a1a1a; --slate:#22374d; --muted:#5c6672; --rule:#c9cfd6; --chipbg:#eef1f4; }
+
+  .page { padding: 0; }
+  .page.two { page-break-before: always; }
+
+  /* ---- Header (contact in body text, never in a <header> element — ATS) ---- */
+  .name { font-size: 22pt; font-weight: 700; letter-spacing: .1px; color: var(--ink); margin: 0; }
+  .role { font-size: 11pt; color: var(--slate); margin: 2px 0 4px; font-style: italic; }
+  .contact { font-family: Arial, Helvetica, sans-serif; font-size: 9pt; color: var(--muted); margin: 0 0 2px; }
+  .contact a { color: var(--slate); text-decoration: none; }
+
+  /* ---- Section ---- */
+  h2.sec {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5pt; font-weight: 700; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--slate);
+    margin: 13px 0 5px; padding-bottom: 3px;
+    border-bottom: 1.5px solid var(--slate);
+  }
+  p.summary { margin: 4px 0 2px; }
+
+  /* ---- Education ---- */
+  .edu-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .edu-inst { font-weight: 700; }
+  .edu-dates { font-family: Arial, Helvetica, sans-serif; font-size: 9pt; color: var(--muted); white-space: nowrap; }
+  .edu-degree { font-style: italic; color: var(--slate); margin: 0 0 2px; }
+  ul.tight { margin: 3px 0 0; padding-left: 16px; }
+  ul.tight li { margin: 1.5px 0; }
+
+  /* ---- Skills (single-column label: values — parses cleanly) ---- */
+  .skill-row { margin: 2.5px 0; }
+  .skill-cat { font-weight: 700; }
+  .skill-val { color: #333; }
+
+  /* ---- Selected experience bullets (page 1) ---- */
+  .xp { margin: 6px 0 0; }
+  .xp-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .xp-title { font-weight: 700; }
+  .xp-meta { font-family: Arial, Helvetica, sans-serif; font-size: 8.6pt; color: var(--muted); }
+
+  /* ---- Project showcase (page 2) ---- */
+  .lede { color: var(--muted); font-size: 9.5pt; margin: 2px 0 8px; }
+  .proj { display: flex; gap: 11px; padding: 9px 0; border-bottom: 1px solid var(--rule); page-break-inside: avoid; }
+  .proj:last-child { border-bottom: none; }
+  .thumb { flex: 0 0 62px; }
+  .thumb svg { width: 62px; height: 62px; display: block; }
+  .pbody { flex: 1 1 auto; }
+  .ptitle { font-weight: 700; font-size: 11pt; margin: 0; color: var(--ink); }
+  .pdesc { margin: 2px 0 4px; font-size: 9.6pt; }
+  .chips { font-family: Arial, Helvetica, sans-serif; font-size: 8pt; color: var(--slate); }
+  .chip { display: inline-block; background: var(--chipbg); border-radius: 3px; padding: 1px 6px; margin: 1px 3px 1px 0; }
+  .pmeta { font-family: Arial, Helvetica, sans-serif; font-size: 8.4pt; color: var(--muted); margin-top: 3px; }
+  .pmeta a { color: var(--slate); text-decoration: none; }
+  .foot { font-family: Arial, Helvetica, sans-serif; font-size: 8.2pt; color: var(--muted); text-align: center; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+{# ============================ PAGE 1 — RÉSUMÉ ============================ #}
+<section class="page one">
+  <h1 class="name">{{ p.name }}</h1>
+  <div class="role">{{ p.tagline }} · Virginia Military Institute, Class of 2027</div>
+  <div class="contact">
+    <a href="mailto:{{ p.contact_email }}">{{ p.contact_email }}</a>
+    &nbsp;·&nbsp; Lexington, VA
+    &nbsp;·&nbsp; <a href="{{ p.contact_github }}">github.com/gun321h-creator</a>
+    &nbsp;·&nbsp; <a href="https://km-portfolio.onrender.com/portfolio">km-portfolio.onrender.com</a>
+  </div>
+
+  <h2 class="sec">Summary</h2>
+  <p class="summary">Electrical &amp; Computer Engineering honors student (GPA 3.79 / 4.00 major) who
+  ships production software end-to-end — FastAPI services, a multi-tenant LINE bot, and a
+  self-hosted analytics dashboard — and runs independent quantitative-trading research with
+  pre-registered hypotheses, walk-forward validation, and explicit bias auditing. Seeking a
+  software / test / research engineering role where rigor and ownership matter.</p>
+
+  <h2 class="sec">Education</h2>
+  <div class="edu-head">
+    <span class="edu-inst">Virginia Military Institute</span>
+    <span class="edu-dates">Aug 2023 – May 2027 (expected)</span>
+  </div>
+  <div class="edu-degree">B.S., Electrical and Computer Engineering — Institute Honors Program</div>
+  <ul class="tight">
+    <li><strong>GPA 3.79 overall / 4.00 in major</strong>; Dean's List, multiple terms; Honors scholarship since 2024.</li>
+    <li>Tau Beta Pi — Engineering Honor Society, Virginia Chapter (inducted Nov 2025); conference representative (Mar 2026).</li>
+    <li>IEEE SoutheastCon 2026 — <strong>4th place, Undergraduate Circuit Design</strong> (Mar 2026).</li>
+    <li>Royal Thai Army Cadet School, Class 74 — <strong>selected #1 of 348</strong> for the army's study-in-US program (2022).</li>
+  </ul>
+
+  <h2 class="sec">Technical Skills</h2>
+  {% for s in p.skills %}
+  <div class="skill-row"><span class="skill-cat">{{ s['category'] }}:</span>
+    <span class="skill-val">{{ s['items'] | join(', ') }}</span></div>
+  {% endfor %}
+
+  <h2 class="sec">Selected Experience</h2>
+  <div class="xp">
+    <div class="xp-head"><span class="xp-title">Self-Hosted Analytics &amp; Trading Dashboard</span>
+      <span class="xp-meta">Python · FastAPI · Jinja2 · Playwright</span></div>
+    <ul class="tight">
+      <li>Built and operate a 12-page FastAPI/Jinja2 dashboard on a Windows VPS with a
+        <strong>~679-test</strong> suite, leak-guard tripwires, and zero-downtime redeploys.</li>
+      <li>Shipped this public portfolio as an isolated service proven free of any private data by an automated leak-test gate.</li>
+    </ul>
+  </div>
+  <div class="xp">
+    <div class="xp-head"><span class="xp-title">Quantitative Trading Research Framework</span>
+      <span class="xp-meta">Python · pandas · MetaTrader 5 · pytest</span></div>
+    <ul class="tight">
+      <li><strong>60+ backtests</strong> across FX, metals, indices, and crypto with pre-registered hypotheses,
+        walk-forward out-of-sample validation, and probabilistic / deflated Sharpe gates.</li>
+      <li>Companion PRISMA-style literature review over <strong>63 IEEE papers</strong> (manuscript in preparation).</li>
+    </ul>
+  </div>
+  <div class="xp">
+    <div class="xp-head"><span class="xp-title">Multi-Tenant LINE Official-Account Bot</span>
+      <span class="xp-meta">Python · FastAPI · SQLite · LINE API</span></div>
+    <ul class="tight">
+      <li>Multi-owner messaging bot with scheduled reminders, daily SQLite snapshots, and a self-healing
+        restart loop, running unattended (<strong>~201 tests</strong>).</li>
+    </ul>
+  </div>
+
+  <h2 class="sec">Leadership</h2>
+  <ul class="tight">
+    <li>OGA Representative, Hotel Company — leads new-cadet orientation (2026); Old Corps Corporal &amp; MathLab tutor.</li>
+    <li>Only Thai cadet at VMI; Expert rifle classification; commendation from the Chief of Defence Forces (2024).</li>
+  </ul>
+</section>
+
+{# ======================= PAGE 2 — PROJECT SHOWCASE ======================= #}
+<section class="page two">
+  <h1 class="name" style="font-size:18pt;">Selected Projects</h1>
+  <div class="lede">Six of the systems behind the résumé — full write-ups and live demos at km-portfolio.onrender.com/portfolio</div>
+
+  {# icon set: index-mapped duotone thumbnails (slate + gold), print-crisp SVG #}
+  {% set slate = '#22374d' %}{% set gold = '#c79a3e' %}{% set wash = '#eef1f4' %}
+  {% set shown = [
+      {'t':'Trading-Research Dashboard','d':'A 12-page FastAPI/Jinja2 monitoring and decision-support dashboard on a Windows VPS: project tracking, an isometric office view of research agents, a live-demo strategy monitor, and a Smart Money Radar scoring 13F / Form-4 signals.','k':'Python, FastAPI, Jinja2, Phaser 3, pytest','m':'~679 tests · 12+ pages · zero-downtime redeploy','l':None,'i':'dash'},
+      {'t':'Quantitative Trading Research','d':'60+ backtests across FX, metals, indices and crypto with pre-registered hypotheses, walk-forward out-of-sample validation, bias auditing, and probabilistic / deflated Sharpe gates.','k':'Python, pandas, MetaTrader 5, pytest','m':'60+ backtests · PRISMA review of 63 IEEE papers','l':None,'i':'chart'},
+      {'t':'Live Web Karaoke — Group Mode','d':'A no-install PWA that turns a phone into a karaoke mic and streams the vocal to a TV over WebRTC with a QR-join flow. Core engineering problem: driving the receiver jitter buffer down to kill echo.','k':'JavaScript, WebRTC, PeerJS, PWA','m':'Live on Vercel · v0.5.1','l':'karaoke-web-prototype.vercel.app','i':'mic'},
+      {'t':'Money Compass — Wealth Aggregator','d':'A read-only personal-finance aggregator pulling bank and card transactions via SimpleFIN into cashflow, runway and subscription views. Auth-gated, fails closed, and never renders figures on a public surface.','k':'Python, FastAPI, SQLite, SimpleFIN, uPlot','m':'40+ tests · auth-gated + leak-guarded','l':None,'i':'wallet'},
+      {'t':'SURI — Systematic Literature Review','d':'A pre-registered, PRISMA-style systematic mapping of quantum-computing threats to blockchain across three research questions, with a multi-dimensional taxonomy and coverage matrix.','k':'IEEE Xplore, PRISMA, Taxonomy, Python','m':'63 IEEE papers · 3 RQs · manuscript in prep','l':None,'i':'doc'},
+      {'t':'Edge Factory — Research Automation','d':'A Python orchestrator that runs each strategy candidate down a nine-station conveyor — seed, expand, dedup, prescreen, backtest, bias-audit, gate, dossier, verdict — so ideas are killed cheaply and early.','k':'Python, pandas, pytest, pyright','m':'MVP v0.1 · 36 tests · pyright 0','l':None,'i':'gear'}
+  ] %}
+
+  {% for pr in shown %}
+  <div class="proj">
+    <div class="thumb">
+      {% if pr.i == 'dash' %}
+      <svg viewBox="0 0 62 62"><rect width="62" height="62" rx="8" fill="{{ wash }}"/><rect x="12" y="12" width="17" height="17" rx="2" fill="{{ slate }}"/><rect x="33" y="12" width="17" height="10" rx="2" fill="{{ gold }}"/><rect x="33" y="26" width="17" height="24" rx="2" fill="{{ slate }}"/><rect x="12" y="33" width="17" height="17" rx="2" fill="{{ gold }}"/></svg>
+      {% elif pr.i == 'chart' %}
+      <svg viewBox="0 0 62 62"><rect width="62" height="62" rx="8" fill="{{ wash }}"/><polyline points="13,44 25,32 34,38 50,17" fill="none" stroke="{{ slate }}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="17" r="3.4" fill="{{ gold }}"/><line x1="13" y1="49" x2="50" y2="49" stroke="{{ slate }}" stroke-width="2"/></svg>
+      {% elif pr.i == 'mic' %}
+      <svg viewBox="0 0 62 62"><rect width="62" height="62" rx="8" fill="{{ wash }}"/><rect x="26" y="13" width="10" height="22" rx="5" fill="{{ slate }}"/><path d="M20 30 a11 11 0 0 0 22 0" fill="none" stroke="{{ gold }}" stroke-width="3" stroke-linecap="round"/><line x1="31" y1="41" x2="31" y2="49" stroke="{{ slate }}" stroke-width="3"/><line x1="24" y1="49" x2="38" y2="49" stroke="{{ slate }}" stroke-width="3" stroke-linecap="round"/></svg>
+      {% elif pr.i == 'wallet' %}
+      <svg viewBox="0 0 62 62"><rect width="62" height="62" rx="8" fill="{{ wash }}"/><rect x="13" y="18" width="36" height="26" rx="4" fill="{{ slate }}"/><rect x="13" y="25" width="36" height="6" fill="{{ gold }}"/><circle cx="42" cy="37" r="3.2" fill="{{ wash }}"/></svg>
+      {% elif pr.i == 'doc' %}
+      <svg viewBox="0 0 62 62"><rect width="62" height="62" rx="8" fill="{{ wash }}"/><path d="M20 13 h15 l9 9 v27 a0 0 0 0 1 0 0 h-24 z" fill="{{ slate }}"/><path d="M35 13 v9 h9" fill="{{ gold }}"/><line x1="25" y1="33" x2="39" y2="33" stroke="{{ wash }}" stroke-width="2"/><line x1="25" y1="39" x2="39" y2="39" stroke="{{ wash }}" stroke-width="2"/></svg>
+      {% else %}
+      <svg viewBox="0 0 62 62"><rect width="62" height="62" rx="8" fill="{{ wash }}"/><circle cx="31" cy="31" r="10" fill="none" stroke="{{ slate }}" stroke-width="4"/><g fill="{{ gold }}"><rect x="29" y="9" width="4" height="8" rx="1"/><rect x="29" y="45" width="4" height="8" rx="1"/><rect x="9" y="29" width="8" height="4" rx="1"/><rect x="45" y="29" width="8" height="4" rx="1"/></g></svg>
+      {% endif %}
+    </div>
+    <div class="pbody">
+      <p class="ptitle">{{ pr.t }}</p>
+      <p class="pdesc">{{ pr.d }}</p>
+      <div class="chips">{% for c in pr.k.split(', ') %}<span class="chip">{{ c }}</span>{% endfor %}</div>
+      <div class="pmeta">{{ pr.m }}{% if pr.l %} &nbsp;·&nbsp; <a href="https://{{ pr.l }}">{{ pr.l }}</a>{% endif %}</div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="foot">Kanokpon Mettasat · {{ p.contact_email }} · km-portfolio.onrender.com/portfolio</div>
+</section>
+
+</body>
+</html>

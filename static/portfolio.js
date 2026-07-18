@@ -535,6 +535,97 @@ function wireVimNav() {
   });
 }
 
+// ── Gilded cat ──────────────────────────────────────────────────────────
+// A small gold cat silhouette that occasionally strolls along the bottom of
+// the viewport, alternating direction each pass. Charm, not distraction:
+//  - first stroll ~8-13s after load, then one pass every ~50-110s;
+//  - pointer-events: none + aria-hidden (never blocks a click or a reader);
+//  - prefers-reduced-motion: the cat is never created, and portfolio.css
+//    additionally hides .gc-cat under the same media query (belt+braces).
+// Inline SVG, brand gold, pure ASCII source.
+const CAT_SVG =
+  '<svg viewBox="0 0 64 34" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false">' +
+  '<path class="cat-tail" d="M14 20 C 7 18, 5 10, 10 5" fill="none" ' +
+  'stroke="#D4A947" stroke-width="2.6" stroke-linecap="round"/>' +
+  '<rect class="cat-leg-a" x="17" y="20" width="2.6" height="11" rx="1.2" fill="#D4A947"/>' +
+  '<rect class="cat-leg-b" x="22" y="20" width="2.6" height="11" rx="1.2" fill="#D4A947"/>' +
+  '<rect class="cat-leg-b" x="38" y="20" width="2.6" height="11" rx="1.2" fill="#D4A947"/>' +
+  '<rect class="cat-leg-a" x="43" y="20" width="2.6" height="11" rx="1.2" fill="#D4A947"/>' +
+  '<g class="cat-bob">' +
+  '<rect x="12" y="12" width="37" height="12" rx="6" fill="#D4A947"/>' +
+  '<circle cx="50" cy="10" r="6.5" fill="#D4A947"/>' +
+  '<polygon points="45,7 46.5,0.5 50,5" fill="#D4A947"/>' +
+  '<polygon points="50.5,5 54,0.5 55.5,7" fill="#D4A947"/>' +
+  '<circle cx="52.6" cy="9" r="1" fill="#100D0B"/>' +
+  '</g></svg>';
+
+function wireWalkingCat() {
+  // Guard against double-wiring (test suite re-imports this module).
+  if (document.body.dataset.catWired) return;
+  document.body.dataset.catWired = "1";
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (reduce.matches) return;  // opt-out honoured: no cat at all
+
+  const cat = document.createElement("div");
+  cat.className = "gc-cat";
+  cat.setAttribute("aria-hidden", "true");
+  cat.innerHTML = CAT_SVG;
+  document.body.appendChild(cat);
+
+  let goingRight = true;
+
+  function stroll() {
+    if (reduce.matches) { cat.remove(); return; }  // user flipped the setting
+    const durSec = 18 + Math.random() * 10;        // slow, unhurried pace
+    cat.style.setProperty("--cat-dur", durSec.toFixed(1) + "s");
+    cat.classList.toggle("rtl", !goingRight);
+    cat.classList.remove("walk");
+    void cat.offsetWidth;                          // restart the animation
+    cat.classList.add("walk");
+    goingRight = !goingRight;
+    // Next pass: after this one finishes plus a 50-110s nap off-screen.
+    const napMs = 50e3 + Math.random() * 60e3;
+    setTimeout(stroll, durSec * 1000 + napMs);
+  }
+
+  setTimeout(stroll, 8000 + Math.random() * 5000);
+}
+
+// ── Scroll reveal (polish pass 2026-07-17) ─────────────────────────────
+// Adds .gc-reveal (hidden state) + .in (revealed) via IntersectionObserver.
+// The hidden state exists ONLY after JS applies the class, so no-JS visitors
+// and reduced-motion users always see full content (CSS also force-shows
+// .gc-reveal under prefers-reduced-motion as belt+braces). Transform/opacity
+// only; each element gets a small stagger via the --rv-delay custom prop.
+function wireReveal() {
+  if (document.body.dataset.revealWired) return;
+  document.body.dataset.revealWired = "1";
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (reduce.matches || !("IntersectionObserver" in window)) return;
+
+  const els = document.querySelectorAll(
+    ".proj-block, .home-card, .edu-node, .blog-post, .reading-item, " +
+    ".gc-contact-card, .audience-purpose, .gc-changelog"
+  );
+  if (!els.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) {
+        en.target.classList.add("in");
+        io.unobserve(en.target);
+      }
+    });
+  }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
+
+  els.forEach((el, i) => {
+    el.classList.add("gc-reveal");
+    el.style.setProperty("--rv-delay", ((i % 3) * 70) + "ms");
+    io.observe(el);
+  });
+}
+
 function init() {
   // v1.2 polish C3: record current page so the palette can show "recent"
   // entries on next visit. Must run BEFORE wirePalette() so the first
@@ -550,6 +641,8 @@ function init() {
   wireSourceModal();
   wireNowPlayingClick();
   wireVimNav();
+  wireWalkingCat();
+  wireReveal();
 }
 
 if (document.readyState === "loading") {

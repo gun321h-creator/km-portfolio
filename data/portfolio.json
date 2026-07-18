@@ -92,7 +92,8 @@
   "projects": [
     {
       "title": "Trading-research dashboard",
-      "summary": "FastAPI + Jinja2 monitoring and decision-support dashboard for a personal quantitative-trading workflow. Surfaces include project tracking, an editorial organisation chart, a Phaser 3 isometric office-RPG view of active research agents, an 11-edge live-demo monitor with a tail-concentration auditor, and a Smart Money Radar that scores 13F / Form-4 / political-disclosure signals (1-100). Deployed via Tailscale Funnel to a Windows VPS with a hard-restart deploy script.",
+      "plain": "A live mission-control screen for my research projects -- one glance from any device shows what every system is doing right now.",
+      "summary": "FastAPI + Jinja2 monitoring and decision-support dashboard for a personal quantitative-trading workflow. Surfaces include project tracking, an editorial organisation chart, a Phaser 3 isometric office-RPG view of active research agents, a live-demo strategy monitor with a tail-concentration auditor, and a Smart Money Radar that scores 13F / Form-4 / political-disclosure signals (1-100). Deployed via Tailscale Funnel to a Windows VPS with a hard-restart deploy script.",
       "stack": [
         "Python",
         "FastAPI",
@@ -116,6 +117,7 @@
     },
     {
       "title": "LINE Official Account bot",
+      "plain": "A chat assistant that never forgets: it lives in the LINE app, remembers everyone's plans, and sends the reminders all by itself.",
       "summary": "Multi-owner LINE Messaging API bot with scheduled reminders, daily SQLite snapshots, Sunday digest, and pre-alert dedupe. Designed to run unattended on a Windows VPS with a self-healing restart loop.",
       "stack": [
         "Python",
@@ -141,6 +143,7 @@
     },
     {
       "title": "Quantitative trading research framework",
+      "plain": "A home-built science lab for trading ideas: every idea is tested against years of market history, and only the honest survivors pass.",
       "summary": "60+ Python backtests across multi-asset OHLCV (FX majors, FX crosses, metals, indices, crypto) with pre-registered hypotheses, walk-forward out-of-sample validation, explicit bias auditing, and probabilistic Sharpe / deflated Sharpe gates. Companion literature review followed a PRISMA-style protocol across 63 IEEE papers with a multi-dimensional taxonomy.",
       "stack": [
         "Python",
@@ -152,8 +155,8 @@
       "link": null,
       "link_label": null,
       "deep_dive_intro": "A pre-registered research framework for evaluating trading edges across many markets without fooling itself. Every claim is gated by statistical lower-bounds, every edge is tested out-of-sample on a held-out window, and every promotion to live capital requires an explicit written spec.",
-      "architecture": "Strategy modules under BOT/research_backtests/strategies/ each declare one family (entry, exit, sizing). A shared cost model applies broker-verified spread, commission, and slippage before any metric is computed. The runner sweeps capital and risk-per-trade grids, then computes block-bootstrap lower-bound Sharpe (SR_LB), Probabilistic Sharpe Ratio (PSR), and Deflated Sharpe Ratio (DSR) over the trade series; gates require SR_LB >= 1.00, PSR >= 0.95, and DSR >= 0.95 with multiple-testing haircut. A separate bias auditor inspects each candidate for lookahead, same-bar fills, profit concentration, and overfit. A companion PRISMA-style literature review classifies 63 IEEE papers across a multi-dimensional taxonomy with a coverage matrix.",
-      "architecture_diagram": "   data/*.csv           strategies/         shared/\n+--------------+    +----------------+    +---------------+\n| BTCUSD/XAU/  |--->| 60+ backtests  |--->| cost model    |\n| USDJPY etc.  |    | (family/file)  |    | (broker $/lot)|\n+--------------+    +-------+--------+    +------+--------+\n                            |                    |\n                            v                    v\n                    +-------+--------------------+----+\n                    | bias auditor                    |\n                    | (lookahead, fill, concentration)|\n                    +---------------+-----------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | SR_LB / PSR / DSR gates |\n                       +------------+------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | CANDIDATE / KILL label  |\n                       +-------------------------+\n",
+      "architecture": "Strategy modules under BOT/research_backtests/strategies/ each declare one family (entry, exit, sizing). A shared cost model applies broker-verified spread, commission, and slippage before any metric is computed. The runner sweeps capital and risk-per-trade grids, then computes block-bootstrap lower-bound Sharpe (SR_LB), Probabilistic Sharpe Ratio (PSR), and Deflated Sharpe Ratio (DSR) over the trade series; promotion is gated on all three statistics jointly, with a multiple-testing haircut (exact thresholds are pre-registered internally). A separate bias auditor inspects each candidate for lookahead, same-bar fills, profit concentration, and overfit. A companion PRISMA-style literature review classifies 63 IEEE papers across a multi-dimensional taxonomy with a coverage matrix.",
+      "architecture_diagram": "   data/*.csv           strategies/         shared/\n+--------------+    +----------------+    +---------------+\n| multi-asset  |--->| 60+ backtests  |--->| cost model    |\n| OHLCV data   |    | (family/file)  |    | (broker $/lot)|\n+--------------+    +-------+--------+    +------+--------+\n                            |                    |\n                            v                    v\n                    +-------+--------------------+----+\n                    | bias auditor                    |\n                    | (lookahead, fill, concentration)|\n                    +---------------+-----------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | SR_LB / PSR / DSR gates |\n                       +------------+------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | CANDIDATE / KILL label  |\n                       +-------------------------+\n",
       "lessons": [
         "Sharpe-lower-bound is leverage-invariant; CAGR is leverage-illusion. Ranking by SR_LB and choosing sizing after edge selection avoided multiple tail-driven false positives that ranked top by CAGR.",
         "A same-day daily feature is lookahead in an intraday strategy: a carry-trend candidate looked PF 2.58 pre-audit and collapsed to PF 1.00 once the daily close was lagged. The bug-class rule now lives as a sacred rule.",
@@ -163,6 +166,7 @@
     },
     {
       "title": "SURI -- Systematic literature review (IEEE, PRISMA-style)",
+      "plain": "I read 63 research papers on how quantum computers could one day threaten Bitcoin -- and organised everything the field knows into one clear map.",
       "summary": "A pre-registered, PRISMA-style systematic mapping of quantum-computing threats to blockchain systems, organised around three research questions -- what quantum threats to Bitcoin and blockchain are studied, what defences are proposed, and how ready the ecosystem is to migrate. Sixty-three IEEE papers survive screening into the synthesis pool (from a wider identified/screened set, with non-IEEE and survey papers removed) and are coded against a multi-dimensional taxonomy and a five-category corpus grid feeding a coverage matrix. The corpus is Bitcoin-heavy and grounded in post-quantum cryptography: Shor against ECDSA, Grover against SHA-256 mining, and the NIST FIPS 203/204/205 schemes (Kyber/ML-KEM, Dilithium, SPHINCS+). Companion to the quant-research framework -- the same discipline applied to the literature side of the work.",
       "stack": [
         "IEEE Xplore",
@@ -186,6 +190,7 @@
     },
     {
       "title": "Money Compass -- personal wealth aggregator",
+      "plain": "A private app that reads my own bank statements and shows where the money actually goes -- like a personal accountant who never sleeps.",
       "summary": "A read-only personal-finance aggregator that pulls Bank of America and US credit-card transactions through the SimpleFIN Bridge and turns them into a cashflow, runway, and subscription view. It is a package inside the trading dashboard, exposed at an auth-gated /money route that fails closed and never renders financial figures on a public surface. A daily refresh task bakes the account state into a JSON snapshot so the request path never touches the bank API or the SQLite ledger directly. Phase 1 (ledger + cashflow + subscription detect) and Phase 2 (month-over-month, budget streak, goals, ranked CFO insights, spending-trend chart, savings tips, category drill-down) both ship and run live on the VPS.",
       "stack": [
         "Python",
@@ -211,6 +216,7 @@
     },
     {
       "title": "Edge Factory -- research-automation pipeline",
+      "plain": "An assembly line for research ideas: drop an idea in one end and it gets tested the same fair way every time -- most ideas die cheap, and the rare good one earns a full report.",
       "summary": "A thin Python orchestrator that runs a strategy candidate down a nine-station conveyor -- seed, expand, dedup, prescreen, backtest, bias-audit, statistical gate, dossier, human verdict -- so systematic-trading ideas are evaluated the same way every time. The design point is not generating many ideas but killing bad ones cheaply and early: a factory without a hard kill-gate just produces false positives at high speed. Two safety invariants are locked in code -- the pipeline always stops at the dossier and never has a path to live capital, and no agent can approve its own candidate. The MVP wires the dedup, prescreen, and statistical gate automatically around a reused fleet of existing research tools.",
       "stack": [
         "Python",
@@ -233,6 +239,7 @@
     },
     {
       "title": "Live web karaoke -- group mode",
+      "plain": "Turns your phone into a karaoke microphone for the TV -- nothing to install, just scan a code and sing.",
       "summary": "A no-install progressive web app that turns a phone into a karaoke microphone and streams the vocal to a TV or laptop over WebRTC, with a QR-code join flow and a group party mode as the core use case. The hard engineering problem was audio latency: the singer hears their own voice through the air instantly and again from the speaker late, so the app drives the receiver's jitter buffer down to remove the browser's default 100-200ms of playout padding. It is deployed live on Vercel and stays within YouTube's terms by embedding the official iframe player rather than scraping audio. A service worker caches the shell for offline-capable reloads, with an explicit cache-version discipline after a stale-render incident.",
       "stack": [
         "JavaScript (ES modules)",
@@ -257,6 +264,7 @@
     },
     {
       "title": "Trading Journal -- decision-intelligence layer",
+      "plain": "A diary that grades my own decisions: when I overrode the system by hand, did that actually help? The diary answers with numbers, not feelings.",
       "summary": "A read-only decision-intelligence layer over a real-money trading track that scores whether the operator's manual closes actually beat the bot's own trailing exit, then narrates the day as a short desk note. It never touches the edge or any order path -- it only reads the realised trade log and the divergence report. The daily note is written by a Groq-hosted model as decorative prose while the numbers stay authoritative, and it is exposed at an auth-gated /journal route rendered as a desk-blotter page with a P&L calendar heatmap. Phase 1 (the deterministic scorecard) is live on the VPS with an hourly producer task.",
       "stack": [
         "Python",

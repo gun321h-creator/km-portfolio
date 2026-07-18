@@ -257,6 +257,14 @@ def http_exception_handler(request: Request, exc: StarletteHTTPException) -> Res
     )
 
 
+# --- Health check (lightweight — Render probes this, NOT the heavy /portfolio
+#     page). Returns instantly with no file I/O so a slow content load can never
+#     make Render mark the instance unhealthy and recycle it. --------------------
+@app.get("/healthz", include_in_schema=False)
+def healthz() -> Response:
+    return JSONResponse({"ok": True})
+
+
 # --- CV preview (standalone template, context is ONLY {build, p}) ----------
 @app.get("/portfolio/cv-preview", response_class=HTMLResponse, include_in_schema=False)
 def cv_preview(request: Request) -> Response:

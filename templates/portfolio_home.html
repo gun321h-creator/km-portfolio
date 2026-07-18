@@ -9,8 +9,16 @@
       {% set _name_parts = p.name.split(' ', 1) %}
       <h1 class="gc-h1">{{ _name_parts[0] }}{% if _name_parts | length > 1 %}<br><span class="gold">{{ _name_parts[1] }}</span>{% endif %}</h1>
       <p class="gc-hero-th">วิศวกรไฟฟ้าและคอมพิวเตอร์ &middot; ลายกนกไทยที่กลายเป็นลายวงจร</p>
+      {# Polish pass 2026-07-17: warm 5-second orientation for a stranger —
+         who this is and why to care, before any technical detail. #}
+      <p class="gc-hero-warm">Hello — I'm Gun. A Thai army cadet on a five-year
+      scholarship in the US, studying engineering with honors, and I love
+      building software people can actually use. Everything on this site is
+      real and running.</p>
       <p class="gc-hero-sub">{{ p.tagline | safe }}{% for line in p.hero_subtitle_lines %} &middot; {{ line }}{% endfor %}</p>
-      <p class="gc-hero-note">GPA: overall 3.6 &middot; major 4.00</p>
+      {# Stale hardcoded "GPA: overall 3.6" note removed 2026-07-17 -- it
+         contradicted the correct 3.79 in p.hero_subtitle_lines one line up.
+         Single source of truth = portfolio.json. #}
       <div class="gc-cta">
         <a class="gc-btn fill" href="/portfolio/projects">View Projects</a>
         <a class="gc-btn" href="/portfolio/contact">Contact</a>
@@ -27,17 +35,17 @@
       <a class="home-card" href="/portfolio/about" data-page-id="about">
         <span class="corner" aria-hidden="true"></span>
         <span class="home-card-title">About</span>
-        <span class="home-card-desc">Who I am, one paragraph.</span>
+        <span class="home-card-desc">The short story &mdash; cadet, engineer, builder.</span>
       </a>
       <a class="home-card" href="/portfolio/education" data-page-id="education">
         <span class="corner" aria-hidden="true"></span>
         <span class="home-card-title">Education</span>
-        <span class="home-card-desc">VMI &middot; CU Boulder &middot; RTA Cadet.</span>
+        <span class="home-card-desc">Six schools, two countries &mdash; top of the class.</span>
       </a>
       <a class="home-card" href="/portfolio/projects" data-page-id="projects">
         <span class="corner" aria-hidden="true"></span>
         <span class="home-card-title">Projects</span>
-        <span class="home-card-desc">Dashboard &middot; LINE bot &middot; Quant research.</span>
+        <span class="home-card-desc">Eight real systems &mdash; see what they do.</span>
       </a>
     </div>
     <p class="home-audience-links">

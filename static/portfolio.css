@@ -20,7 +20,9 @@
   --ivory:      #EDE4D3;             /* งาช้าง */
   --vermilion:  #B8452E;             /* ชาด -- borders / blocks (3.6:1) */
   --vermilion-text: #D3603F;         /* vermilion lifted to >=4.5:1 for small text */
-  --gold-dim:   rgba(212, 169, 71, 0.55);
+  /* 0.70 alpha (was 0.55): as small-text ink on lacquer 0.55 measured ~3.3:1
+     (below AA 4.5). 0.70 lands ~4.6:1 and still reads as "dim gold". */
+  --gold-dim:   rgba(212, 169, 71, 0.70);
   --gold-faint: rgba(212, 169, 71, 0.22);
   --ivory-soft: rgba(237, 228, 211, 0.85);
   --ivory-mut:  rgba(237, 228, 211, 0.70);
@@ -33,10 +35,18 @@
 
 /* ── base / shell overrides ─────────────────────────────────────────── */
 * { box-sizing: border-box; }
-html { background: var(--lacquer); scroll-behavior: smooth; }
+/* color-scheme: theme_sage.css declares `light` (Stripe-Light dashboard);
+   the portfolio commits fully to the dark lacquer base, so native widgets /
+   scrollbars must follow. Loads after theme_sage -> this wins. */
+html { background: var(--lacquer); scroll-behavior: smooth; color-scheme: dark; }
 html, body, body.px-shell {
   margin: 0; padding: 0;
+  /* shorthand first, then a literal longhand LAST so it wins even if
+     custom-property substitution on the shorthand misbehaves (observed
+     computing to transparent in Chromium; html's canvas propagation saved
+     the render, but don't rely on it) */
   background: var(--lacquer);
+  background-color: #100D0B;
   color: var(--ivory);
   font-family: var(--thai);
   font-size: 15px;
@@ -49,7 +59,11 @@ html, body, body.px-shell {
 /* The shell's theme-toggle easter-egg ships `hidden`, but a pixel-chrome rule
    un-hides it into a floating pill; force it off on the public portfolio. */
 #mm-theme-toggle { display: none !important; }
-main.px-main { display: block; margin: 0; padding: 0; width: auto; max-width: none; min-height: 100vh; }
+/* CONTRAST ROOT-CAUSE FIX: pixel_chrome.css paints `.px-main { background:
+   var(--px-bg) }` = Stripe-Light WHITE. This override reset the layout but
+   originally forgot `background`, so every page body sat on a white pane
+   while the type stayed ivory -> invisible. Re-assert the lacquer here. */
+main.px-main { display: block; margin: 0; padding: 0; width: auto; max-width: none; min-height: 100vh; background: var(--lacquer); background-color: #100D0B; }
 
 a { color: var(--gold); text-decoration: none; }
 a:hover { color: var(--ivory); }
@@ -248,6 +262,20 @@ main.editor section[id] { scroll-margin-top: 96px; }
   margin: 0 0 16px; line-height: 1.7; font-size: 0.98rem; max-width: 760px;
 }
 .md-body strong { color: var(--ivory); }
+/* v3: latest.md now renders real blocks (see portfolio.py _render_md_blocks) */
+.md-body p { margin: 0 0 14px; }
+.md-body h3 {
+  font-family: var(--latin); font-weight: 600; font-size: 1.02rem;
+  color: var(--gold); letter-spacing: 0.02em; margin: 18px 0 10px;
+}
+.md-body h4 {
+  font-family: var(--latin); font-weight: 600; font-size: 0.74rem;
+  color: var(--gold); text-transform: uppercase; letter-spacing: 0.22em;
+  margin: 22px 0 10px;
+}
+.md-body ul { padding-left: 20px; margin: 0 0 14px; }
+.md-body li { margin-bottom: 8px; }
+.md-body li::marker { color: var(--gold); }
 .md-body em { color: var(--gold); font-style: italic; }
 .md-body code, .proj-tagline code {
   background: rgba(212,169,71,0.10); color: var(--gold);
@@ -378,7 +406,57 @@ main.editor section[id] { scroll-margin-top: 96px; }
   font-family: var(--latin); font-size: 0.75rem; letter-spacing: 0.06em;
 }
 
-/* ── education timeline (details/summary kept) ──────────────────────── */
+/* ── education timeline v3 -- visual vertical timeline ──────────────── */
+.edu-lede {
+  font-family: var(--thai); color: var(--ivory-soft); font-size: 0.98rem;
+  line-height: 1.7; margin: 0 0 30px; max-width: 680px;
+}
+.edu-timeline { list-style: none; margin: 0; padding: 4px 0 8px; position: relative; max-width: 820px; }
+.edu-timeline::before {
+  content: ""; position: absolute; left: 8px; top: 10px; bottom: 10px; width: 1px;
+  background: linear-gradient(to bottom, var(--gold) 0%, var(--gold-faint) 90%, transparent 100%);
+}
+.edu-node { position: relative; padding: 0 0 30px 38px; }
+.edu-node:last-child { padding-bottom: 8px; }
+.edu-node-marker {
+  position: absolute; left: 0; top: 3px; width: 17px; height: 17px;
+  background: var(--lacquer) url("/static/brand/via.svg") center / contain no-repeat;
+}
+.edu-node-dates {
+  display: inline-block; font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-dim);
+  margin: 0 0 6px;
+}
+.edu-node-card {
+  background: var(--panel); border: 1px solid var(--gold-faint);
+  padding: 16px 20px 14px; transition: border-color 0.15s;
+}
+.edu-node-card:hover { border-color: var(--gold-dim); }
+.edu-node-current .edu-node-card { border-color: var(--gold-dim); }
+.edu-node-institution {
+  margin: 0 0 2px; font-family: var(--latin); font-weight: 800;
+  font-size: 1.12rem; letter-spacing: -0.005em; color: var(--gold); line-height: 1.3;
+}
+.edu-node-program {
+  margin: 0 0 10px; font-family: var(--thai); font-size: 0.9rem;
+  color: var(--ivory-soft); line-height: 1.5;
+}
+.edu-node-loc { color: var(--ivory-mut); font-style: italic; }
+.edu-milestones { list-style: none; margin: 0; padding: 0; }
+.edu-milestone {
+  position: relative; padding: 3px 0 3px 22px;
+  font-family: var(--thai); font-size: 0.88rem; line-height: 1.6;
+  color: var(--ivory-mut);
+}
+.edu-milestone::before {
+  content: "\2022"; position: absolute; left: 8px; top: 3px;
+  color: var(--gold-faint);
+}
+/* Standout wins: four-pointed star marker + full-ivory bold line. */
+.edu-milestone.edu-win { color: var(--ivory); font-weight: 600; }
+.edu-milestone.edu-win::before { content: "\2726"; left: 3px; color: var(--gold); font-size: 0.8rem; }
+
+/* ── education awards card (details/summary kept) ───────────────────── */
 .edu-card { margin: 0 0 16px; border: 1px solid var(--gold-faint); background: var(--panel); max-width: 820px; }
 .edu-card[open] { border-color: var(--gold-dim); }
 .edu-summary {
@@ -568,6 +646,186 @@ pre.code {
 .modal-copy:hover { border-color: var(--gold); }
 .modal-copy.copied { color: var(--ivory); border-color: var(--gold); }
 
+/* ── gilded cat -- occasional stroll along the bottom edge ──────────── */
+/* Injected by portfolio.js (wireWalkingCat). Pure CSS animation, no assets
+   beyond an inline SVG silhouette in brand gold. pointer-events: none so it
+   never blocks a click; aria-hidden so screen readers never meet the cat.
+   Under prefers-reduced-motion the JS never creates it AND the global
+   animation kill below parks it off-screen -- belt and braces. */
+.gc-cat {
+  position: fixed; bottom: -2px; left: 0; z-index: 40;
+  width: 56px; pointer-events: none; user-select: none;
+  transform: translateX(-90px); will-change: transform;
+  opacity: 0.85;
+}
+.gc-cat svg { display: block; width: 100%; height: auto; }
+.gc-cat.walk { animation: gc-cat-cross var(--cat-dur, 24s) linear forwards; }
+.gc-cat.rtl.walk { animation-direction: reverse; }
+.gc-cat.rtl svg { transform: scaleX(-1); }
+@keyframes gc-cat-cross {
+  from { transform: translateX(-90px); }
+  to   { transform: translateX(calc(100vw + 34px)); }
+}
+/* gait: gentle body bob + tail sway + alternating leg swing */
+.gc-cat .cat-bob  { animation: gc-cat-bob 0.5s ease-in-out infinite alternate; }
+@keyframes gc-cat-bob { from { transform: translateY(0); } to { transform: translateY(1.4px); } }
+.gc-cat .cat-tail {
+  animation: gc-cat-tail 1.6s ease-in-out infinite alternate;
+  transform-box: fill-box; transform-origin: bottom right;
+}
+@keyframes gc-cat-tail { from { transform: rotate(-6deg); } to { transform: rotate(7deg); } }
+.gc-cat .cat-leg-a { animation: gc-cat-step 0.5s ease-in-out infinite alternate; }
+.gc-cat .cat-leg-b { animation: gc-cat-step 0.5s ease-in-out infinite alternate-reverse; }
+.gc-cat .cat-leg-a, .gc-cat .cat-leg-b { transform-box: fill-box; transform-origin: top center; }
+@keyframes gc-cat-step { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+
+/* ════════════════════════════════════════════════════════════════════
+   POLISH PASS (2026-07-17) — plain-language layer, crafted thumbnails,
+   scroll reveal, hero moment. All motion is transform/opacity only and
+   dies under the prefers-reduced-motion kill at the bottom of this file.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── plain-language layer ───────────────────────────────────────────── */
+.gc-page-lede {
+  font-family: var(--thai); font-size: 0.98rem; line-height: 1.7;
+  color: var(--ivory-soft); max-width: 720px; margin: -6px 0 30px;
+}
+.gc-page-lede .th { color: var(--gold); }
+.gc-hero-warm {
+  font-family: var(--thai); font-size: 1.02rem; line-height: 1.7;
+  color: var(--ivory); max-width: 560px; margin: 6px auto 12px;
+}
+.proj-plain {
+  font-family: var(--thai); font-size: 1.0rem; line-height: 1.65;
+  color: var(--ivory); margin: 0 0 10px; position: relative; padding-left: 24px;
+}
+.proj-plain .pp-mark {
+  position: absolute; left: 2px; top: 0; color: var(--gold); font-size: 0.85rem;
+}
+/* technical summary steps back to second voice under the plain line */
+.proj-summary { color: var(--ivory-mut); font-size: 0.88rem; }
+.proj-detail-plain {
+  font-family: var(--thai); font-size: 1.05rem; line-height: 1.7;
+  color: var(--ivory); max-width: 760px; margin: 0 0 14px;
+  padding: 12px 18px; border-left: 2px solid var(--gold);
+  background: rgba(212, 169, 71, 0.06);
+}
+
+/* ── crafted project thumbnails (inline SVG, _partials/proj_thumbs.html) ─ */
+.proj-thumb {
+  border: 1px solid var(--gold-faint); background: #14100D;
+  margin: 0 0 18px; overflow: hidden; line-height: 0;
+  transition: border-color 0.2s ease;
+}
+.proj-block:hover .proj-thumb { border-color: var(--gold-dim); }
+.proj-thumb svg { width: 100%; height: auto; display: block; }
+.proj-detail-thumb .proj-thumb { max-width: 760px; margin: 8px 0 20px; }
+
+/* thumbnail micro-interactions — parent-card hover drives each glyph.
+   transform-box: fill-box keeps SVG transform origins local to the shape. */
+.proj-thumb .th-bar, .proj-thumb .th-gear, .proj-thumb .th-needle,
+.proj-thumb .th-bub, .proj-thumb .th-lens, .proj-thumb .th-note,
+.proj-thumb .th-stamp, .proj-thumb .th-clock-hand, .proj-thumb .th-box {
+  transform-box: fill-box; transform-origin: center;
+}
+.proj-thumb .th-bar { transform-origin: center bottom; }
+.proj-thumb .th-clock-hand { transform-origin: 0% 0%; }
+@keyframes th-rise    { from { transform: scaleY(1); }  to { transform: scaleY(1.25); } }
+@keyframes th-spin    { from { transform: rotate(0); }  to { transform: rotate(360deg); } }
+@keyframes th-swing   { from { transform: rotate(-16deg); } to { transform: rotate(14deg); } }
+@keyframes th-bob     { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+@keyframes th-blink   { from { opacity: 0.25; } to { opacity: 1; } }
+@keyframes th-peek    { from { transform: translate(0, 0); } to { transform: translate(-7px, -6px); } }
+@keyframes th-slide   { from { transform: translateX(0); } to { transform: translateX(9px); } }
+@keyframes th-pulse-k { from { opacity: 1; transform: scale(1); } to { opacity: 0.35; transform: scale(1.35); } }
+@keyframes th-draw    { from { stroke-dashoffset: 340; } to { stroke-dashoffset: 0; } }
+@keyframes th-stampk  { from { transform: scale(1); } to { transform: scale(1.12); } }
+.proj-block:hover .th-b1 { animation: th-rise 0.55s ease-in-out infinite alternate; }
+.proj-block:hover .th-b2 { animation: th-rise 0.55s ease-in-out 0.18s infinite alternate; }
+.proj-block:hover .th-b3 { animation: th-rise 0.55s ease-in-out 0.36s infinite alternate; }
+.proj-block:hover .th-pulse { animation: th-pulse-k 1.1s ease-out infinite; }
+.proj-block:hover .th-gear { animation: th-spin 5s linear infinite; }
+.proj-block:hover .th-needle { animation: th-swing 1.4s ease-in-out infinite alternate; }
+.proj-block:hover .th-bub-a { animation: th-bob 0.9s ease-in-out infinite alternate; }
+.proj-block:hover .th-bub-b { animation: th-bob 0.9s ease-in-out 0.3s infinite alternate; }
+.proj-block:hover .th-clock-hand { animation: th-spin 4s linear infinite; }
+.proj-block:hover .th-lens { animation: th-peek 1.2s ease-in-out infinite alternate; }
+.proj-block:hover .th-note { animation: th-bob 1.1s ease-in-out infinite alternate; }
+.proj-block:hover .th-stamp { animation: th-stampk 0.8s ease-in-out infinite alternate; }
+.proj-block:hover .th-box { animation: th-slide 1.3s ease-in-out infinite alternate; }
+.proj-block:hover .th-w1 { animation: th-blink 0.8s ease-in-out infinite alternate; }
+.proj-block:hover .th-w2 { animation: th-blink 0.8s ease-in-out 0.25s infinite alternate; }
+.proj-block:hover .th-w3 { animation: th-blink 0.8s ease-in-out infinite alternate; }
+.proj-block:hover .th-w4 { animation: th-blink 0.8s ease-in-out 0.25s infinite alternate; }
+.proj-block:hover .th-line {
+  stroke-dasharray: 340; animation: th-draw 1.2s ease-out forwards;
+}
+
+/* ── scroll reveal (wireReveal in portfolio.js) ─────────────────────────
+   .gc-reveal is added BY JS only — no JS (or reduced motion) = everything
+   visible, nothing hidden. Transform/opacity only. */
+.gc-reveal {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+  transition-delay: var(--rv-delay, 0ms);
+}
+.gc-reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  /* belt+braces: if the class ever lands under reduced motion, stay visible */
+  .gc-reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* ── hero moment ────────────────────────────────────────────────────── */
+@keyframes gc-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.gc-hero .gc-overline  { animation: gc-rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) 0.05s both; }
+.gc-hero .gc-h1        { animation: gc-rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.15s both; }
+.gc-hero .gc-hero-th   { animation: gc-rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.28s both; }
+.gc-hero .gc-hero-warm { animation: gc-rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.40s both; }
+.gc-hero .gc-hero-sub  { animation: gc-rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.52s both; }
+.gc-hero .gc-cta       { animation: gc-rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.64s both; }
+.gc-hero .gc-name-note { animation: gc-rise 0.8s cubic-bezier(0.2, 0.7, 0.3, 1) 0.80s both; }
+/* gold surname shimmer — one pass, then rests as static gold */
+@keyframes gc-shimmer { from { background-position: 180% 0; } to { background-position: 0% 0; } }
+.gc-h1 .gold {
+  background: linear-gradient(100deg, #D4A947 20%, #F6E7B8 50%, #D4A947 80%);
+  background-size: 220% 100%; background-position: 0% 0;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gc-shimmer 2.2s ease 1.0s 1 both;
+}
+/* mandala drifts imperceptibly — alive, not spinning */
+@keyframes gc-mandala-drift {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.gc-mandala { animation: gc-mandala-drift 240s linear infinite; will-change: transform; }
+
+/* ── hover micro-interactions ───────────────────────────────────────── */
+.corner { transition: width 0.22s ease, height 0.22s ease; }
+.proj-block:hover .corner, .home-card:hover .corner { width: 44px; height: 44px; }
+.proj-block {
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+.proj-block:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 42px -22px rgba(212, 169, 71, 0.4);
+}
+.home-card { transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.25s ease; }
+.home-card:hover { box-shadow: 0 14px 36px -20px rgba(212, 169, 71, 0.45); }
+.chip { transition: border-color 0.18s ease, color 0.18s ease; }
+.proj-block:hover .chip { border-color: var(--gold-dim); }
+/* gold sheen sweeps across buttons on hover */
+.gc-btn { position: relative; overflow: hidden; }
+.gc-btn::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+  background: linear-gradient(105deg, transparent, rgba(237, 228, 211, 0.35), transparent);
+  transform: skewX(-18deg) translateX(0); pointer-events: none;
+  transition: transform 0.55s ease; will-change: transform;
+}
+.gc-btn:hover::after { transform: skewX(-18deg) translateX(390%); }
+.proj-deep-dive-link, .back-link { transition: color 0.15s ease, letter-spacing 0.2s ease; }
+.proj-deep-dive-link:hover { letter-spacing: 0.16em; }
+
 /* ── accessibility ──────────────────────────────────────────────────── */
 .skip-link {
   position: absolute; left: -9999px; top: 8px; padding: 9px 14px;
@@ -580,6 +838,8 @@ pre.code {
   *, *::before, *::after { transition: none !important; animation: none !important; }
   html { scroll-behavior: auto; }
   main.editor { animation: none; }
+  /* JS also skips creating the cat; this guarantees no frozen cat mid-page. */
+  .gc-cat { display: none !important; }
 }
 
 /* subtle load fade (kept from v1.5 W1-C) */
@@ -618,7 +878,27 @@ main.editor { animation: portfolio-fade-in 200ms ease-out; }
   html, body, body.px-shell { background: #fff; color: #111; font-size: 12px; }
   .gc-header, .statusbar, .gc-changelog, .palette, .cheatsheet, .source-modal,
   .commit-grid-mount, .gc-cta, .gc-mandala, .gc-divider, .skip-link,
-  .home-pdf-link, .noscript-hint, .back-link { display: none !important; }
+  .home-pdf-link, .noscript-hint, .back-link, .gc-cat,
+  .proj-thumb { display: none !important; }
+  /* polish pass: shimmer uses transparent text-fill — restore solid ink,
+     and reveal/entrance states must never hide content on paper */
+  .gc-h1 .gold { background: none; -webkit-text-fill-color: #6b5417; }
+  .gc-reveal, .gc-hero .gc-overline, .gc-hero .gc-h1, .gc-hero .gc-hero-th,
+  .gc-hero .gc-hero-warm, .gc-hero .gc-hero-sub, .gc-hero .gc-name-note {
+    opacity: 1 !important; transform: none !important; animation: none !important;
+  }
+  .gc-hero-warm, .gc-page-lede, .proj-plain, .proj-detail-plain { color: #222; }
+  .proj-detail-plain { background: none; border-left: 2px solid #6b5417; }
+  .proj-plain .pp-mark { color: #6b5417; }
+  /* education timeline prints as a plain readable outline */
+  .edu-timeline::before, .edu-node-marker { display: none; }
+  .edu-node { padding-left: 0; }
+  .edu-node-card { background: none; border: 1px solid #bbb; }
+  .edu-node-institution { color: #6b5417; }
+  .edu-node-dates { color: #444; }
+  .edu-node-program, .edu-milestone { color: #222; }
+  .edu-milestone.edu-win { color: #000; }
+  .edu-lede { color: #222; }
   .gc-shell { max-width: 100%; padding: 0; }
   .gc-hero { padding: 0 0 12px; margin: 0; text-align: left; }
   .gc-hero-inner { padding: 0; max-width: 100%; }

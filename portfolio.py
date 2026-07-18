@@ -71,9 +71,14 @@ _PROJECT_FILENAMES = (
 # CANDIDATE trade CSV). Replaces the v1.3 hand-drawn SVG placeholder;
 # the .svg file is retained on disk for reference but no longer linked.
 _PROJECT_SVGS = (
-    "/static/projects/dashboard.png",
-    "/static/projects/line-bot.png",
-    "/static/projects/quant.png",
+    # 2026-07-17: the three illustration PNGs were never shipped in the
+    # PUBLIC build (no static/projects/ dir) -- every page load logged three
+    # 404s and showed broken-image icons. None => template renders the card
+    # without an image ({% if %} gate). Restore paths only when the assets
+    # actually ship in this repo.
+    None,
+    None,
+    None,
     None,
     # Phase B: no illustration asset for idx 4-7 yet; template gates on a
     # truthy value so None renders the deep-dive without an image.
@@ -444,12 +449,49 @@ def load_portfolio_latest_md() -> str | None:
         return None
 
 
+def _render_md_blocks(raw: str) -> str:
+    """Render latest.md's small markdown subset to SAFE block HTML.
+
+    v3 (2026-07-17): the old path fed the whole file through
+    `_render_inline`, so `##` headings printed literally and every
+    paragraph collapsed into one blob inside `.md-body`. This renders
+    blocks (split on blank lines) into <h3>/<h4>/<ul>/<p>.
+
+    Safety: every text fragment still goes through `_render_inline`,
+    which HTML-escapes FIRST -- the only un-escaped tags are the ones
+    this function and `_render_inline` insert. No raw-HTML passthrough.
+    """
+    out: list[str] = []
+    for block in re.split(r"\n\s*\n", raw.strip()):
+        lines = [ln.strip() for ln in block.splitlines() if ln.strip()]
+        if not lines:
+            continue
+        # Heading line (blocks in latest.md keep headings on their own
+        # line; tolerate trailing lines by re-queueing them as a <p>).
+        first = lines[0]
+        if first.startswith("### "):
+            out.append(f"<h4>{_render_inline(first[4:])}</h4>")
+            lines = lines[1:]
+        elif first.startswith("## "):
+            out.append(f"<h3>{_render_inline(first[3:])}</h3>")
+            lines = lines[1:]
+        if not lines:
+            continue
+        if all(ln.startswith("- ") for ln in lines):
+            items = "".join(f"<li>{_render_inline(ln[2:])}</li>" for ln in lines)
+            out.append(f"<ul>{items}</ul>")
+        else:
+            out.append(f"<p>{_render_inline(' '.join(lines))}</p>")
+    return "".join(out)
+
+
 @functools.lru_cache(maxsize=1)
 def load_portfolio_latest_md_rendered() -> str | None:
-    """v1.1: optional 2024-2026 update payload, with inline markdown
-    rendered to safe HTML. Returns None when latest.md is absent.
+    """v1.1: optional 2024-2026 update payload, with markdown rendered
+    to safe HTML (v3: block-level -- headings/lists/paragraphs -- not
+    just inline bold/code). Returns None when latest.md is absent.
 
-    Wraps `load_portfolio_latest_md` + `_render_inline` so the route
+    Wraps `load_portfolio_latest_md` + `_render_md_blocks` so the route
     does not call private helpers across modules.
 
     Callers MUST NOT mutate the returned value -- it is shared across
@@ -458,4 +500,4 @@ def load_portfolio_latest_md_rendered() -> str | None:
     raw = load_portfolio_latest_md()
     if raw is None:
         return None
-    return _render_inline(raw)
+    return _render_md_blocks(raw)

@@ -1,0 +1,198 @@
+{# proj_thumbs.html — crafted per-project thumbnails (polish pass 2026-07-17).
+   Inline SVG only: zero network requests, zero broken-image risk (the old
+   PNG paths 404'd in the public build and were removed). Duotone system:
+   slate (#46617E / #2C3E52) + brand gold (#D4A947) on near-lacquer.
+   Decorative: wrapper is aria-hidden; the card's <h3> carries the name.
+   Hover micro-animation classes (th-*) are driven by portfolio.css from
+   the parent card's :hover — transform/opacity only, and the global
+   prefers-reduced-motion kill switches them all off. #}
+
+{% macro thumb(pid) %}
+{% set _id = pid[5:] if pid.startswith('proj-') else pid %}
+<div class="proj-thumb proj-thumb-{{ _id }}" aria-hidden="true">
+<svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" preserveAspectRatio="xMidYMid slice">
+  <rect width="600" height="240" fill="#14100D"/>
+  {# faint circuit traces — the Gilded Circuit signature, kept whisper-quiet #}
+  <g stroke="#D4A947" stroke-opacity="0.12" stroke-width="1.5" fill="none">
+    <path d="M0 202 H86 L118 172 H206"/>
+    <path d="M600 38 H514 L482 68 H394"/>
+    <path d="M0 56 H60 L84 80"/>
+    <path d="M600 186 H540 L516 162"/>
+  </g>
+  <g fill="#D4A947" fill-opacity="0.28">
+    <circle cx="206" cy="172" r="3"/>
+    <circle cx="394" cy="68" r="3"/>
+    <circle cx="84" cy="80" r="2.5"/>
+    <circle cx="516" cy="162" r="2.5"/>
+  </g>
+
+  {% if _id == 'dashboard' %}
+  {# mission-control: four panels, live bars, sparkline, pulsing status dot #}
+  <g>
+    <rect x="198" y="48" width="94" height="74" rx="6" fill="#2C3E52"/>
+    <rect x="308" y="48" width="94" height="44" rx="6" fill="#46617E"/>
+    <rect x="308" y="106" width="94" height="86" rx="6" fill="#2C3E52"/>
+    <rect x="198" y="136" width="94" height="56" rx="6" fill="#46617E"/>
+    <g fill="#D4A947">
+      <rect class="th-bar th-b1" x="214" y="84" width="13" height="28" rx="2"/>
+      <rect class="th-bar th-b2" x="236" y="70" width="13" height="42" rx="2"/>
+      <rect class="th-bar th-b3" x="258" y="92" width="13" height="20" rx="2"/>
+    </g>
+    <polyline points="322,170 342,150 356,160 374,132 390,142" fill="none" stroke="#D4A947" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="390" cy="142" r="4.5" fill="#D4A947"/>
+    <circle class="th-pulse" cx="390" cy="64" r="6" fill="#D4A947"/>
+    <rect x="322" y="58" width="44" height="6" rx="3" fill="#EDE4D3" fill-opacity="0.4"/>
+    <rect x="214" y="150" width="60" height="6" rx="3" fill="#EDE4D3" fill-opacity="0.4"/>
+    <rect x="214" y="166" width="42" height="6" rx="3" fill="#EDE4D3" fill-opacity="0.25"/>
+  </g>
+
+  {% elif _id == 'linebot' %}
+  {# chat bubbles + reminder clock #}
+  <g>
+    <g class="th-bub th-bub-a">
+      <rect x="188" y="56" width="152" height="54" rx="16" fill="#2C3E52"/>
+      <path d="M214 110 l-8 18 24 -18 z" fill="#2C3E52"/>
+      <circle cx="224" cy="83" r="5.5" fill="#46617E"/>
+      <circle cx="250" cy="83" r="5.5" fill="#46617E"/>
+      <circle cx="276" cy="83" r="5.5" fill="#46617E"/>
+    </g>
+    <g class="th-bub th-bub-b">
+      <rect x="278" y="128" width="134" height="50" rx="16" fill="#D4A947"/>
+      <path d="M390 178 l8 16 -22 -16 z" fill="#D4A947"/>
+      <rect x="296" y="145" width="74" height="6.5" rx="3" fill="#100D0B"/>
+      <rect x="296" y="158" width="48" height="6.5" rx="3" fill="#100D0B"/>
+    </g>
+    <g class="th-clock">
+      <circle cx="416" cy="74" r="26" fill="#14100D" stroke="#46617E" stroke-width="5"/>
+      <path class="th-clock-hand" d="M416 60 v14 l11 9" fill="none" stroke="#D4A947" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  {% elif _id == 'quant' %}
+  {# lab bench: axes, candles, gold conviction line that draws on hover #}
+  <g>
+    <line x1="184" y1="192" x2="432" y2="192" stroke="#46617E" stroke-width="3.5"/>
+    <line x1="184" y1="192" x2="184" y2="50" stroke="#46617E" stroke-width="3.5"/>
+    <g fill="#2C3E52">
+      <rect x="214" y="122" width="13" height="48" rx="2"/>
+      <rect x="244" y="100" width="13" height="54" rx="2"/>
+      <rect x="274" y="128" width="13" height="42" rx="2"/>
+      <rect x="304" y="92" width="13" height="54" rx="2"/>
+      <rect x="334" y="108" width="13" height="44" rx="2"/>
+    </g>
+    <polyline class="th-line" points="198,170 240,142 268,154 310,112 350,122 410,64" fill="none" stroke="#D4A947" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="410" cy="64" r="6" fill="#D4A947"/>
+  </g>
+
+  {% elif _id == 'suri' %}
+  {# paper stack + magnifier: 63 papers, one map #}
+  <g>
+    <rect x="228" y="60" width="122" height="140" rx="6" fill="#2C3E52" transform="rotate(-5 289 130)"/>
+    <rect x="250" y="52" width="122" height="148" rx="6" fill="#46617E"/>
+    <g stroke="#EDE4D3" stroke-opacity="0.75" stroke-width="5" stroke-linecap="round">
+      <line x1="268" y1="84" x2="346" y2="84"/>
+      <line x1="268" y1="106" x2="354" y2="106"/>
+      <line x1="268" y1="128" x2="330" y2="128"/>
+    </g>
+    <g class="th-lens">
+      <circle cx="376" cy="152" r="31" fill="#D4A947" fill-opacity="0.14" stroke="#D4A947" stroke-width="5.5"/>
+      <line x1="399" y1="175" x2="424" y2="200" stroke="#D4A947" stroke-width="8" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  {% elif _id == 'money-compass' %}
+  {# compass rose + gold needle that swings on hover #}
+  <g>
+    <circle cx="300" cy="122" r="66" fill="#171310" stroke="#46617E" stroke-width="6"/>
+    <g stroke="#46617E" stroke-width="3.5" stroke-linecap="round">
+      <line x1="300" y1="62" x2="300" y2="74"/>
+      <line x1="300" y1="170" x2="300" y2="182"/>
+      <line x1="240" y1="122" x2="252" y2="122"/>
+      <line x1="348" y1="122" x2="360" y2="122"/>
+    </g>
+    <g class="th-needle">
+      <polygon points="300,78 313,122 300,166 287,122" fill="#D4A947"/>
+      <polygon points="300,78 313,122 300,122 287,122" fill="#F4E3B0"/>
+    </g>
+    <circle cx="300" cy="122" r="8" fill="#100D0B" stroke="#D4A947" stroke-width="3.5"/>
+    <g class="th-coin">
+      <circle cx="410" cy="84" r="17" fill="none" stroke="#D4A947" stroke-width="4.5"/>
+      <circle cx="410" cy="84" r="7" fill="#D4A947" fill-opacity="0.55"/>
+    </g>
+  </g>
+
+  {% elif _id == 'edge-factory' %}
+  {# conveyor + gear: ideas in, verdicts out #}
+  <g>
+    <line x1="182" y1="178" x2="430" y2="178" stroke="#46617E" stroke-width="6" stroke-linecap="round"/>
+    <g fill="#2C3E52">
+      <circle cx="206" cy="190" r="8"/>
+      <circle cx="300" cy="190" r="8"/>
+      <circle cx="394" cy="190" r="8"/>
+    </g>
+    <rect class="th-box th-bx-a" x="198" y="142" width="36" height="30" rx="4" fill="#2C3E52"/>
+    <rect class="th-box th-bx-b" x="284" y="142" width="36" height="30" rx="4" fill="#46617E"/>
+    <rect class="th-box th-bx-c" x="370" y="142" width="36" height="30" rx="4" fill="#D4A947"/>
+    <g class="th-gear">
+      <circle cx="300" cy="80" r="27" fill="none" stroke="#D4A947" stroke-width="7"/>
+      <g fill="#D4A947">
+        <rect x="295" y="40" width="10" height="15" rx="2"/>
+        <rect x="295" y="105" width="10" height="15" rx="2"/>
+        <rect x="260" y="75" width="15" height="10" rx="2"/>
+        <rect x="325" y="75" width="15" height="10" rx="2"/>
+        <rect x="268" y="50" width="12" height="12" rx="2" transform="rotate(45 274 56)"/>
+        <rect x="320" y="50" width="12" height="12" rx="2" transform="rotate(-45 326 56)"/>
+        <rect x="268" y="98" width="12" height="12" rx="2" transform="rotate(-45 274 104)"/>
+        <rect x="320" y="98" width="12" height="12" rx="2" transform="rotate(45 326 104)"/>
+      </g>
+    </g>
+  </g>
+
+  {% elif _id == 'karaoke' %}
+  {# phone-as-mic: mic + sound waves + floating note #}
+  <g>
+    <rect x="283" y="46" width="34" height="66" rx="17" fill="#46617E"/>
+    <path d="M264 94 a36 36 0 0 0 72 0" fill="none" stroke="#D4A947" stroke-width="6" stroke-linecap="round"/>
+    <line x1="300" y1="132" x2="300" y2="158" stroke="#46617E" stroke-width="6"/>
+    <line x1="277" y1="158" x2="323" y2="158" stroke="#46617E" stroke-width="6" stroke-linecap="round"/>
+    <g stroke="#D4A947" stroke-width="5" fill="none" stroke-linecap="round">
+      <path class="th-wave th-w1" d="M350 70 a26 26 0 0 1 0 46"/>
+      <path class="th-wave th-w2" d="M372 56 a46 46 0 0 1 0 74"/>
+      <path class="th-wave th-w3" d="M250 70 a26 26 0 0 0 0 46"/>
+      <path class="th-wave th-w4" d="M228 56 a46 46 0 0 0 0 74"/>
+    </g>
+    <g class="th-note" fill="#D4A947">
+      <circle cx="398" cy="168" r="8"/>
+      <rect x="403" y="132" width="4.5" height="38" rx="2"/>
+      <polygon points="407,132 424,142 407,150"/>
+    </g>
+  </g>
+
+  {% elif _id == 'journal' %}
+  {# open desk journal + grading stamp #}
+  <g>
+    <path d="M300 70 C 272 55, 220 55, 204 66 V 178 C 220 167, 272 167, 300 182 Z" fill="#2C3E52"/>
+    <path d="M300 70 C 328 55, 380 55, 396 66 V 178 C 380 167, 328 167, 300 182 Z" fill="#46617E"/>
+    <line x1="300" y1="70" x2="300" y2="182" stroke="#100D0B" stroke-width="3"/>
+    <g stroke="#EDE4D3" stroke-opacity="0.7" stroke-width="4" stroke-linecap="round">
+      <line x1="222" y1="90" x2="282" y2="96"/>
+      <line x1="222" y1="110" x2="282" y2="116"/>
+      <line x1="222" y1="130" x2="264" y2="135"/>
+    </g>
+    <g class="th-stamp">
+      <circle cx="350" cy="114" r="25" fill="none" stroke="#D4A947" stroke-width="5.5"/>
+      <path d="M337 114 l10 10 17 -20" fill="none" stroke="#D4A947" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  {% else %}
+  {# fallback for a future 9th project: brand medallion #}
+  <g>
+    <circle cx="300" cy="120" r="52" fill="none" stroke="#46617E" stroke-width="6"/>
+    <circle cx="300" cy="120" r="30" fill="none" stroke="#D4A947" stroke-width="5"/>
+    <circle cx="300" cy="120" r="9" fill="#D4A947"/>
+  </g>
+  {% endif %}
+</svg>
+</div>
+{% endmacro %}
