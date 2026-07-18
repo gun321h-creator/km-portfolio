@@ -1,0 +1,16 @@
+{% extends "portfolio_base.html" %}
+{% block main %}
+<section id="not-found" data-tab="404">
+  <h2 class="filesep">404 <span class="fs-crumb">not found</span></h2>
+  <h1 class="proj-title">404 -- page not found</h1>
+  <p class="proj-tagline">No page at <code>{{ requested_path }}</code>.</p>
+  <p>Try one of these instead:</p>
+  <ul class="audience-items">
+    <li><a href="/portfolio">Home</a></li>
+    <li><a href="/portfolio/about">About</a></li>
+    <li><a href="/portfolio/education">Education</a></li>
+    <li><a href="/portfolio/projects">Projects</a></li>
+    <li><a href="/portfolio/contact">Contact</a></li>
+  </ul>
+</section>
+{% endblock %}

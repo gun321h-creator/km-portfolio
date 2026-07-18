@@ -1,0 +1,143 @@
+/* BOT/dashboard/static/css/_tooltip.css
+ *
+ * Wave-2 UI polish — shared jargon-tooltip primitive.
+ * CSS-only [data-tip] hover/focus bubble. Reads theme_sage.css tokens only.
+ *
+ * Usage:
+ *   <span class="mm-tip" data-tip="คำอธิบายภาษาไทยสั้น ๆ"
+ *         tabindex="0" aria-label="คำอธิบายภาษาไทยสั้น ๆ">SR_LB</span>
+ *
+ *   - dotted underline marks the annotated term (subtle, cursor:help)
+ *   - bubble appears above on :hover and :focus-visible (keyboard reachable)
+ *   - aria-label mirrors the tip for screen-readers
+ *
+ * Author: น้องหน้า — 2026-07-02
+ * Dependencies: theme_sage.css must load first.
+ */
+
+.mm-tip {
+  position: relative;
+  border-bottom: 1px dotted currentColor;
+  cursor: help;
+  /* keep the dotted underline snug to the glyphs */
+  text-decoration: none;
+}
+
+.mm-tip:focus-visible {
+  outline: none;
+  border-radius: 2px;
+  box-shadow: var(--shadow-focus);
+}
+
+/* ── bubble ─────────────────────────────────────────────── */
+.mm-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(4px);
+  z-index: 200;
+
+  min-width: 140px;
+  max-width: 260px;
+  width: max-content;
+  padding: 8px 10px;
+
+  background: var(--panel-2, #FFFFFF);
+  color: var(--ink, #0A2540);
+  border: 1px solid var(--line, #E3E8EE);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+  white-space: normal;
+  letter-spacing: 0;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--t-fast, 150ms) var(--ease, ease),
+              transform var(--t-fast, 150ms) var(--ease, ease);
+}
+
+/* ── arrow ──────────────────────────────────────────────── */
+.mm-tip::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 3px);
+  transform: translateX(-50%) translateY(4px);
+  z-index: 201;
+
+  border: 5px solid transparent;
+  border-top-color: var(--panel-2, #FFFFFF);
+  /* subtle border echo on the arrow tip */
+  filter: drop-shadow(0 1px 0 var(--line, #E3E8EE));
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--t-fast, 150ms) var(--ease, ease),
+              transform var(--t-fast, 150ms) var(--ease, ease);
+}
+
+.mm-tip:hover::after,
+.mm-tip:focus-visible::after,
+.mm-tip:hover::before,
+.mm-tip:focus-visible::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Edge-guard: tips near the viewport's left/right can be nudged with
+   .mm-tip--left / .mm-tip--right to keep the bubble on-screen. */
+.mm-tip--left::after  { left: 0; transform: translateX(0) translateY(4px); }
+.mm-tip--left:hover::after,
+.mm-tip--left:focus-visible::after { transform: translateX(0) translateY(0); }
+.mm-tip--right::after { left: auto; right: 0; transform: translateX(0) translateY(4px); }
+.mm-tip--right:hover::after,
+.mm-tip--right:focus-visible::after { transform: translateX(0) translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-tip::after,
+  .mm-tip::before { transition: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Wave-2 shared: mobile table scroll affordance
+   Wrap a wide table in .mm-tbl-scroll; add a .mm-tbl-hint sibling above it.
+   On narrow screens a right-edge fade + "↔ เลื่อนดูได้" hint appear.
+   ══════════════════════════════════════════════════════════════════════ */
+.mm-tbl-scroll {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.mm-tbl-scroll::after {
+  content: "";
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 28px; pointer-events: none;
+  background: linear-gradient(to right,
+    rgba(255, 255, 255, 0), var(--bg, #FFFFFF));
+  opacity: 0;
+  transition: opacity var(--t-fast, 150ms) var(--ease, ease);
+}
+.mm-tbl-hint {
+  display: none;
+  font-family: var(--mono, monospace);
+  font-size: 10px; letter-spacing: .06em;
+  color: var(--mute, #64748D);
+  margin: 2px 0 6px;
+}
+@media (max-width: 720px) {
+  .mm-tbl-scroll::after { opacity: 1; }
+  .mm-tbl-hint { display: block; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mm-tbl-scroll::after { transition: none; }
+}

@@ -1,0 +1,339 @@
+/*
+ * BOT/dashboard/static/css/sage_premium.css
+ *
+ * Sage Premium UI layer — tactile cards, stagger-in reveals, sparkline
+ * component, number-roll typography, ⌘K palette skin, theme-toggle button.
+ *
+ * Loaded after theme_sage.css. Uses only var(--*) tokens defined there.
+ * Never hardcodes hex values except as fallbacks where a var must resolve
+ * to a concrete color for SVG stroke/fill that cannot reference CSS vars.
+ *
+ * Pages affected: all px-shell pages except /office and /ny-session.
+ * Author note: น้องหน้า — 2026-06-08
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   1.  TACTILE CARDS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sage-card,
+.wealth-stat,
+.wealth-card,
+.wealth-sm-card,
+.sm-card,
+.sme-card,
+.px-card,
+[data-tactile] {
+  transition:
+    transform   .18s cubic-bezier(.2, .8, .2, 1),
+    box-shadow  .22s ease;
+  will-change: transform;
+}
+
+.sage-card:hover,
+.wealth-stat:hover,
+.wealth-card:hover,
+.wealth-sm-card:hover,
+.sm-card:hover,
+.sme-card:hover,
+.px-card:hover,
+[data-tactile]:hover {
+  transform:   translateY(-3px);
+  box-shadow:  var(--shadow-lg);
+}
+
+.sage-card:active,
+.wealth-stat:active,
+.wealth-card:active,
+.wealth-sm-card:active,
+.sm-card:active,
+.sme-card:active,
+.px-card:active,
+[data-tactile]:active {
+  transform:   translateY(-1px) scale(.995);
+}
+
+/* Don't fight existing pointer rules — only add pointer on known interactive cards */
+a.sage-card,
+a.wealth-card,
+a.sm-card,
+a.sme-card,
+a.px-card,
+[data-tactile][role="button"],
+[data-tactile][tabindex] {
+  cursor: pointer;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   2.  STAGGER-IN REVEAL
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@keyframes sage-fade-up {
+  from {
+    opacity:   0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity:   1;
+    transform: translateY(0);
+  }
+}
+
+/* Parent container — JS adds this class; CSS does the rest. */
+.sage-stagger-in > * {
+  animation: sage-fade-up .5s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+/* nth-child delays: up to 8 children get staggered; beyond that all share
+   the max 320ms so no child waits forever. */
+.sage-stagger-in > *:nth-child(1)  { animation-delay:  40ms; }
+.sage-stagger-in > *:nth-child(2)  { animation-delay:  80ms; }
+.sage-stagger-in > *:nth-child(3)  { animation-delay: 120ms; }
+.sage-stagger-in > *:nth-child(4)  { animation-delay: 160ms; }
+.sage-stagger-in > *:nth-child(5)  { animation-delay: 200ms; }
+.sage-stagger-in > *:nth-child(6)  { animation-delay: 240ms; }
+.sage-stagger-in > *:nth-child(7)  { animation-delay: 280ms; }
+.sage-stagger-in > *:nth-child(8)  { animation-delay: 320ms; }
+/* n+9 stays at 320ms — cascade picks up the rule above automatically
+   because there is no more-specific rule, so we add one. */
+.sage-stagger-in > *:nth-child(n+9) { animation-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sage-stagger-in > * {
+    animation: none;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   3.  SPARKLINE COMPONENT
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sage-spark {
+  display:    block;
+  width:      100%;
+  height:     32px;
+  overflow:   visible;
+}
+
+/* Draw animation — line travels along its own length */
+@keyframes sage-spark-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes sage-spark-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+.sage-spark path.line {
+  stroke:           var(--accent);
+  stroke-width:     2;
+  fill:             none;
+  stroke-linecap:   round;
+  stroke-linejoin:  round;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: sage-spark-draw 1.2s ease-out forwards;
+}
+
+.sage-spark path.area {
+  fill:    rgba(232, 131, 107, .14); /* accent @ 14% — intentional rgba fallback */
+  opacity: 0;
+  animation: sage-spark-fade .8s .35s ease forwards;
+}
+
+/* Variant: trending up */
+.sage-spark.is-up path.line {
+  stroke: var(--live);
+}
+
+.sage-spark.is-up path.area {
+  fill: rgba(74, 157, 110, .12); /* live-dim manual — SVG fill cannot use CSS vars in all browsers */
+}
+
+/* Variant: trending down */
+.sage-spark.is-down path.line {
+  stroke: var(--bad);
+}
+
+.sage-spark.is-down path.area {
+  fill: rgba(200, 85, 77, .12); /* bad-dim manual */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sage-spark path.line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .sage-spark path.area {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   4.  NUMBER-ROLL TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sage-rolled-num {
+  font-variant-numeric: tabular-nums;
+  font-family:          var(--mono);
+  letter-spacing:       -.01em;
+}
+
+/* Auto-apply to known numeric display elements */
+.wealth-stat-value,
+.sm-score,
+.sme-tier {
+  font-variant-numeric: tabular-nums;
+  letter-spacing:       -.01em;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   5.  ⌘K NINJA-KEYS PALETTE SKIN
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/*
+ * ninja-keys exposes these custom properties on its host element.
+ * See: https://github.com/ssleptsov/ninja-keys
+ * --ninja-accent-color         : focus ring / selected item highlight
+ * --ninja-secondary-background : modal bg
+ * --ninja-selected-background  : hovered item bg
+ * --ninja-text-color           : primary text
+ * --ninja-secondary-text-color : muted text / breadcrumbs
+ * --ninja-input-background     : search-input bg
+ * --ninja-key-border-radius    : key-pill border radius
+ * --ninja-modal-shadow         : outer shadow of the dialog
+ * --ninja-backdrop-color       : backdrop tint
+ */
+
+:root {
+  --ninja-accent-color:          var(--accent);
+  --ninja-secondary-background:  var(--panel);
+  --ninja-selected-background:   var(--accent-dim);
+  --ninja-text-color:            var(--ink);
+  --ninja-secondary-text-color:  var(--mute);
+  --ninja-input-background:      var(--panel-2);
+  --ninja-key-border-radius:     4px;
+  --ninja-modal-shadow:          var(--shadow-lg);
+  --ninja-backdrop-color:        rgba(31, 45, 38, .30); /* ink @ 30% */
+}
+
+ninja-keys {
+  /* Ensure font family matches the rest of the shell */
+  --ninja-font-size:       13px;
+  font-family:             var(--mono);
+}
+
+/* Section headings inside the palette */
+ninja-keys::part(ninja-section-item) {
+  font-size:   10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color:       var(--mute);
+}
+
+/* When terminal mode is active the palette picks up that theme's variables
+   automatically because :root vars are reassigned by terminal_mode.css. */
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   6.  THEME TOGGLE BUTTON  (#mm-theme-toggle)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#mm-theme-toggle {
+  /* Fixed bottom-right corner */
+  position:  fixed;
+  bottom:    16px;
+  right:     16px;
+  z-index:   9000;
+
+  /* Shape */
+  width:     40px;
+  height:    40px;
+  border-radius: 50%;
+  padding:   0;
+
+  /* Palette */
+  background:     var(--panel-2);
+  border:         1px solid var(--line);
+  color:          var(--ink-2);
+  box-shadow:     var(--shadow);
+
+  /* Typography */
+  font-size:  17px;
+  line-height: 1;
+
+  /* Interaction */
+  cursor:    pointer;
+  display:   flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform  .18s cubic-bezier(.2, .8, .2, 1),
+    box-shadow .22s ease,
+    background .18s ease;
+}
+
+#mm-theme-toggle:hover {
+  transform:  scale(1.08);
+  box-shadow: var(--shadow-lg);
+  background: var(--panel);
+}
+
+#mm-theme-toggle:active {
+  transform:  scale(.96);
+}
+
+#mm-theme-toggle:focus-visible {
+  outline:        2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Terminal mode variant — the button signals the alternate theme via
+   data-theme on <html>. terminal_mode.css reassigns :root vars;
+   our button just needs to breathe in that context. */
+[data-theme="terminal"] #mm-theme-toggle {
+  background: var(--panel-2);
+  border-color: var(--line);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+/* Keep toggle above pixel-chrome left/right asides on mobile */
+@media (max-width: 1280px) {
+  #mm-theme-toggle {
+    bottom: 12px;
+    right:  12px;
+    width:  36px;
+    height: 36px;
+    font-size: 15px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   7.  MOBILE RESPONSIVE GUARDS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Tactile hover effect is a desktop concept; don't fight mobile tap states */
+@media (hover: none) {
+  .sage-card:hover,
+  .wealth-stat:hover,
+  .wealth-card:hover,
+  .wealth-sm-card:hover,
+  .sm-card:hover,
+  .sme-card:hover,
+  .px-card:hover,
+  [data-tactile]:hover {
+    transform:  none;
+    box-shadow: none;
+  }
+}

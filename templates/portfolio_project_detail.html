@@ -1,0 +1,67 @@
+{% extends "portfolio_base.html" %}
+
+{# v1.3 E3: per-project deep-dive page. The route picks `current_project`
+   from portfolio.json by __id and threads it into context. Renders title,
+   architecture, stack, scale, lessons, plus the same SVG illustration
+   shown on the projects card list (B5). #}
+
+{% block main %}
+  {% if current_project %}
+    <section id="project-detail" data-tab="projects" class="proj-detail">
+      <h2 class="filesep">Project deep-dive <span class="fs-crumb">{{ current_project.title }}</span></h2>
+
+      <a class="back-link" href="/portfolio/projects">&larr; Back to projects</a>
+
+      {% if current_project.svg_illustration %}
+        {# v1.6 Wave B-LINE: per-project width/height -- dashboard + quant are
+           600x400 landscape, line-bot is a 400x866 phone-portrait. JSON-side
+           image_w/image_h override the 600x400 default; image_portrait flag
+           adds the .portrait CSS variant that re-caps max-width to 400. #}
+        <img class="proj-illustration{% if current_project.image_portrait %} portrait{% endif %}"
+             src="{{ current_project.svg_illustration }}"
+             alt="{{ current_project.title }} illustration"
+             width="{{ current_project.image_w | default(600) }}"
+             height="{{ current_project.image_h | default(400) }}"
+             loading="eager"
+             decoding="async"
+             fetchpriority="high">
+      {% endif %}
+
+      <h1 class="proj-detail-title">{{ current_project.title }}</h1>
+      {% if current_project.deep_dive_intro %}
+        <p class="proj-detail-intro">{{ current_project.deep_dive_intro }}</p>
+      {% endif %}
+
+      {% if current_project.architecture %}
+        <h2 class="section-subhead">Architecture</h2>
+        <p class="proj-detail-body">{{ current_project.architecture }}</p>
+        {% if current_project.architecture_diagram %}
+          <pre class="ascii-arch">{{ current_project.architecture_diagram }}</pre>
+        {% endif %}
+      {% endif %}
+
+      {% if current_project.stack %}
+        <h2 class="section-subhead">Tech stack</h2>
+        <ul class="skill-list">
+          {% for s in current_project.stack %}<li class="skill-tag">{{ s }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if current_project.scale %}
+        <h2 class="section-subhead">Scale</h2>
+        <p class="proj-detail-body">{{ current_project.scale }}</p>
+      {% endif %}
+
+      {% if current_project.lessons %}
+        <h2 class="section-subhead">Lessons learned</h2>
+        <ol class="lessons-list">
+          {% for l in current_project.lessons %}<li>{{ l }}</li>{% endfor %}
+        </ol>
+      {% endif %}
+
+      <a class="back-link" href="/portfolio/projects">&larr; Back to projects</a>
+    </section>
+  {% else %}
+    <section><p class="proj-detail-body">Project not found.</p></section>
+  {% endif %}
+{% endblock %}

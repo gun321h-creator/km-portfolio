@@ -1,0 +1,88 @@
+{% extends "portfolio_base.html" %}
+
+{# v1.7 (2026-06-03): collapsible education timeline.
+
+   Recruiters / admission readers see VMI + CU Boulder + Royal Thai Army cadet
+   default-open in the first 5 seconds. Pre-cadet history (AFAPS + Satit
+   Patumwan + Bangkok Christian) renders as collapsed <details> blocks so
+   readers who care can expand, and the recruiter who doesn't simply scrolls
+   past. Native HTML elements -- no JS, no a11y rebuild, prints cleanly.
+
+   `_DEFAULT_OPEN_COUNT = 3` -- the first three education[] entries (VMI,
+   CU Boulder, Chulachomklao) are default-open. Indices 3+ are collapsed. #}
+{% set _open_count = 3 %}
+
+{% block main %}
+  <h2 class="filesep">Education <span class="fs-crumb">การศึกษา</span></h2>
+
+  {# Legacy anchor IDs ('vmi', 'cu-boulder', 'rta-cadet') are preserved for
+     back-compat with deep links + tests. Index 0 = VMI, 1 = CU Boulder,
+     2 = Royal Thai Army Cadet (Chulachomklao). Indices 3+ get auto-slug. #}
+  {% set _legacy_ids = ['vmi', 'cu-boulder', 'rta-cadet'] %}
+
+  {% for ed in p.education %}
+    {% set _open = loop.index0 < _open_count %}
+    {% set _legacy = _legacy_ids[loop.index0] if loop.index0 < _legacy_ids | length else None %}
+    {% set _sid = _legacy if _legacy else ('edu-' ~ loop.index) %}
+    <section id="{{ _sid }}" data-tab="education/">
+      <details class="edu-card"{% if _open %} open{% endif %}>
+        <summary class="edu-summary">
+          <span class="edu-summary-institution">{{ ed.institution }}</span>
+          <span class="edu-summary-dates">{{ ed.dates }}</span>
+          {% if not _open %}
+            <span class="edu-summary-hint">[expand]</span>
+          {% endif %}
+        </summary>
+        <pre class="code"><code>{
+  "institution": "{{ ed.institution }}",
+  "location":    "{{ ed.location }}",
+  "program":     "{{ ed.degree_or_program }}",
+  "dates":       "{{ ed.dates }}"{% if ed.details %},
+  "details": [
+{%- for d in ed.details %}
+    "{{ d }}"{% if not loop.last %},{% endif %}
+{%- endfor %}
+  ]{% endif %}
+}</code></pre>
+      </details>
+    </section>
+  {% endfor %}
+
+  {% if p.awards %}
+  <div class="gc-divider" role="separator"></div>
+  <section id="awards" data-tab="education">
+    <h2 class="filesep">Honors &amp; awards <span class="fs-crumb">รางวัล</span></h2>
+    <details class="edu-card" open>
+      <summary class="edu-summary">
+        <span class="edu-summary-institution">Honors, awards, leadership ({{ p.awards | length }})</span>
+        <span class="edu-summary-dates">2021 -- 2026</span>
+      </summary>
+      <ol class="awards-list">
+        {% for a in p.awards %}
+          <li class="awards-item">
+            <span class="awards-date">{{ a.date }}</span>
+            <span class="awards-title">{{ a.title }}</span>
+            <span class="awards-where">@ {{ a.where }}</span>
+          </li>
+        {% endfor %}
+      </ol>
+    </details>
+  </section>
+  {% endif %}
+
+  <div class="gc-divider" role="separator"></div>
+  <section id="edu-latest" data-tab="education" data-mtime="{{ latest_md_mtime or '' }}">
+    <h2 class="filesep">Latest term
+      {% if latest_md %}<span class="fs-new">&#9679; new</span>{% endif %}
+      <span class="fs-crumb">อัปเดตเทอมล่าสุด</span>
+    </h2>
+    {% if latest_md %}
+      <div class="md-body">{{ latest_md_rendered | safe }}</div>
+    {% else %}
+      <p class="md-placeholder">
+        Awaiting next-term update -- this section renders automatically when new
+        term data lands.
+      </p>
+    {% endif %}
+  </section>
+{% endblock %}

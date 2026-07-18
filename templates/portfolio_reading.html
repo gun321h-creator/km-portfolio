@@ -1,0 +1,25 @@
+{% extends "portfolio_base.html" %}
+{% block main %}
+{% if p.reading %}
+<section id="reading-hero" data-tab="reading">
+  <h2 class="filesep">Reading list <span class="fs-crumb">หนังสือ &amp; เปเปอร์</span></h2>
+  <h1 class="proj-title">{{ p.reading.headline }}</h1>
+  <p class="proj-tagline">{{ p.reading.tagline }}</p>
+
+  <ul class="reading-list">
+    {% for item in p.reading["items"] %}
+    <li class="reading-item">
+      <span class="reading-kind">{{ item.kind }}</span>
+      <div class="reading-meta">
+        <span class="reading-title">{{ item.title }}</span>
+        <span class="reading-author">-- {{ item.author }} ({{ item.year }})</span>
+      </div>
+      <p class="reading-takeaway">{{ item.takeaway }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% else %}
+<section><p>Reading list not configured.</p></section>
+{% endif %}
+{% endblock %}

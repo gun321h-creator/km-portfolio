@@ -1,0 +1,23 @@
+{% extends "portfolio_base.html" %}
+{% block main %}
+{% if p.blog %}
+<section id="blog-hero" data-tab="blog">
+  <h2 class="filesep">Notes <span class="fs-crumb">บันทึก</span></h2>
+  <h1 class="proj-title">{{ p.blog.headline }}</h1>
+  <p class="proj-tagline">{{ p.blog.tagline }}</p>
+
+  {% for post in p.blog.posts %}
+  <article class="blog-post" id="{{ post.id }}">
+    <header class="blog-post-header">
+      <span class="blog-post-date">{{ post.date }}</span>
+      <h2 class="blog-post-title">{{ post.title }}</h2>
+    </header>
+    <p class="blog-post-teaser">{{ post.teaser }}</p>
+    <div class="blog-post-body">{{ post.body }}</div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<section><p>Blog not configured.</p></section>
+{% endif %}
+{% endblock %}

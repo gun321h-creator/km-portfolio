@@ -1,0 +1,15 @@
+# Public repo — belt-and-suspenders against ever committing a secret.
+__pycache__/
+*.pyc
+*.pyo
+.env
+.env.*
+.venv/
+venv/
+key/
+*.key
+*.pem
+.pytest_cache/
+.ruff_cache/
+_design_preview.html
+.DS_Store

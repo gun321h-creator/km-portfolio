@@ -1,0 +1,551 @@
+/* BOT/dashboard/static/css/terminal_mode.css
+ *
+ * Bloomberg Terminal Mode — opt-in dark amber palette.
+ *
+ * Activates when <html data-theme="terminal">.
+ * Every rule here is scoped to [data-theme="terminal"] or to the NEW
+ * layout classes (.fwd-bloomberg-grid, .fwd-cell, #mm-ticker) which are
+ * defined below and are safe in both sage and terminal themes.
+ *
+ * Contrast (terminal palette, WCAG spot-check):
+ *   --ink  (#ff8c00) on --bg (#0a0a0a) = ~7.1:1  AA  body   PASS
+ *   --ink-2(#ffb84a) on --bg (#0a0a0a) = ~5.8:1  AA  body   PASS
+ *   --live (#00d96b) on --bg (#0a0a0a) = ~8.0:1  AAA        PASS
+ *   --bad  (#ff5a5a) on --bg (#0a0a0a) = ~4.2:1  AA  UI     PASS
+ */
+
+/* ══════════════════════════════════════════════════════════
+   PALETTE OVERRIDE
+══════════════════════════════════════════════════════════ */
+
+[data-theme="terminal"] {
+  --bg:        #0a0a0a;
+  --panel:     #111111;
+  --panel-2:   #161616;
+  --ink:       #ff8c00;           /* Bloomberg amber */
+  --ink-2:     #ffb84a;
+  --mute:      #9a6a24;
+  --mute-2:    #6a4a1c;
+  --accent:    #ffd54a;
+  --accent-2:  #e8b820;
+  --accent-dim:rgba(255, 213, 74, 0.12);
+  --line:      #2a1f10;
+  --line-2:    #3a2a18;
+  --live:      #00d96b;
+  --live-dim:  rgba(0, 217, 107, 0.12);
+  --warn:      #ffb84a;
+  --warn-dim:  rgba(255, 184, 74, 0.15);
+  --bad:       #ff5a5a;
+  --bad-dim:   rgba(255, 90, 90, 0.12);
+  --info:      #7ad4ff;
+  --display:   var(--mono);   /* mono everywhere in terminal mode */
+  --shadow-sm: 0 0 0 1px rgba(255,140,0,.12);
+  --shadow:    0 0 18px rgba(255,140,0,.08);
+  --shadow-lg: 0 0 32px rgba(255,140,0,.18);
+
+  /* legacy aliases */
+  --px-bg:         var(--bg);
+  --px-panel-bg:   var(--panel);
+  --px-panel-2:    var(--panel-2);
+  --px-border:     var(--line);
+  --px-border-2:   var(--line-2);
+  --px-text:       var(--ink);
+  --px-text-mute:  var(--mute);
+  --px-text-dim:   var(--mute-2);
+  --px-cyan:       var(--accent);
+  --px-green:      var(--live);
+  --px-amber:      var(--warn);
+  --px-red:        var(--bad);
+  --bone:          var(--ink);
+  --bone-2:        var(--ink-2);
+  --surface:       var(--panel);
+  --surface-2:     var(--panel-2);
+  --text:          var(--ink);
+  --text-mute:     var(--mute);
+  --muted:         var(--mute);
+  --border:        var(--line);
+  --bg-fold:       var(--panel);
+  --bg-card:       var(--panel);
+}
+
+/* ══════════════════════════════════════════════════════════
+   BODY + GLOBAL TYPOGRAPHY
+══════════════════════════════════════════════════════════ */
+
+[data-theme="terminal"] body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+}
+
+[data-theme="terminal"] h1,
+[data-theme="terminal"] h2,
+[data-theme="terminal"] h3,
+[data-theme="terminal"] h4 {
+  font-family: var(--mono);
+  color: var(--ink);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+[data-theme="terminal"] a {
+  color: var(--ink-2);
+}
+[data-theme="terminal"] a:hover {
+  color: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════
+   CRT SCANLINES OVERLAY
+══════════════════════════════════════════════════════════ */
+
+[data-theme="terminal"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,140,0,.025) 0,
+    rgba(255,140,0,.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PHOSPHOR GLOW ON NUMBERS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="terminal"] .term-num,
+[data-theme="terminal"] .sage-rolled-num,
+[data-theme="terminal"] .wealth-stat-value,
+[data-theme="terminal"] .cell-num {
+  color: var(--ink);
+  text-shadow: 0 0 8px rgba(255,140,0,.35);
+}
+
+/* ══════════════════════════════════════════════════════════
+   PIXEL-CHROME SHELL OVERRIDES
+══════════════════════════════════════════════════════════ */
+
+[data-theme="terminal"] .px-shell {
+  background: var(--bg);
+}
+
+[data-theme="terminal"] .px-topbar {
+  background: #000;
+  border-bottom: 1px solid var(--line-2);
+  color: var(--ink);
+}
+
+[data-theme="terminal"] .px-brand {
+  color: var(--ink);
+  font-family: var(--mono);
+  text-shadow: 0 0 8px rgba(255,140,0,.4);
+}
+
+[data-theme="terminal"] .px-nav a {
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+[data-theme="terminal"] .px-nav a:hover { color: var(--ink); }
+
+[data-theme="terminal"] .px-hud {
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+[data-theme="terminal"] .px-left,
+[data-theme="terminal"] .px-right,
+[data-theme="terminal"] .px-bottom {
+  background: #0d0d0d;
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+
+[data-theme="terminal"] .px-panel-title {
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+/* Theme toggle button — visible glyph in terminal mode */
+[data-theme="terminal"] #mm-theme-toggle {
+  background: transparent;
+  border: 1px solid var(--line-2);
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+[data-theme="terminal"] #mm-theme-toggle:hover {
+  color: var(--ink);
+  border-color: var(--mute);
+}
+
+/* Card surfaces */
+[data-theme="terminal"] .card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  box-shadow: none;
+}
+[data-theme="terminal"] .card h3 {
+  border-bottom: 1px solid var(--line);
+}
+
+/* ══════════════════════════════════════════════════════════
+   TICKER STRIP — Bloomberg-style, only active in terminal mode
+══════════════════════════════════════════════════════════ */
+
+/* Hidden by default; shown only in terminal mode */
+#mm-ticker {
+  display: none;
+}
+
+[data-theme="terminal"] #mm-ticker {
+  display: block;
+  position: sticky;
+  top: 0;
+  background: #000;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 99;
+  padding: 6px 0;
+}
+
+[data-theme="terminal"] #mm-ticker .ticker-track {
+  display: inline-block;
+  padding-left: 100%;
+  animation: ticker-scroll 40s linear infinite;
+  will-change: transform;
+}
+
+[data-theme="terminal"] #mm-ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }  /* track is doubled so -50% loops cleanly */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #mm-ticker .ticker-track {
+    animation: none;
+    padding-left: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   BLOOMBERG CELL GRID — works in BOTH sage and terminal modes
+   (sage: clean card cells; terminal: glowing amber panel)
+══════════════════════════════════════════════════════════ */
+
+.fwd-bloomberg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin: 20px 0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fwd-cell {
+  background: var(--panel);
+  padding: 14px 16px;
+  position: relative;
+  transition: background .15s ease;
+  min-height: 96px;
+}
+
+.fwd-cell:hover {
+  background: var(--panel-2);
+}
+
+.fwd-cell:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.fwd-cell .cell-code {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--mute);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.fwd-cell .cell-num {
+  font-family: var(--mono);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.fwd-cell .cell-label {
+  font-size: 10px;
+  color: var(--mute);
+  margin-top: 3px;
+  letter-spacing: .03em;
+}
+
+.fwd-cell .cell-spark {
+  width: 100%;
+  height: 24px;
+  margin-top: 8px;
+  display: block;
+}
+
+/* Status dot — top-right corner */
+.fwd-cell .cell-dot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--live);
+  box-shadow: 0 0 0 2px rgba(0, 217, 107, .18);
+}
+
+.fwd-cell.is-warn .cell-dot {
+  background: var(--warn);
+  box-shadow: 0 0 0 2px rgba(255, 184, 74, .20);
+}
+
+.fwd-cell.is-bad .cell-dot {
+  background: var(--bad);
+  box-shadow: 0 0 0 2px rgba(255, 90, 90, .20);
+}
+
+/* Terminal-mode enhancements for cells */
+[data-theme="terminal"] .fwd-bloomberg-grid {
+  background: var(--line-2);
+  border-color: var(--line-2);
+}
+
+[data-theme="terminal"] .fwd-cell {
+  background: #0d0d0d;
+  border: none;
+}
+
+[data-theme="terminal"] .fwd-cell:hover {
+  background: #141414;
+}
+
+[data-theme="terminal"] .fwd-cell .cell-num {
+  text-shadow: 0 0 10px rgba(255, 140, 0, .40);
+}
+
+[data-theme="terminal"] .fwd-cell .cell-code {
+  color: var(--mute);
+}
+
+/* Pulse animation on live dot — terminal mode only */
+[data-theme="terminal"] .fwd-cell .cell-dot {
+  animation: dot-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="terminal"] .fwd-cell .cell-dot {
+    animation: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   FORWARD MONITOR PAGE — terminal-mode surface overrides
+══════════════════════════════════════════════════════════ */
+
+/* Hero section */
+[data-theme="terminal"] .hero {
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  box-shadow: var(--shadow-lg);
+}
+
+[data-theme="terminal"] .hero .number {
+  color: var(--ink);
+  text-shadow: 0 0 14px rgba(255,140,0,.45);
+  font-family: var(--mono);
+}
+
+[data-theme="terminal"] .hero .label {
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+}
+
+[data-theme="terminal"] .wordmark .mark {
+  color: var(--ink);
+  font-family: var(--mono);
+  text-shadow: 0 0 10px rgba(255,140,0,.3);
+}
+
+[data-theme="terminal"] .wordmark em {
+  color: var(--accent);
+}
+
+/* Gov banner */
+[data-theme="terminal"] .gov-banner {
+  background: #1a0e00;
+  border: 1px solid var(--line-2);
+  color: var(--warn);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+/* Progress bars */
+[data-theme="terminal"] .track {
+  background: var(--line);
+}
+
+[data-theme="terminal"] .track .fill {
+  background: var(--ink);
+  box-shadow: 0 0 6px rgba(255,140,0,.4);
+}
+
+/* Gauge */
+[data-theme="terminal"] .gauge {
+  background: var(--line);
+}
+
+[data-theme="terminal"] .gauge .zone.pass {
+  background: rgba(0,217,107,.25);
+}
+
+[data-theme="terminal"] .gauge .zone.fail {
+  background: rgba(255,90,90,.20);
+}
+
+[data-theme="terminal"] .gauge .marker {
+  background: var(--ink);
+  box-shadow: 0 0 8px rgba(255,140,0,.6);
+}
+
+/* Tail card */
+[data-theme="terminal"] .tail-level {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255,140,0,.35);
+}
+
+/* Table */
+[data-theme="terminal"] .tbl {
+  background: var(--panel);
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+[data-theme="terminal"] .tbl th {
+  background: #000;
+  color: var(--mute);
+  border-bottom: 1px solid var(--line-2);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+[data-theme="terminal"] .tbl td {
+  border-bottom: 1px solid var(--line);
+}
+
+[data-theme="terminal"] .tbl tr.good td {
+  color: var(--live);
+}
+
+[data-theme="terminal"] .tbl tr.bad td {
+  color: var(--bad);
+}
+
+/* Log pre */
+[data-theme="terminal"] .log {
+  background: #000;
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+/* Health strip chips */
+[data-theme="terminal"] .chip {
+  background: #0d0d0d;
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  font-family: var(--mono);
+}
+
+[data-theme="terminal"] .chip .k {
+  color: var(--mute);
+  font-size: 9px;
+  letter-spacing: .08em;
+}
+
+[data-theme="terminal"] .chip .v {
+  color: var(--ink);
+}
+
+[data-theme="terminal"] .chip.bad {
+  border-color: var(--bad);
+  color: var(--bad);
+}
+
+/* Back link */
+[data-theme="terminal"] .back-link {
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-decoration: none;
+  letter-spacing: .05em;
+}
+[data-theme="terminal"] .back-link:hover {
+  color: var(--ink);
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE
+══════════════════════════════════════════════════════════ */
+
+@media (max-width: 700px) {
+  .fwd-bloomberg-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+  }
+
+  .fwd-cell .cell-num {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 420px) {
+  .fwd-bloomberg-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

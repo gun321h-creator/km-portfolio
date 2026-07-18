@@ -1,0 +1,54 @@
+{% extends "portfolio_base.html" %}
+{% block main %}
+{% if audience %}
+<section id="audience-hero" data-tab="{{ current_page_id }}">
+  <h2 class="filesep">{{ current_page_id | replace('-', ' ') | title }} <span class="fs-crumb">one-pager</span></h2>
+  <h1 class="proj-title">{{ audience.headline }}</h1>
+  <p class="proj-tagline">{{ audience.tagline }}</p>
+  <p class="audience-purpose">{{ audience.purpose }}</p>
+
+  {% for s in audience.sections %}
+    <h2 class="section-subhead">{{ s.title }}</h2>
+    <p>{{ s.body }}</p>
+    {% if s.get("items") %}
+      <ul class="audience-items">
+        {% for it in s["items"] %}<li>{{ it }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+
+  <h2 class="section-subhead">Next steps</h2>
+  <ul class="audience-cta">
+    {% for c in audience.cta_links %}
+      <li>
+        <a href="{{ c.href }}"
+           {% if c.href.startswith('http') %}rel="noopener" target="_blank"{% endif %}>{{ c.label }}</a>
+        {% if c.get("note") %}<span class="cta-note">-- {{ c["note"] }}</span>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if audience.get("qr") %}
+    {# ql/caption are raw portfolio.json strings -> rely on Jinja autoescape.
+       Do NOT pipe either through | safe (no _render_inline on qr fields). #}
+    {% set ql = audience.qr.get("url_label") or "the link page" %}
+    <div class="audience-qr">
+      <div class="audience-qr-tile">
+        {# QR ↦ gunvmi.vercel.app (link page). Inlined, NOT a static asset:
+           the dashboard deploy script enumerates static subdirs explicitly and
+           would skip a new static/portfolio/ dir -> 404. Inline ships with the
+           template (*.html). Regen: scripts/make_qr_linkpage.py (border 3, ecc M). #}
+        <svg role="img" aria-label="QR code linking to {{ ql }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 31" class="aq-svg"><title>{{ ql }}</title><path stroke="#15140f" d="M3 3.5h7m1 0h1m1 0h1m3 0h1m1 0h1m1 0h7m-25 1h1m5 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m3 0h2m1 0h1m4 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h1m3 0h4m2 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m2 0h1m1 0h2m1 0h3m1 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m2 0h3m4 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-17 1h1m2 0h1m3 0h2m-17 1h1m1 0h2m1 0h3m6 0h1m3 0h1m2 0h1m1 0h2m-25 1h1m2 0h1m8 0h1m3 0h2m1 0h1m3 0h1m-23 1h3m1 0h2m4 0h2m6 0h1m-15 1h1m1 0h1m4 0h4m1 0h1m3 0h2m-22 1h4m1 0h1m1 0h1m1 0h1m1 0h3m2 0h2m1 0h1m1 0h3m-24 1h1m3 0h1m3 0h1m1 0h1m1 0h3m1 0h4m3 0h1m-24 1h1m4 0h1m1 0h1m1 0h1m1 0h3m2 0h2m1 0h1m1 0h2m-24 1h1m1 0h3m2 0h1m3 0h1m3 0h1m3 0h2m3 0h1m-23 1h3m1 0h1m1 0h1m4 0h12m-17 1h2m1 0h1m4 0h1m3 0h1m1 0h1m1 0h1m-25 1h7m1 0h2m2 0h3m1 0h1m1 0h1m1 0h1m1 0h3m-25 1h1m5 0h1m1 0h1m1 0h2m2 0h3m3 0h1m2 0h2m-25 1h1m1 0h3m1 0h1m2 0h1m2 0h1m1 0h1m1 0h6m2 0h1m-25 1h1m1 0h3m1 0h1m1 0h4m5 0h2m1 0h5m-25 1h1m1 0h3m1 0h1m1 0h1m1 0h2m2 0h3m1 0h1m1 0h1m1 0h2m-24 1h1m5 0h1m2 0h2m2 0h2m2 0h1m2 0h1m1 0h1m-23 1h7m1 0h1m4 0h2m4 0h6"/></svg>
+      </div>
+      <div class="audience-qr-cap">
+        <span class="aq-label">Scan</span>
+        <p>{{ audience.qr.caption }}</p>
+        {% if audience.qr.get("url_label") %}<span class="aq-url">{{ audience.qr.url_label }}</span>{% endif %}
+      </div>
+    </div>
+  {% endif %}
+</section>
+{% else %}
+<section><p>Audience page not configured.</p></section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,86 @@
+/* V3 PICK 3 — sticky section headers + 6px freshness pulse dots
+   Owned by Agent C. Do NOT edit from other agents.
+   Design spec: docs/superpowers/specs/2026-06-09-dashboard-v3-picks-1-2-3-design.md §6.1
+*/
+
+.mm-section-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  background: color-mix(in srgb, var(--panel, #ffffff) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 16px;
+  margin: 0 -16px 8px;
+  border-bottom: 1px solid var(--line, rgba(0,0,0,0.1));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mm-section-sticky h2,
+.mm-section-sticky h3 {
+  margin: 0;
+  flex: 1;
+}
+
+.mm-section-meta {
+  font-size: 12px;
+  color: var(--mute, #6b7280);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* Freshness dot — 6px circle, prepended by JS */
+.mm-freshness-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mute, #9ca3af);
+  flex: none;
+  transition: background-color 0.3s ease;
+}
+
+.mm-freshness-dot[data-age="green"] {
+  background: var(--live, #3FAA77);
+  box-shadow: 0 0 6px var(--live, #3FAA77);
+  animation: mm-freshness-pulse 2s ease-in-out infinite;
+}
+
+.mm-freshness-dot[data-age="amber"] {
+  background: var(--warn, #FF6118);
+  box-shadow: none;
+}
+
+.mm-freshness-dot[data-age="red"] {
+  background: var(--bad, #DF1B41);
+  box-shadow: none;
+}
+
+.mm-freshness-dot[data-age="unknown"] {
+  background: var(--mute, #9ca3af);
+  opacity: 0.4;
+  box-shadow: none;
+}
+
+@keyframes mm-freshness-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px var(--live, #3FAA77);
+  }
+  50% {
+    box-shadow: 0 0 14px var(--live, #3FAA77);
+  }
+}
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mm-freshness-dot[data-age="green"] {
+    animation: none;
+  }
+  .mm-section-sticky {
+    position: static;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

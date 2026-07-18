@@ -1,0 +1,77 @@
+{% extends "portfolio_base.html" %}
+
+{% block main %}
+  {# ── Gilded Circuit hero: mandala backdrop + scrim + bilingual headline ── #}
+  <section id="hero" class="gc-hero" aria-label="Introduction">
+    <img class="gc-mandala" src="/static/brand/mandala.svg" alt="" aria-hidden="true" width="640" height="640" fetchpriority="high" decoding="async">
+    <div class="gc-hero-inner">
+      <p class="gc-overline">Gilded Circuit <span class="th">&middot; ลายรดน้ำ &times; ลายวงจร</span></p>
+      {% set _name_parts = p.name.split(' ', 1) %}
+      <h1 class="gc-h1">{{ _name_parts[0] }}{% if _name_parts | length > 1 %}<br><span class="gold">{{ _name_parts[1] }}</span>{% endif %}</h1>
+      <p class="gc-hero-th">วิศวกรไฟฟ้าและคอมพิวเตอร์ &middot; ลายกนกไทยที่กลายเป็นลายวงจร</p>
+      <p class="gc-hero-sub">{{ p.tagline | safe }}{% for line in p.hero_subtitle_lines %} &middot; {{ line }}{% endfor %}</p>
+      <p class="gc-hero-note">GPA: overall 3.6 &middot; major 4.00</p>
+      <div class="gc-cta">
+        <a class="gc-btn fill" href="/portfolio/projects">View Projects</a>
+        <a class="gc-btn" href="/portfolio/contact">Contact</a>
+      </div>
+      <p class="gc-name-note">The mark is literal: <b>กนก (kanok)</b> — the first word of the name — means <b>gold</b>, and names the Thai flame ornament itself.</p>
+    </div>
+  </section>
+
+  <div class="gc-divider" role="separator"></div>
+
+  <section id="home-cards">
+    <h2 class="filesep">Explore <span class="fs-crumb">สำรวจ</span></h2>
+    <div class="home-cards">
+      <a class="home-card" href="/portfolio/about" data-page-id="about">
+        <span class="corner" aria-hidden="true"></span>
+        <span class="home-card-title">About</span>
+        <span class="home-card-desc">Who I am, one paragraph.</span>
+      </a>
+      <a class="home-card" href="/portfolio/education" data-page-id="education">
+        <span class="corner" aria-hidden="true"></span>
+        <span class="home-card-title">Education</span>
+        <span class="home-card-desc">VMI &middot; CU Boulder &middot; RTA Cadet.</span>
+      </a>
+      <a class="home-card" href="/portfolio/projects" data-page-id="projects">
+        <span class="corner" aria-hidden="true"></span>
+        <span class="home-card-title">Projects</span>
+        <span class="home-card-desc">Dashboard &middot; LINE bot &middot; Quant research.</span>
+      </a>
+    </div>
+    <p class="home-audience-links">
+      Audience-specific: <a href="/portfolio/recruit">recruiters</a>
+      <span class="sep">&middot;</span>
+      <a href="/portfolio/internship">interns</a>
+      <span class="sep">&middot;</span>
+      <a href="/portfolio/grad-school">grad school</a>
+    </p>
+    <p class="home-audience-links">
+      More: <a href="/portfolio/blog">notes</a>
+      <span class="sep">&middot;</span>
+      <a href="/portfolio/reading">reading list</a>
+    </p>
+  </section>
+
+  <div class="gc-divider" role="separator"></div>
+
+  <!-- F2 commit grid (rendered by JS if data present) -->
+  <section id="activity">
+    <h2 class="filesep">Build activity <span class="fs-crumb">recent commits</span></h2>
+    <div class="commit-grid-mount" data-src="/portfolio-activity.json" data-mtime=""></div>
+  </section>
+
+  <div class="gc-divider" role="separator"></div>
+
+  <section id="home-contact">
+    <h2 class="filesep">Contact <span class="fs-crumb">ติดต่อ</span></h2>
+    <p class="md-body">
+      <a href="mailto:{{ p.contact_email }}" class="email">{{ p.contact_email }}</a>
+      <span class="muted"> &middot; {{ p.contact_location }}</span>
+    </p>
+    <p class="home-pdf-link">
+      <a href="/portfolio.pdf" download>Download as PDF</a>
+    </p>
+  </section>
+{% endblock %}

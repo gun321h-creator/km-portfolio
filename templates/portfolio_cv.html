@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+{# v1.6 Wave C: hand-tuned one-page CV.
+
+   This template is print-tight: NOT extending portfolio_base.html (which
+   carries IDE chrome, sidebar, tabs, font subsets). Self-contained CSS in
+   a <style> block lives at the top of <head> so Playwright's page.pdf()
+   sees exactly one document at US Letter (8.5" x 11") portrait.
+
+   Priority order (cut from the bottom if it does not fit one page):
+     1. Header     (name + tagline + contact line)
+     2. About      (2-3 line summary)
+     3. Education  (VMI + GPA + Tau Beta Pi + IEEE SoutheastCon)
+     4. Projects   (3 entries -- title + 1-line summary + stack chips)
+     5. Skills     (5-6 chips)
+     6. Footer     (live-portfolio URL)
+#}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>{{ p.name }} -- CV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Anuphan:wght@400;500;600&display=swap">
+  <style>
+    /* US Letter portrait, 0.6 inch margins -- Playwright's page.pdf() is
+       called with the same numbers; @page lets WebKit honour them when
+       prefer_css_page_size=True. */
+    @page {
+      size: letter portrait;
+      margin: 0.6in;
+    }
+
+    /* v2 "Gilded Circuit", print-correct inversion: the screen identity is
+       gold-on-lacquer; on paper the same system flips to lacquer ink on
+       ivory with gold hairline rules and a single vermilion accent.
+       (A lacquer-black page would be hostile to print -- deliberate.) */
+    :root {
+      --bg:       #FBF6EA;  /* ivory paper */
+      --ink:      #100D0B;  /* lacquer heading */
+      --text:     #26201A;  /* warm near-black body */
+      --muted:    #6E6353;  /* secondary */
+      --rule:     #D4A947;  /* gold separator */
+      --gold-deep:#8A6D24;  /* gold dark enough for small print text */
+      --accent:   #B8452E;  /* vermilion -- one accent only */
+      --chip-bg:  #F2EAD7;  /* chip ivory */
+      --chip-ink: #26201A;  /* chip text */
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Anuphan", "Bricolage Grotesque", "Helvetica Neue",
+                   Arial, sans-serif;
+      /* 10.5pt body -- comfortable for print, dense enough to fit one
+         page after the 6 sections below. */
+      font-size: 10.5pt;
+      line-height: 1.4;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .cv {
+      /* Width matches the @page printable area at 0.6in margins on
+         8.5in paper: 7.3 inches. Browser preview at this width stays
+         honest with the PDF. */
+      width: 7.3in;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    /* --- Header --------------------------------------------------- */
+
+    .cv-header {
+      border-bottom: 2px solid var(--rule);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .cv-name {
+      font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+      font-size: 22pt;
+      font-weight: 800;
+      color: var(--ink);
+      margin: 0 0 2px;
+      letter-spacing: -0.01em;
+    }
+
+    .cv-tagline {
+      font-size: 11pt;
+      color: var(--gold-deep);
+      font-style: italic;
+      margin: 0 0 6px;
+    }
+
+    .cv-contact {
+      font-size: 9.5pt;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .cv-contact span + span::before {
+      content: " | ";
+      color: var(--rule);
+    }
+
+    /* --- Section headings ----------------------------------------- */
+
+    .cv-section {
+      margin: 10px 0 4px;
+    }
+
+    .cv-section h2 {
+      font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+      font-size: 11pt;
+      font-weight: 600;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin: 0 0 4px;
+      padding-bottom: 2px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cv-section p { margin: 0 0 4px; }
+
+    .cv-section ul {
+      margin: 2px 0 4px;
+      padding-left: 18px;
+    }
+
+    .cv-section li { margin: 0 0 2px; }
+
+    /* --- About ---------------------------------------------------- */
+
+    .cv-about p {
+      margin: 0;
+      text-align: justify;
+    }
+
+    /* --- Education ------------------------------------------------ */
+
+    .cv-edu-line {
+      margin: 0 0 3px;
+    }
+
+    .cv-edu-school {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .cv-edu-meta {
+      color: var(--muted);
+      font-size: 9.5pt;
+    }
+
+    /* --- Projects ------------------------------------------------- */
+
+    .cv-project {
+      margin: 0 0 6px;
+    }
+
+    .cv-project-title {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .cv-project-summary {
+      display: block;
+      margin: 0;
+    }
+
+    /* --- Skills / chip row --------------------------------------- */
+
+    .cv-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 6px;
+      margin: 2px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cv-chip {
+      background: var(--chip-bg);
+      color: var(--chip-ink);
+      border: 1px solid var(--rule);
+      border-radius: 0;
+      padding: 1px 6px;
+      font-size: 9pt;
+      font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* --- Footer --------------------------------------------------- */
+
+    .cv-footer {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px solid var(--rule);
+      font-size: 9pt;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .cv-footer a { color: var(--ink); text-decoration: none; }
+    .cv-footer a:hover { text-decoration: underline; }
+
+    /* Print-specific: strip any hover artefacts (no-op in PDF render
+       but keeps the /portfolio/cv-preview browser view honest). */
+    @media print {
+      a { color: var(--ink); text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <article class="cv">
+
+    {# ----- 1. Header ---------------------------------------------- #}
+    <header class="cv-header">
+      <h1 class="cv-name">{{ p.name }}</h1>
+      <p class="cv-tagline">{{ p.tagline | safe }}</p>
+      <p class="cv-contact">
+        <span>{{ p.contact_email }}</span>
+        <span>{{ p.contact_location }}</span>
+        {% if p.contact_github %}
+        <span>GitHub: gun321h-creator</span>
+        {% endif %}
+      </p>
+    </header>
+
+    {# ----- 2. About ----------------------------------------------- #}
+    <section class="cv-section cv-about">
+      <h2>About</h2>
+      <p>{{ p.about | safe }}</p>
+    </section>
+
+    {# ----- 3. Education ------------------------------------------- #}
+    <section class="cv-section">
+      <h2>Education</h2>
+      {% set vmi = p.education[0] %}
+      <p class="cv-edu-line">
+        <span class="cv-edu-school">{{ vmi.institution }}</span> --
+        {{ vmi.degree_or_program }}
+        <span class="cv-edu-meta">({{ vmi.dates }})</span>
+      </p>
+      <ul>
+        <li>Honors Program; Dean's List; Overall GPA 3.6 / Major GPA 4.00.</li>
+        <li>Tau Beta Pi -- Engineering Honor Society, Virginia Chapter (Nov 2025).</li>
+        <li>IEEE SoutheastCon 2026 -- 4th place, Undergraduate Circuit Design (Mar 2026).</li>
+        <li>Royal Thai Army Cadet School, Class 74 -- selected #1 of 348 for the army's study-in-US program (May 2022).</li>
+      </ul>
+    </section>
+
+    {# ----- 4. Projects -------------------------------------------- #}
+    <section class="cv-section">
+      <h2>Projects</h2>
+      {% for proj in p.projects[:3] %}
+      <div class="cv-project">
+        <span class="cv-project-title">{{ proj.title }}.</span>
+        <span class="cv-project-summary">{{ proj.summary | safe }}</span>
+        {% if proj.stack %}
+        <ul class="cv-chips">
+          {% for tag in proj.stack[:5] %}
+          <li class="cv-chip">{{ tag }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </section>
+
+    {# ----- 5. Skills ---------------------------------------------
+       The top-level ``skills`` list groups chip-friendly items by
+       category (Languages / Web / Data / Tooling / Infrastructure).
+       The recruit.sections[0].items list also exists but holds full
+       prose sentences -- too long for chips on a one-page CV. We pick
+       one representative chip from the first six categories (cap 6
+       chips, never more) to keep the row to one line.
+
+       NOTE: ``items`` collides with Jinja's bound dict-method, so the
+       inner lookup uses bracket access. #}
+    {% if p.skills %}
+    <section class="cv-section">
+      <h2>Skills</h2>
+      <ul class="cv-chips">
+        {% set cat_chips = [] %}
+        {% for cat in p.skills[:6] %}
+          {% set _ = cat_chips.append((cat.category, (cat['items'][0] if cat['items'] else ''))) %}
+        {% endfor %}
+        {% for label, first in cat_chips %}
+        <li class="cv-chip">{{ label }}: {{ first }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    {# ----- 6. Footer --------------------------------------------- #}
+    <footer class="cv-footer">
+      Live portfolio:
+      {# Phase B: was the private Tailscale hostname — replaced with the Render
+         public host. Update if the Render service name changes (Phase D). #}
+      <a href="https://km-portfolio.onrender.com/portfolio">
+        km-portfolio.onrender.com/portfolio
+      </a>
+    </footer>
+
+  </article>
+</body>
+</html>

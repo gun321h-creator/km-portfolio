@@ -1,0 +1,386 @@
+/* BOT/dashboard/static/css/cinematic.css
+ *
+ * PURPOSE: Cinematic Flow — motion layer for the IC Markets dashboard.
+ *   Provides cross-document view transitions, glassmorphism utilities,
+ *   scroll-driven fade-in, 3D tilt, and magnetic CTA base styles.
+ *   Composes ON TOP of theme_sage.css vars; does NOT redefine :root.
+ *   sage_premium.css (tactile cards / sparklines / countUp) loads first
+ *   or alongside — cinematic.css only adds motion, never layout/color.
+ *
+ * BROWSER SUPPORT:
+ *   View Transitions  — Chrome 126+, Safari 18+.   Graceful: FF skips, page still loads.
+ *   animation-timeline: scroll() — Chrome 115+, Safari 17.2+.  FF fallback via IntersectionObserver (cinematic.js).
+ *   backdrop-filter   — Chrome 76+, Safari 14+, FF 103+ (behind flag until 126).  Fallback: solid panel bg.
+ *   @starting-style   — Chrome 117+, Safari 17.4+.
+ *   All effects respect prefers-reduced-motion.
+ *
+ * OPTING IN (data-attributes):
+ *   data-scroll-fade           — element fades + rises on scroll entry
+ *   data-tilt                  — 3D card tilt on pointer hover (JS drives rotation)
+ *   data-magnetic              — button drifts toward cursor (JS drives translate)
+ *   data-magnetic-strength="N" — override drift multiplier (default 0.25)
+ *   data-vt-name="ticker-NVDA" — opt element into named view-transition slot
+ *   data-vt-link               — opt <a> into soft startViewTransition nav (cinematic.js)
+ *
+ * DOES NOT TOUCH: /office (Phaser canvas), /ny-session (owns its own animation).
+ */
+
+/* ─────────────────────────────────────────────────────────────
+   1. CROSS-DOCUMENT VIEW TRANSITIONS
+   ───────────────────────────────────────────────────────────── */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Shared easing for every named group */
+::view-transition-group(*) {
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Named "fly-across" slot — any element can opt in:
+   e.g. <div data-vt-name="ticker-NVDA" style="view-transition-name: ticker-NVDA">
+   The data-attribute is a hint to developers; the CSS var below makes it
+   easy to wire up without raw style= strings when used in Jinja macros. */
+[data-vt-name] {
+  /* JS or inline style must set view-transition-name to data-vt-name value.
+     We expose the attribute so Jinja templates can do:
+       style="view-transition-name: {{ vt_name }}"
+     without cluttering template logic. */
+  contain: layout;   /* promote stacking context cheaply */
+}
+
+/* Slide-and-fade for new page entering */
+@keyframes cinematic-vt-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cinematic-vt-slide-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+::view-transition-old(root) {
+  animation-name: cinematic-vt-slide-out;
+}
+
+::view-transition-new(root) {
+  animation-name: cinematic-vt-slide-in;
+}
+
+/* Reduced-motion: cut transitions to a simple crossfade */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.1s;
+    animation-name: none;   /* browser default crossfade */
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. GLASSMORPHISM UTILITIES
+   ───────────────────────────────────────────────────────────── */
+
+/* Light glass — default sage surface */
+.glass {
+  background: rgba(247, 248, 244, 0.62);        /* --panel at 62% */
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(212, 220, 210, 0.50);  /* --line at 50% */
+  border-radius: 12px;
+}
+
+/* Compound card: glass + shadow + subtle inner highlight */
+.glass-card {
+  background: rgba(247, 248, 244, 0.62);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(212, 220, 210, 0.50);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg, 0 8px 24px rgba(31, 45, 38, 0.12));
+  /* inner rim — top-left highlight gives depth */
+  background-clip: padding-box;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.00) 60%
+  );
+  pointer-events: none;
+}
+
+/* .glass-card needs position:relative to anchor ::before */
+.glass-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dark glass — for overlays on photos / terminal mode */
+.glass-dark {
+  background: rgba(31, 45, 38, 0.42);           /* --ink at 42% */
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(74, 157, 110, 0.18);   /* --live tint */
+  border-radius: 12px;
+  color: var(--panel, #F7F8F4);
+}
+
+/* Terminal theme override — amber tint instead of sage green */
+[data-theme="terminal"] .glass,
+[data-theme="terminal"] .glass-card {
+  background: rgba(20, 18, 12, 0.60);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border-color: rgba(255, 140, 0, 0.18);
+}
+
+[data-theme="terminal"] .glass-dark {
+  background: rgba(10, 9, 6, 0.72);
+  border-color: rgba(255, 140, 0, 0.28);
+}
+
+/* Fallback for browsers where backdrop-filter is unsupported (FF pre-126) */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass,
+  .glass-card {
+    background: var(--panel, #F7F8F4);
+    border-color: var(--line, #D4DCD2);
+  }
+  .glass-dark {
+    background: var(--ink, #1F2D26);
+  }
+  [data-theme="terminal"] .glass,
+  [data-theme="terminal"] .glass-card {
+    background: rgb(20, 18, 12);
+    border-color: rgba(255, 140, 0, 0.30);
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. SCROLL-DRIVEN FADE  (animation-timeline: scroll / view())
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes cinematic-scroll-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  [data-scroll-fade] {
+    animation: cinematic-scroll-fade linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+}
+
+/* Reduced-motion: always show, no animation */
+@media (prefers-reduced-motion: reduce) {
+  [data-scroll-fade] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ── IntersectionObserver fallback class (added by cinematic.js)
+   Applied when animation-timeline is unsupported AND reduced-motion is off */
+[data-scroll-fade]:not(.is-revealed) {
+  /* Pre-reveal state for the IO fallback path.
+     Browsers with native animation-timeline never reach this selector
+     because the @supports block already runs the animation. */
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* The class cinematic.js adds on intersection */
+[data-scroll-fade].is-revealed {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Stagger support: data-scroll-delay="N" where N is an index 0-9.
+   Jinja templates can write: data-scroll-delay="{{ loop.index0 }}" */
+@supports (animation-timeline: scroll()) {
+  [data-scroll-fade][data-scroll-delay="1"] { animation-delay: 0.06s; }
+  [data-scroll-fade][data-scroll-delay="2"] { animation-delay: 0.12s; }
+  [data-scroll-fade][data-scroll-delay="3"] { animation-delay: 0.18s; }
+  [data-scroll-fade][data-scroll-delay="4"] { animation-delay: 0.24s; }
+  [data-scroll-fade][data-scroll-delay="5"] { animation-delay: 0.30s; }
+  [data-scroll-fade][data-scroll-delay="6"] { animation-delay: 0.36s; }
+  [data-scroll-fade][data-scroll-delay="7"] { animation-delay: 0.42s; }
+  [data-scroll-fade][data-scroll-delay="8"] { animation-delay: 0.48s; }
+  [data-scroll-fade][data-scroll-delay="9"] { animation-delay: 0.54s; }
+}
+
+/* IO fallback stagger (JS reads data-scroll-delay to add CSS transition-delay) */
+[data-scroll-fade].is-revealed {
+  /* delay is set inline by cinematic.js via style="transition-delay: Xs" */
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. 3D TILT (JS drives the rotation; CSS sets context)
+   ───────────────────────────────────────────────────────────── */
+
+[data-tilt] {
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+  cursor: default;
+}
+
+/* Parent of [data-tilt] needs a perspective context.
+   We set it on the element itself to avoid requiring a wrapper. */
+[data-tilt]:hover {
+  /* JS sets perspective() inline via transform property, but a fallback
+     perspective on the element guards against partially-applied transforms */
+  box-shadow: var(--shadow-lg, 0 8px 24px rgba(31, 45, 38, 0.12));
+}
+
+/* Tilt strength override: data-tilt-max="8" → JS reads this.
+   CSS just acknowledges the attribute exists (no-op rule for clarity). */
+[data-tilt][data-tilt-max] { /* strength tuned via JS */ }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tilt] {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. MAGNETIC CTA (JS drives translate)
+   ───────────────────────────────────────────────────────────── */
+
+[data-magnetic] {
+  display: inline-flex;         /* common for buttons/badges */
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+  cursor: pointer;
+}
+
+/* On leave, JS removes inline transform — CSS transition springs it back */
+[data-magnetic]:focus-visible {
+  /* ensure keyboard focus ring still shows through the transform */
+  outline: 2px solid var(--accent, #E8836B);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-magnetic] {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. PAGE ENTRY FADE
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes cinematic-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply to pages that opt in via body.cinematic-enter.
+   We DON'T apply to body globally to avoid fighting view-transition animations. */
+body.cinematic-enter {
+  animation: cinematic-page-enter 0.35s ease-out both;
+}
+
+/* If a page uses @view-transition { navigation: auto } the browser already
+   handles entry. Only use body.cinematic-enter on pages loaded without
+   a prior view-transition (first cold load, direct URL, hard refresh). */
+
+@media (prefers-reduced-motion: reduce) {
+  body.cinematic-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. FOCUS + KEYBOARD ACCESSIBILITY
+   ───────────────────────────────────────────────────────────── */
+
+/* Ensure tilt/magnetic wrappers remain keyboard-reachable */
+[data-tilt]:focus-within,
+[data-magnetic]:focus-visible {
+  outline: 2px solid var(--accent, #E8836B);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   8. RESPONSIVE / MOBILE
+   ───────────────────────────────────────────────────────────── */
+
+/* On narrow viewports, disable tilt/glass blur (perf + no hover) */
+@media (max-width: 480px) {
+  [data-tilt] {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+
+  /* Reduce backdrop-filter cost on low-end mobile */
+  .glass,
+  .glass-card {
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+  }
+
+  .glass-dark {
+    backdrop-filter: blur(10px) saturate(110%);
+    -webkit-backdrop-filter: blur(10px) saturate(110%);
+  }
+}

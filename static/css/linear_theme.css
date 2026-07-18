@@ -1,0 +1,523 @@
+/* BOT/dashboard/static/css/linear_theme.css
+ *
+ * Linear Research Theme — deep graphite canvas, indigo accent, Inter Variable.
+ *
+ * Activates when <html data-theme="linear">.
+ * Every rule is scoped to [data-theme="linear"].
+ * CRT scanlines and ticker marquee remain scoped to [data-theme="terminal"] —
+ * they do NOT bleed into Linear mode.
+ *
+ * Palette:
+ *   --bg   #08090A   on --ink #F7F8F8 =  ~19.5:1  AAA   PASS
+ *   --panel #0F1011  on --ink #F7F8F8 =  ~18.6:1  AAA   PASS
+ *   --mute  #8A8F98  on --bg  #08090A =   ~4.6:1  AA    PASS (UI chrome)
+ *   --accent #5E6AD2 on --bg  #08090A =   ~3.4:1  AA    PASS (UI chrome only — NOT body text)
+ *
+ * Fonts: Inter Variable (cv01 + ss03) as --display; JetBrains Mono as --mono.
+ * Both are loaded in <head> of pixel_chrome_base.html.
+ */
+
+/* ══════════════════════════════════════════════════════════
+   PALETTE OVERRIDE
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] {
+  /* ── surface ─────────────────────────── */
+  --bg:        #08090A;
+  --panel:     #0F1011;
+  --panel-2:   #161718;
+  --line:      #23252A;
+  --line-2:    #2F3034;
+
+  /* ── ink ──────────────────────────────── */
+  --ink:       #F7F8F8;
+  --ink-2:     #C6CACE;
+  --mute:      #8A8F98;
+  --mute-2:    #62666D;
+
+  /* ── semantic accents ─────────────────── */
+  --accent:    #5E6AD2;
+  --accent-2:  #7B85DE;
+  --accent-dim: rgba(94, 106, 210, 0.15);
+  --live:      #4CB782;
+  --live-dim:  rgba(76, 183, 130, 0.15);
+  --warn:      #F2C84B;
+  --warn-dim:  rgba(242, 200, 75, 0.15);
+  --bad:       #F26D6D;
+  --bad-dim:   rgba(242, 109, 109, 0.15);
+  --info:      #8AB8E6;
+
+  /* ── type ─────────────────────────────── */
+  --display: 'Inter', system-ui, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* ── shadows ──────────────────────────── */
+  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.40);
+  --shadow:       0 2px 12px rgba(0, 0, 0, 0.50);
+  --shadow-lg:    0 12px 36px rgba(0, 0, 0, 0.60);
+  --shadow-focus: 0 0 0 3px rgba(94, 106, 210, 0.32);
+  /* keep legacy alias so existing uses of --shadow-coral still resolve */
+  --shadow-coral: var(--shadow-focus);
+
+  /* ── legacy aliases (back-compat, mirrors terminal_mode.css pattern) ── */
+  --px-bg:         var(--bg);
+  --px-panel-bg:   var(--panel);
+  --px-panel-2:    var(--panel-2);
+  --px-border:     var(--line);
+  --px-border-2:   var(--line-2);
+  --px-text:       var(--ink);
+  --px-text-mute:  var(--mute);
+  --px-text-dim:   var(--mute-2);
+  --px-cyan:       var(--accent);
+  --px-cyan-soft:  var(--accent-dim);
+  --px-green:      var(--live);
+  --px-amber:      var(--warn);
+  --px-red:        var(--bad);
+  --px-violet:     var(--accent);
+  --bone:          var(--ink);
+  --bone-2:        var(--ink-2);
+  --surface:       var(--panel);
+  --surface-2:     var(--panel-2);
+  --text:          var(--ink);
+  --text-mute:     var(--mute);
+  --muted:         var(--mute);
+  --muted-2:       var(--mute-2);
+  --border:        var(--line);
+  --bg-fold:       var(--panel);
+  --bg-card:       var(--panel);
+  --bg-detail:     var(--panel-2);
+  --rule:          var(--line);
+  --rule-strong:   var(--line-2);
+  --ink-mute:      var(--ink-2);
+  --ink-faint:     var(--mute);
+  --c-active:      var(--live);
+  --c-opus:        var(--accent);
+
+  color-scheme: dark;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BODY + GLOBAL TYPOGRAPHY
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--display);
+  font-feature-settings: 'cv01' 1, 'ss03' 1;
+  -webkit-font-smoothing: antialiased;
+  /* Suppress cinematic.css page-enter animation — Linear bg must not flash */
+  animation: none;
+}
+
+/* Tabular nums for Inter at numeric positions */
+[data-theme="linear"] {
+  font-variant-numeric: tabular-nums;
+}
+
+[data-theme="linear"] h1,
+[data-theme="linear"] h2,
+[data-theme="linear"] h3,
+[data-theme="linear"] h4 {
+  color: var(--ink);
+  font-family: var(--display);
+  letter-spacing: -.02em;
+  font-feature-settings: 'cv01' 1, 'ss03' 1;
+}
+
+/* ══════════════════════════════════════════════════════════
+   LINKS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] a:not(.px-back):not(.px-anchor):not(.px-nav a) {
+  color: var(--accent);
+}
+[data-theme="linear"] a:not(.px-back):not(.px-anchor):not(.px-nav a):hover {
+  color: var(--accent-2);
+}
+
+/* ══════════════════════════════════════════════════════════
+   BUTTONS
+   (Exclude toggle pill control buttons handled separately below)
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] button:not([id^="mm-"]):not([data-theme-val]):not(.toastify-button) {
+  background: var(--panel-2);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  transition: border-color .12s ease;
+}
+[data-theme="linear"] button:not([id^="mm-"]):not([data-theme-val]):not(.toastify-button):hover {
+  border-color: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════
+   FORM ELEMENTS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] input,
+[data-theme="linear"] textarea,
+[data-theme="linear"] select {
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+[data-theme="linear"] input:focus,
+[data-theme="linear"] textarea:focus,
+[data-theme="linear"] select:focus {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent-dim);
+  outline-offset: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PIXEL-CHROME TOPBAR
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .px-topbar {
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 -1px 0 var(--accent-dim), 0 1px 2px rgba(0,0,0,.3);
+}
+
+[data-theme="linear"] .px-brand {
+  color: var(--ink);
+  background: var(--accent-dim);
+  border-color: var(--line);
+  text-shadow: none;
+}
+
+[data-theme="linear"] .px-nav a {
+  color: var(--ink-2);
+}
+[data-theme="linear"] .px-nav a:hover {
+  color: var(--accent);
+}
+
+[data-theme="linear"] .px-hud {
+  color: var(--mute);
+}
+
+[data-theme="linear"] .px-left,
+[data-theme="linear"] .px-right {
+  background: var(--panel);
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+
+[data-theme="linear"] .px-bottom {
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
+[data-theme="linear"] .px-panel-title {
+  color: var(--mute);
+  font-size: 10px;
+  letter-spacing: .07em;
+}
+
+[data-theme="linear"] .px-log-line {
+  color: var(--mute);
+}
+
+/* ══════════════════════════════════════════════════════════
+   3-STATE THEME TOGGLE PILL
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] #mm-theme-toggle {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+[data-theme="linear"] #mm-theme-toggle button[data-theme-val] {
+  color: var(--mute);
+  background: transparent;
+  border: none;
+  transition: color .12s ease;
+}
+
+[data-theme="linear"] #mm-theme-toggle button[aria-checked="true"] {
+  color: var(--accent);
+}
+
+[data-theme="linear"] #mm-theme-toggle .mm-toggle-pill {
+  background: var(--accent-dim);
+  border-radius: 16px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CARD SURFACES
+   Tighter corners than sage; Linear uses 8px not 12px
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .px-card,
+[data-theme="linear"] .sage-card,
+[data-theme="linear"] .sm-card,
+[data-theme="linear"] .sme-card,
+[data-theme="linear"] .wealth-stat,
+[data-theme="linear"] .wealth-card,
+[data-theme="linear"] .card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="linear"] .card h3 {
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+
+/* ══════════════════════════════════════════════════════════
+   KPI / STAT NUMBERS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .wealth-stat-value,
+[data-theme="linear"] .sm-score,
+[data-theme="linear"] .sme-tier,
+[data-theme="linear"] .cell-num,
+[data-theme="linear"] .term-num,
+[data-theme="linear"] .sage-rolled-num {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+  /* Subtle indigo glow — much softer than terminal's amber glow */
+  text-shadow: 0 0 8px rgba(94, 106, 210, .20);
+}
+
+/* ══════════════════════════════════════════════════════════
+   STATUS PILLS + BANDS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .pill,
+[data-theme="linear"] .wealth-band {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(94, 106, 210, .30);
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   LIVE / PULSE INDICATORS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .pulse-dot,
+[data-theme="linear"] [data-live] {
+  color: var(--live);
+}
+
+/* ══════════════════════════════════════════════════════════
+   BLOOMBERG CELL GRID (fwd-cell)
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .fwd-bloomberg-grid {
+  background: var(--line);
+  border-color: var(--line-2);
+}
+
+[data-theme="linear"] .fwd-cell {
+  background: var(--panel);
+  border: none;
+}
+
+[data-theme="linear"] .fwd-cell:hover {
+  background: var(--panel-2);
+}
+
+[data-theme="linear"] .fwd-cell .cell-num {
+  /* Indigo glow instead of amber */
+  text-shadow: 0 0 8px rgba(94, 106, 210, .25);
+}
+
+[data-theme="linear"] .fwd-cell .cell-code {
+  color: var(--mute);
+}
+
+/* ══════════════════════════════════════════════════════════
+   HUB BENTO GRID
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .bento-hub {
+  gap: 8px;
+}
+
+[data-theme="linear"] .bento-tile {
+  background: var(--panel);
+  border-color: var(--line);
+  transition: border-color .12s ease;
+}
+
+[data-theme="linear"] .bento-tile:hover {
+  border-color: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SMART MONEY EDGE / RESEARCH CARDS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .sme-card {
+  background: var(--panel);
+  border-color: var(--line);
+}
+
+/* ══════════════════════════════════════════════════════════
+   PROGRESS BARS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .track {
+  background: var(--line);
+}
+
+[data-theme="linear"] .track .fill {
+  background: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════
+   GOV BANNER / ALERT STRIPS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .gov-banner {
+  background: rgba(94, 106, 210, .08);
+  border: 1px solid rgba(94, 106, 210, .25);
+  color: var(--accent-2);
+}
+
+/* ══════════════════════════════════════════════════════════
+   TABLES
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .tbl {
+  background: var(--panel);
+  color: var(--ink-2);
+  font-size: 13px;
+}
+
+[data-theme="linear"] .tbl th {
+  background: var(--panel-2);
+  color: var(--mute);
+  border-bottom: 1px solid var(--line-2);
+  font-size: 11px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+[data-theme="linear"] .tbl td {
+  border-bottom: 1px solid var(--line);
+}
+
+[data-theme="linear"] .tbl tr.good td { color: var(--live); }
+[data-theme="linear"] .tbl tr.bad td  { color: var(--bad);  }
+
+/* ══════════════════════════════════════════════════════════
+   LOG / CODE BLOCKS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .log,
+[data-theme="linear"] pre,
+[data-theme="linear"] code {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  font-family: var(--mono);
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEALTH STRIP CHIPS
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .chip {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
+[data-theme="linear"] .chip .k {
+  color: var(--mute);
+  font-size: 10px;
+  letter-spacing: .06em;
+}
+
+[data-theme="linear"] .chip .v {
+  color: var(--ink);
+}
+
+[data-theme="linear"] .chip.bad {
+  border-color: var(--bad);
+  color: var(--bad);
+}
+
+/* ══════════════════════════════════════════════════════════
+   BACK LINK
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .back-link,
+[data-theme="linear"] .px-back {
+  color: var(--mute);
+  text-decoration: none;
+}
+[data-theme="linear"] .back-link:hover,
+[data-theme="linear"] .px-back:hover {
+  color: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════
+   GLASSMORPHISM UTILITY (.glass from cinematic.css)
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .glass {
+  background: rgba(15, 16, 17, 0.62);
+  border-color: rgba(35, 37, 42, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ══════════════════════════════════════════════════════════
+   APEXCHARTS TREEMAP — keep semantic stroke from bg
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] .apexcharts-treemap-rect {
+  stroke: var(--bg);
+}
+
+/* ══════════════════════════════════════════════════════════
+   NO FLASH ON COLD LOAD
+   cinematic.css adds body { animation: cinematic-page-enter }
+   which briefly animates the background. Suppress in Linear so the
+   deep graphite background does not flash from white.
+══════════════════════════════════════════════════════════ */
+
+[data-theme="linear"] body {
+  animation: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   REDUCED MOTION — all transitions trimmed
+══════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="linear"] * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   THEME-SWITCH TRANSITION
+   Smooth fade when toggling between Stripe-Light ↔ Linear ↔ Bloomberg.
+   Scoped to users who have NOT opted out of motion.
+══════════════════════════════════════════════════════════ */
+
+@media not (prefers-reduced-motion: reduce) {
+  html {
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  body {
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+}

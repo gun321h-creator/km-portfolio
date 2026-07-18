@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="32" viewBox="0 0 480 32" preserveAspectRatio="none" role="img" aria-label="Gold circuit-trace divider with vias and a small kranok curl">
+  <!-- Gilded Circuit · trace-spine divider.
+       Enters and exits at y=16 so it tiles side-by-side or stretches.
+       For vertical use, rotate 90° in CSS. -->
+  <g stroke="#D4A947" fill="none" stroke-width="1.5">
+    <!-- run 1: jog up to a via -->
+    <path d="M 0 16 H 60 L 70 6 H 129"/>
+    <circle cx="134" cy="6" r="4"/>
+    <circle cx="134" cy="6" r="1.5" fill="#D4A947" stroke="none"/>
+    <!-- run 2: back down, stub with pad, jog down to second via -->
+    <path d="M 139 6 H 190 L 200 16 H 236 L 246 26 H 300"/>
+    <path d="M 220 16 V 9" stroke-width="1.25"/>
+    <rect x="217" y="3" width="6" height="6" fill="#D4A947" stroke="none"/>
+    <circle cx="306" cy="26" r="4"/>
+    <circle cx="306" cy="26" r="1.5" fill="#D4A947" stroke="none"/>
+    <!-- kranok curl growing out of the second via — the fusion signature -->
+    <path stroke-width="1.25" d="M 306 21 C 306 13.5 311.5 9.5 316.5 11.5 C 320.4 13.1 320 18.2 316.2 17.8 C 313.9 17.6 313.4 15.2 315 14.2"/>
+    <!-- run 3: rise back to centerline, stub with pad, exit -->
+    <path d="M 312 26 H 360 L 370 16 H 480"/>
+    <path d="M 420 16 V 23" stroke-width="1.25"/>
+    <rect x="417" y="23" width="6" height="6" fill="#D4A947" stroke="none"/>
+  </g>
+</svg>

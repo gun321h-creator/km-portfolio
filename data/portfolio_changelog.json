@@ -1,0 +1,40 @@
+{
+  "version": "1.0",
+  "entries": [
+    {
+      "date": "2026-05-24",
+      "file": "portfolio.json",
+      "added": 7,
+      "removed": 1,
+      "note": "resume content -- Tau Beta Pi, IEEE 4th, term GPAs"
+    },
+    {
+      "date": "2026-05-24",
+      "file": "portfolio.js",
+      "added": 96,
+      "removed": 0,
+      "note": "F5 Now Playing + popover"
+    },
+    {
+      "date": "2026-05-24",
+      "file": "portfolio.js",
+      "added": 38,
+      "removed": 0,
+      "note": "F3 view-source modal + 3-overlay exclusion"
+    },
+    {
+      "date": "2026-05-24",
+      "file": "portfolio.js",
+      "added": 39,
+      "removed": 0,
+      "note": "F2 commit-activity grid (SVG, 5-bucket)"
+    },
+    {
+      "date": "2026-05-23",
+      "file": "portfolio.js",
+      "added": 213,
+      "removed": 0,
+      "note": "F1 cheatsheet + Cmd-K palette + IDE shell"
+    }
+  ]
+}

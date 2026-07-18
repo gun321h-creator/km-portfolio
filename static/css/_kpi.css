@@ -1,0 +1,60 @@
+/* BOT/dashboard/static/css/_kpi.css
+ *
+ * KPI-card anatomy primitives (Stripe/Grafana pattern):
+ *   big number + delta pill (▲/▼ tinted) + tiny inline sparkline.
+ *
+ * Shared, theme-token-only (reads theme_sage.css). Two primitives:
+ *   .mm-delta  — a period-change pill. Colour AND arrow AND sign are all
+ *                redundant so it reads for colour-blind users too.
+ *   .mm-spark  — host for an MMSpark inline-SVG sparkline (spark_util.js).
+ *
+ * Author: น้องหน้า — 2026-07-02
+ * Dependencies: theme_sage.css must load first.
+ */
+
+/* ── delta pill ───────────────────────────────────────────────── */
+.mm-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.mm-delta__arrow { font-size: 9px; line-height: 1; }
+.mm-delta__val   { font-variant-numeric: tabular-nums; }
+
+/* direction — bg + border + text all carry the signal (not colour alone) */
+.mm-delta.up   { background: var(--live-dim); border-color: var(--live); color: var(--live); }
+.mm-delta.down { background: var(--bad-dim);  border-color: var(--bad);  color: var(--bad); }
+.mm-delta.flat { background: var(--panel-3);  border-color: var(--line); color: var(--mute); }
+
+/* larger variant for hero KPIs */
+.mm-delta--lg {
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 15px;
+}
+.mm-delta--lg .mm-delta__arrow { font-size: 12px; }
+
+/* ── inline sparkline ─────────────────────────────────────────── */
+.mm-spark {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  vertical-align: middle;
+  color: var(--mute-2, #98A2B3);   /* default stroke via currentColor */
+}
+.mm-spark.up   { color: var(--live); }
+.mm-spark.down { color: var(--bad); }
+.mm-spark-svg  { display: block; overflow: visible; }
+
+/* wealth hero net-worth sparkline */
+.wealth-hero-spark { margin-top: 6px; min-height: 22px; }

@@ -1,0 +1,378 @@
+/* BOT/dashboard/static/css/polish_pack.css
+ *
+ * Polish Pack 5-in-1 — shared utility layer for the IC Markets dashboard.
+ *
+ * Provides:
+ *   1. .mm-pulse-halo      — 2-ring radiant pulse halo on live indicators
+ *   2. .mm-shim            — shimmer skeleton for loading placeholders
+ *   3. .mm-num-flow        — NumberFlow base typography
+ *   4. .toastify overrides — sage-themed toast notifications
+ *   5. #mm-theme-toggle    — 3-state pill (Sage / Linear / Terminal)
+ *
+ * Loaded after theme_sage.css. Reads only var(--*) tokens; never hardcodes hex
+ * except as mandatory fallbacks where CSS vars cannot be used (e.g. SVG attrs).
+ *
+ * Dependencies: theme_sage.css must load first.
+ * Author: น้องหน้า — 2026-06-08
+ */
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   1.  2-RING RADIANT PULSE HALO  (.mm-pulse-halo)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.mm-pulse-halo {
+  position: relative;
+}
+
+.mm-pulse-halo::before,
+.mm-pulse-halo::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1.5px solid currentColor;
+  opacity: 0.6;
+  animation: mm-halo-pulse 1.8s cubic-bezier(.2, .8, .4, 1) infinite;
+  pointer-events: none;
+}
+
+.mm-pulse-halo::after {
+  animation-delay: 0.6s;
+}
+
+@keyframes mm-halo-pulse {
+  0%   { transform: scale(1);   opacity: .6; }
+  70%  { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Semantic colour variants */
+.mm-pulse-halo.is-live { color: var(--live); }
+.mm-pulse-halo.is-warn { color: var(--warn); }
+.mm-pulse-halo.is-bad  { color: var(--bad);  }
+
+/* Reduced-motion: static ring only, no animation */
+@media (prefers-reduced-motion: reduce) {
+  .mm-pulse-halo::before,
+  .mm-pulse-halo::after {
+    animation: none;
+    opacity: .5;
+    transform: scale(1.3);
+  }
+  .mm-pulse-halo::after {
+    display: none;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   2.  SHIMMER SKELETON  (.mm-shim)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.mm-shim {
+  display: inline-block;
+  min-width: 48px;
+  height: 1em;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--line) 0%,
+    color-mix(in srgb, var(--line) 60%, var(--panel)) 50%,
+    var(--line) 100%
+  );
+  background-size: 200% 100%;
+  animation: mm-shim 1.4s linear infinite;
+  vertical-align: middle;
+  color: transparent;
+  /* Prevent text from showing through while loading */
+  user-select: none;
+}
+
+/* Width variants */
+.mm-shim.w-1 { min-width:  36px; }
+.mm-shim.w-2 { min-width:  60px; }
+.mm-shim.w-3 { min-width:  96px; }
+.mm-shim.w-4 { min-width: 140px; }
+
+/* Block display variant — full-width placeholder line */
+.mm-shim.is-block {
+  display: block;
+  height: 16px;
+  min-width: 0;
+  width: 100%;
+}
+
+@keyframes mm-shim {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* Reduced-motion: static muted bar, no sweep */
+@media (prefers-reduced-motion: reduce) {
+  .mm-shim {
+    animation: none;
+    background: var(--line);
+    background-size: 100% 100%;
+    opacity: .6;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   3.  NUMBERFLOW BASE STYLE  (.mm-num-flow)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/*
+ * Base class for wrapping numeric display elements.
+ * The <number-flow> web component (loaded by polish_pack.js) slots inside or
+ * replaces [data-mm-flow] spans. Apply .mm-num-flow to the *container* so
+ * neighbours inherit the same typography baseline.
+ */
+.mm-num-flow {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--mono);
+  letter-spacing: -.01em;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+/*
+ * <number-flow> custom element CSS variables.
+ * These are the vars the @number-flow/vanilla package reads from the element.
+ * We set them on the element type and they cascade naturally.
+ * See: https://github.com/barvian/number-flow
+ */
+number-flow {
+  --number-flow-char-height:   1em;
+  --number-flow-mask-height:   .25em;
+  --number-flow-mask-width:    .5em;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--mono);
+  letter-spacing: -.01em;
+}
+
+/* When reduced-motion is active, number-flow still renders but should
+   skip its internal flip animation — the package respects the media query
+   natively, so no extra override needed here. */
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   4.  TOASTIFY CUSTOMISATION
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/*
+ * Overrides the default Toastify card to match the Sage palette.
+ * Toastify-JS CDN is loaded lazily by polish_pack.js; these rules are
+ * scoped to the classes Toastify produces so they never affect anything else.
+ */
+.toastify {
+  background:    var(--panel-2);
+  color:         var(--ink);
+  border:        1px solid var(--line);
+  border-radius: 10px;
+  box-shadow:    var(--shadow-lg);
+  font-family:   var(--mono);
+  font-size:     13px;
+  padding:       12px 16px;
+  /* Reset Toastify's own gradient bg */
+  background-image: none !important;
+}
+
+.toastify.on {
+  /* Toastify adds .on after the element is visible — no override needed */
+}
+
+/* Semantic left-border accent stripe */
+.toastify.toastify-success { border-left: 3px solid var(--live); }
+.toastify.toastify-warn    { border-left: 3px solid var(--warn); }
+.toastify.toastify-error   { border-left: 3px solid var(--bad);  }
+
+/* Close button inherits ink colour */
+.toastify .toast-close {
+  color: var(--mute);
+  opacity: 1;
+  font-size: 16px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1;
+}
+.toastify .toast-close:hover {
+  color: var(--ink);
+}
+
+/* Terminal-mode variant — the vars resolve automatically when
+   data-theme="terminal" is set on <html>, so no extra rules needed. */
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   5.  THEME TOGGLE 3-STATE PILL  (#mm-theme-toggle)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/*
+ * This block REPLACES the single-button circle defined in sage_premium.css
+ * (Section 6).  The new toggle is a pill container with 3 icon buttons and
+ * a sliding highlight pill.
+ *
+ * HTML expected:
+ *   <div id="mm-theme-toggle" data-active-idx="0" role="group" aria-label="เลือก theme">
+ *     <span class="mm-toggle-pill" aria-hidden="true"></span>
+ *     <button data-theme-val="sage"     aria-checked="true"  title="Sage mode">🌿</button>
+ *     <button data-theme-val="linear"   aria-checked="false" title="Linear mode">◼</button>
+ *     <button data-theme-val="terminal" aria-checked="false" title="Terminal mode">⌨</button>
+ *   </div>
+ *
+ * NOTE: If the base template still has the old single-button form of
+ * #mm-theme-toggle (a lone <button>), these rules will apply without breaking
+ * anything — the pill just won't appear, and the button will look like a
+ * standard fixed pill instead of the three-button variant.
+ */
+
+/* Override the circle shape from sage_premium.css */
+#mm-theme-toggle {
+  position:    fixed;
+  bottom:      16px;
+  right:       16px;
+  z-index:     95;
+
+  display:        flex;
+  align-items:    center;
+  gap:            0;
+  flex-direction: row;
+
+  background:    var(--panel-2);
+  border:        1px solid var(--line);
+  border-radius: 999px;
+  padding:       4px;
+  box-shadow:    var(--shadow);
+  overflow:      hidden;
+
+  /* Undo the fixed 40×40 circle from sage_premium.css */
+  width:   auto;
+  height:  auto;
+
+  transition: transform .18s cubic-bezier(.2, .8, .2, 1);
+}
+
+#mm-theme-toggle:hover {
+  transform: scale(1.04);
+  box-shadow: var(--shadow-lg);
+  background: var(--panel-2); /* keep stable; let shadow do the lift */
+}
+
+#mm-theme-toggle:active {
+  transform: scale(.98);
+}
+
+/* Each option button */
+#mm-theme-toggle button {
+  position:   relative;
+  z-index:    2;
+
+  background: transparent;
+  border:     0;
+  width:      32px;
+  height:     32px;
+  border-radius: 999px;
+  cursor:     pointer;
+  color:      var(--mute);
+  font-size:  14px;
+
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+
+  transition: color .18s ease;
+
+  /* Reset any inherited button styles */
+  padding: 0;
+  margin:  0;
+  outline: none;
+}
+
+#mm-theme-toggle button:focus-visible {
+  outline:        2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Active / selected button */
+#mm-theme-toggle button[aria-checked="true"] {
+  color: var(--ink);
+}
+
+/* Sliding highlight pill (positioned absolutely within the container) */
+#mm-theme-toggle .mm-toggle-pill {
+  position:      absolute;
+  z-index:       1;
+  /* Align with top padding */
+  top:           4px;
+  left:          4px;
+  width:         32px;
+  height:        32px;
+  background:    var(--accent-dim, rgba(232, 131, 107, .18));
+  border-radius: 999px;
+  pointer-events: none;
+  transition:    transform .28s cubic-bezier(.2, .8, .2, 1);
+}
+
+/* Pill position driven by data-active-idx on the container */
+#mm-theme-toggle[data-active-idx="0"] .mm-toggle-pill { transform: translateX(0);    }
+#mm-theme-toggle[data-active-idx="1"] .mm-toggle-pill { transform: translateX(32px); }
+#mm-theme-toggle[data-active-idx="2"] .mm-toggle-pill { transform: translateX(64px); }
+
+/* Mobile: push up above bottom nav if present */
+@media (max-width: 540px) {
+  #mm-theme-toggle {
+    bottom: 80px;
+  }
+}
+
+/* Smaller pill on narrow viewports */
+@media (max-width: 400px) {
+  #mm-theme-toggle {
+    bottom: 12px;
+    right:  12px;
+  }
+
+  #mm-theme-toggle button {
+    width:  28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  #mm-theme-toggle .mm-toggle-pill {
+    width:  28px;
+    height: 28px;
+  }
+
+  #mm-theme-toggle[data-active-idx="1"] .mm-toggle-pill { transform: translateX(28px); }
+  #mm-theme-toggle[data-active-idx="2"] .mm-toggle-pill { transform: translateX(56px); }
+}
+
+/* Terminal-mode: keep amber border personality */
+[data-theme="terminal"] #mm-theme-toggle {
+  background:   var(--panel-2);
+  border-color: var(--line-2);
+}
+
+[data-theme="terminal"] #mm-theme-toggle button[aria-checked="true"] {
+  color: var(--ink);
+  text-shadow: 0 0 8px rgba(255, 140, 0, .40);
+}
+
+[data-theme="terminal"] #mm-theme-toggle .mm-toggle-pill {
+  background: rgba(255, 213, 74, .14);
+}
+
+/* Reduced-motion: disable the pill slide */
+@media (prefers-reduced-motion: reduce) {
+  #mm-theme-toggle .mm-toggle-pill {
+    transition: none;
+  }
+
+  #mm-theme-toggle {
+    transition: none;
+  }
+}

@@ -1,0 +1,21 @@
+/* Lucide inline-SVG icon system. Size follows font-size (1em). Color follows currentColor. */
+.ic {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;   /* optical baseline align next to text */
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ic-lg { width: 1.4em; height: 1.4em; }
+.ic-sm { width: .85em; height: .85em; stroke-width: 2.2; }
+
+/* semantic color — preserve the meaning that status emoji used to carry */
+.ic-good { color: var(--live); }
+.ic-warn { color: var(--warn); }
+.ic-bad  { color: var(--bad); }
+.ic-mute { color: var(--mute); }

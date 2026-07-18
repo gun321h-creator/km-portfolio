@@ -1,0 +1,6 @@
+# Pinned to the minor verified locally (fastapi 0.139.x pins a compatible
+# starlette itself). Bump deliberately, not silently, so a Render rebuild can't
+# pull an untested starlette major.
+fastapi>=0.139,<0.140
+uvicorn[standard]>=0.30,<1
+jinja2>=3.1,<4

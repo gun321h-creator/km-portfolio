@@ -1,0 +1,285 @@
+/* BOT/dashboard/static/css/tv_tables.css
+ *
+ * TradingView-style data tables — drop-in CSS for any <table> or <div> grid.
+ *
+ * Classes:
+ *   .tv-tbl              — base table (28px row height, monospace tabular-nums)
+ *   .tv-tbl.is-compact   — 22px row height, 11.5px font
+ *   .tv-tbl.is-dense     — no row borders, alternating row tint
+ *   .tv-tbl.is-stackable — collapses to card layout on mobile (≤540px)
+ *
+ * Cell helpers:
+ *   .num / .num.up / .num.down   — right-aligned numbers with up/down colour
+ *   .ticker                      — symbol + optional 16px logo dot
+ *   .ticker .logo                — 16px circle logo placeholder
+ *   .muted                       — muted secondary text
+ *   .pill                        — small tag / badge chip
+ *
+ * Author: น้องหน้า — 2026-06-08
+ * Dependencies: theme_sage.css must load first.
+ */
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BASE TABLE
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tv-tbl {
+  width:            100%;
+  border-collapse:  collapse;
+  font-family:      var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size:        12.5px;
+  line-height:      1;
+}
+
+
+/* ── HEADER ────────────────────────────────────────────────────────────── */
+
+.tv-tbl thead th {
+  font-family:    var(--display, system-ui);
+  font-size:      10.5px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color:          var(--mute);
+  font-weight:    500;
+  text-align:     left;
+  padding:        8px 10px;
+  border-bottom:  1px solid var(--line-2);
+  /* No background override — inherits page surface */
+  white-space: nowrap;
+}
+
+/* Right-align numeric header cells */
+.tv-tbl thead th.num {
+  text-align: right;
+}
+
+
+/* ── BODY ROWS ─────────────────────────────────────────────────────────── */
+
+.tv-tbl tbody tr {
+  height:        28px;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 40%, transparent);
+  transition:    background .12s ease;
+}
+
+.tv-tbl tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.tv-tbl tbody tr:hover {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+/* Keyboard-focus row highlight */
+.tv-tbl tbody tr:focus-within {
+  outline:        2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+
+/* ── CELLS ─────────────────────────────────────────────────────────────── */
+
+.tv-tbl td {
+  padding:        0 10px;
+  vertical-align: middle;
+  color:          var(--ink);
+}
+
+/* Numeric cell — right-aligned, monospace (inherited) */
+.tv-tbl .num {
+  text-align: right;
+}
+
+/* Green / red values — using TV's canonical palette colours.
+   These are intentionally concrete hex values (not theme vars) because
+   up/down green/red have industry-standard meaning and must NOT shift
+   with theme palette changes. */
+.tv-tbl .num.up   { color: #26A69A; }
+.tv-tbl .num.down { color: #EF5350; }
+
+
+/* ── TICKER CELL ───────────────────────────────────────────────────────── */
+
+.tv-tbl .ticker {
+  display:     inline-flex;
+  align-items: center;
+  gap:         8px;
+  font-family: var(--mono);
+}
+
+/* 16 × 16 logo circle — coloured background as fallback */
+.tv-tbl .ticker .logo {
+  width:        16px;
+  height:       16px;
+  border-radius: 50%;
+  background:   var(--accent-dim, rgba(232, 131, 107, .18));
+  display:      inline-block;
+  flex-shrink:  0;
+  overflow:     hidden;
+}
+
+/* When a data-color attribute is present, JS can set background inline;
+   the CSS attr() fallback is aspirational (limited browser support)
+   but harmless. */
+.tv-tbl .ticker .logo[data-color] {
+  background: attr(data-color);
+}
+
+/* Logo image inside the circle */
+.tv-tbl .ticker .logo img {
+  width:   100%;
+  height:  100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+
+/* ── HELPER CLASSES ────────────────────────────────────────────────────── */
+
+.tv-tbl .muted {
+  color: var(--mute);
+}
+
+/* Small tag / badge pill */
+.tv-tbl .pill {
+  display:       inline-block;
+  padding:       1px 6px;
+  font-size:     10px;
+  background:    var(--accent-dim, rgba(232, 131, 107, .18));
+  border-radius: 4px;
+  color:         var(--accent);
+  font-family:   var(--mono);
+  white-space:   nowrap;
+}
+
+/* Semantic pill colour variants */
+.tv-tbl .pill.live  { background: var(--live-dim);  color: var(--live); }
+.tv-tbl .pill.warn  { background: var(--warn-dim);  color: var(--warn); }
+.tv-tbl .pill.bad   { background: var(--bad-dim);   color: var(--bad);  }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPACT VARIANT  (.tv-tbl.is-compact)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tv-tbl.is-compact tbody tr {
+  height: 22px;
+}
+
+.tv-tbl.is-compact {
+  font-size: 11.5px;
+}
+
+.tv-tbl.is-compact thead th {
+  padding: 6px 10px;
+  font-size: 10px;
+}
+
+.tv-tbl.is-compact td {
+  padding: 0 8px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DENSE VARIANT  (.tv-tbl.is-dense)
+   No row borders; alternating row tint.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tv-tbl.is-dense tbody tr {
+  border-bottom: 0;
+}
+
+.tv-tbl.is-dense tbody tr:nth-child(2n) {
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+
+/* Preserve hover even in dense mode */
+.tv-tbl.is-dense tbody tr:hover {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   STACKABLE (MOBILE) VARIANT  (.tv-tbl.is-stackable)
+   Collapses to a list-of-cards layout on ≤540px screens.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 540px) {
+  .tv-tbl.is-stackable thead {
+    /* Hide header row — each row is self-labelling in card layout */
+    display: none;
+  }
+
+  .tv-tbl.is-stackable tbody tr {
+    display:               grid;
+    grid-template-columns: 1fr auto;
+    gap:                   2px 8px;
+    padding:               8px;
+    height:                auto;
+    border-bottom:         1px solid var(--line);
+  }
+
+  .tv-tbl.is-stackable tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .tv-tbl.is-stackable tbody td {
+    padding: 2px 0;
+  }
+
+  /* First column of each card row spans full width */
+  .tv-tbl.is-stackable tbody td:first-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Right-align the auto column */
+  .tv-tbl.is-stackable tbody td.num {
+    justify-self: end;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THEME-SPECIFIC OVERRIDES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Linear theme — sub-pixel border tweaks (CSS vars resolve via linear_theme.css) */
+[data-theme="linear"] .tv-tbl tbody tr {
+  border-bottom-color: rgba(255, 255, 255, .04);
+}
+
+[data-theme="linear"] .tv-tbl thead th {
+  border-bottom-color: rgba(255, 255, 255, .08);
+}
+
+[data-theme="linear"] .tv-tbl tbody tr:hover {
+  background: rgba(255, 255, 255, .04);
+}
+
+/* Terminal theme — amber grid lines */
+[data-theme="terminal"] .tv-tbl tbody tr {
+  border-bottom-color: rgba(255, 140, 0, .10);
+}
+
+[data-theme="terminal"] .tv-tbl thead th {
+  border-bottom-color: rgba(255, 140, 0, .18);
+}
+
+[data-theme="terminal"] .tv-tbl td {
+  color: var(--ink);
+}
+
+[data-theme="terminal"] .tv-tbl tbody tr:hover {
+  background: rgba(255, 140, 0, .05);
+}
+
+[data-theme="terminal"] .tv-tbl .num.up   { color: var(--live); }
+[data-theme="terminal"] .tv-tbl .num.down { color: var(--bad);  }
+
+[data-theme="terminal"] .tv-tbl .pill {
+  background: rgba(255, 213, 74, .12);
+  color: var(--accent);
+}

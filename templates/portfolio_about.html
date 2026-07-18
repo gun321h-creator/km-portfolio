@@ -1,0 +1,27 @@
+{% extends "portfolio_base.html" %}
+
+{% block main %}
+  <section id="about" data-tab="about">
+    <h2 class="filesep">About <span class="fs-crumb">เกี่ยวกับ</span></h2>
+    <h1 class="md-h1">{{ p.name }}</h1>
+    <p class="md-sub muted">{{ p.tagline | safe }}{% for line in p.hero_subtitle_lines %} &middot; {{ line }}{% endfor %}</p>
+    <p class="md-body">{{ p.about | safe }}</p>
+  </section>
+
+  {% if p.skills %}
+  <div class="gc-divider" role="separator"></div>
+  <section id="skills" data-tab="about">
+    <h2 class="filesep">Skills <span class="fs-crumb">ทักษะ</span></h2>
+    <div class="skills-grid">
+      {% for cat in p.skills %}
+        <div class="skill-cat">
+          <h3 class="skill-cat-title">{{ cat.category }}</h3>
+          <ul class="skill-list">
+            {% for s in cat["items"] %}<li class="skill-tag">{{ s }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+{% endblock %}

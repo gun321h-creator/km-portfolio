@@ -1,0 +1,5 @@
+{# Icon macro — renders a Lucide symbol from the inline sprite (_partials/icon_sprite.html). #}
+{# Usage: {% import "_partials/icons.html" as ic with context %}  then  {{ ic.icon('wallet') }} or {{ ic.icon('wallet', 'ic-lg') }} #}
+{% macro icon(name, cls='') -%}
+<svg class="ic{% if cls %} {{ cls }}{% endif %}" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-{{ name }}"></use></svg>
+{%- endmacro %}

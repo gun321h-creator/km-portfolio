@@ -1,0 +1,219 @@
+/* BOT/dashboard/static/css/theme_sage.css
+ *
+ * STRIPE-LIGHT THEME — single source of truth for the dashboard palette.
+ * Replaced 2026-06-08: sage cream + coral → white canvas + Stripe indigo.
+ *
+ * Loaded BEFORE every page-specific CSS file. Every other stylesheet must
+ * drop its own :root block and reference these vars instead.
+ *
+ * Contrast budget (WCAG) — APPROXIMATED values for Stripe-Light palette.
+ * Run BOT/dashboard/tests/test_contrast_audit.py for live measured ratios.
+ *   --ink #0A2540   on --bg #FFFFFF     ≈ 14.5:1  AAA body PASS
+ *   --ink #0A2540   on --panel #F6F9FC  ≈ 13.8:1  AAA body PASS
+ *   --ink-2 #425466 on --bg #FFFFFF     ≈  7.8:1  AAA body PASS
+ *   --mute #64748D  on --bg #FFFFFF     ≈  4.9:1  AA  body PASS
+ *   --accent #635BFF on --bg #FFFFFF    ≈  5.2:1  AA  UI   PASS
+ *   --live #3FAA77  on --bg #FFFFFF     ≈  3.4:1  AA  UI   PASS
+ *   --bad #DF1B41   on --bg #FFFFFF     ≈  5.6:1  AA  UI   PASS
+ *   --warn #FF6118  on --bg #FFFFFF     ≈  3.6:1  AA  UI   PASS
+ *
+ * The BELOW-AA accents are chrome only (border / fill / glow / dim tints).
+ * Never use them for body text. For button text, overlay ink or white on a
+ * sufficient ink background — never on bare accent.
+ */
+
+:root {
+  /* ── surface (4-tier with pale-blue Stripe panels) ─────── */
+  --bg:        #FFFFFF;       /* main canvas (was #ECEFE7 sage cream) */
+  --panel:     #F6F9FC;       /* card surface — Stripe's signature pale blue */
+  --panel-2:   #FFFFFF;       /* elevated card / popover */
+  --panel-3:   #EBEEF1;       /* hover state on nav */
+  --line:      #E3E8EE;       /* hairline border (was #D4DCD2) */
+  --line-2:    #D6D9FC;       /* indigo-tinted divider */
+
+  /* ── ink (4-tier deep navy) ────────────────────────────── */
+  --ink:       #0A2540;       /* primary text — Stripe deep navy (was #1F2D26) */
+  --ink-2:     #425466;       /* secondary text */
+  --mute:      #64748D;       /* captions / metadata */
+  --mute-2:    #98A2B3;       /* placeholder */
+
+  /* ── semantic accents (Stripe-aligned) ─────────────────── */
+  --accent:        #635BFF;   /* PRIMARY indigo (was coral #E8836B) */
+  --accent-2:      #7A73FF;   /* lighter variant */
+  --accent-hover:  #0A2540;   /* hover DARKENS to navy (Stripe signature, NOT lightens) */
+  --accent-dim:    rgba(99, 91, 255, 0.12);
+  --accent-bg:     #D6D9FC;   /* pill bg / chip surface */
+
+  --live:      #3FAA77;       /* success green (Stripe Elements) */
+  --live-dim:  rgba(63, 170, 119, 0.14);
+  --warn:      #FF6118;       /* caution amber-red */
+  --warn-dim:  rgba(255, 97, 24, 0.14);
+  --bad:       #DF1B41;       /* error red (Stripe Elements danger) */
+  --bad-dim:   rgba(223, 27, 65, 0.14);
+  --info:      #2863B1;       /* info pill */
+  --info-dim:  rgba(40, 99, 177, 0.14);
+
+  /* ── mesh hero gradient stops (Stripe homepage) ───────── */
+  --mesh-1:    #7F7DFC;       /* purple */
+  --mesh-2:    #00D4FF;       /* cyan */
+  --mesh-3:    #FF80B5;       /* pink */
+  --mesh-4:    #635BFF;       /* indigo (matches accent) */
+
+  /* ── type ──────────────────────────────────────────────── */
+  --display: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;  /* code blocks only — NOT KPIs */
+  --pixel:   var(--mono);     /* retired — alias to mono so legacy code doesn't break */
+
+  /* Variable font features — Stripe-style tabular lining numerals for KPIs */
+  --font-features-num: 'tnum' 1, 'lnum' 1, 'cv01' 1, 'ss03' 1;
+
+  /* ── Stripe "ribbon" shadows ─────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(50, 50, 93, 0.04);
+  --shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.02),
+    0 2px 5px rgba(50, 50, 93, 0.05),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-lg:
+    0 0 0 1px rgba(0, 0, 0, 0.02),
+    0 16px 32px rgba(50, 50, 93, 0.12),
+    0 8px 16px rgba(0, 0, 0, 0.06);
+  --shadow-indigo: 0 4px 10px rgba(99, 91, 255, 0.25);
+  --shadow-focus:  0 0 0 3px rgba(99, 91, 255, 0.28);
+
+  /* ── motion ────────────────────────────────────────────── */
+  --ease: cubic-bezier(0.25, 1, 0.5, 1);   /* Stripe's signature easeOutQuart */
+  --t-fast: 150ms;
+  --t-base: 300ms;
+  --t-slow: 600ms;
+
+  /* ── radius ────────────────────────────────────────────── */
+  --r-sm: 4px;     /* buttons, pills */
+  --r:    8px;     /* cards (Stripe r-7 ≈ 8) */
+  --r-lg: 14px;    /* modals, hero containers */
+  --r-pill: 999px;
+
+  /* ── legacy aliases (back-compat for files we haven't refactored yet) ── */
+  /* These mirror old per-file vars so partial refactors don't break.
+   * Where names suggest different colors than their target (e.g.
+   * --px-violet → indigo, --bone → ink), the remap is INTENTIONAL: the
+   * old dark theme had light-on-dark semantics; the new Stripe-Light theme
+   * has dark-on-light. Contrast is preserved.
+   * Remove the entire block once every CSS file has been refactored
+   * (Phase 5 done). */
+  --px-bg: var(--bg);
+  --px-panel-bg: var(--panel);
+  --px-panel-2: var(--panel-2);
+  --px-border: var(--line);
+  --px-border-2: var(--line-2);
+  --px-text: var(--ink);
+  --px-text-mute: var(--mute);
+  --px-text-dim: var(--mute-2);
+  --px-cyan: var(--accent);
+  --px-cyan-soft: var(--accent-dim);
+  --px-green: var(--live);
+  --px-amber: var(--warn);
+  --px-red: var(--bad);
+  --px-violet: var(--accent);  /* brand mark: violet → indigo in Stripe-Light theme */
+  --bone: var(--ink);   /* fg color: was light cream on dark, now dark ink on light (contrast preserved) */
+  --bone-2: var(--ink-2);
+  --surface: var(--panel);
+  --surface-2: var(--panel-2);
+  --text: var(--ink);
+  --text-mute: var(--mute);
+  --muted: var(--mute);
+  --muted-2: var(--mute-2);
+  --border: var(--line);
+  --bg-fold: var(--panel);
+  --bg-card: var(--panel-2);
+  --bg-detail: var(--panel-2);
+  --rule: var(--line);
+  --rule-strong: var(--line-2);
+  --ink-mute: var(--ink-2);
+  --ink-faint: var(--mute);
+  --c-active: var(--live);
+  --c-opus: var(--accent);
+  --d-trading: var(--live);
+  --d-knowledge: var(--info);
+  --d-dev: var(--accent);
+  --d-design: var(--bad);
+  --d-life: var(--warn);
+  --d-vision: var(--accent-2);
+  /* kept for files still referencing the old coral shadow token */
+  --shadow-coral: var(--shadow-indigo);
+}
+
+/* Force light scheme — no dark-mode media query. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light only;
+  }
+}
+
+html {
+  color-scheme: light;
+  font-family: var(--display);
+}
+
+/* Body picks up Inter Variable as the default — replaces Bricolage Grotesque everywhere */
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--display);
+  font-feature-settings: 'cv01' 1, 'ss03' 1;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* All KPI / numeric displays use Inter with tabular + lining figures */
+.wealth-stat-value,
+.sm-score,
+.sme-tier,
+.cell-num,
+.bento-tile .value,
+.kpi,
+[data-kpi],
+.tv-tbl,
+.tv-tbl .num {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: var(--font-features-num);
+}
+
+/* Stripe-style headings: light weight + tight tracking */
+h1 { font-weight: 300; letter-spacing: -0.022em; }
+h2 { font-weight: 300; letter-spacing: -0.014em; }
+h3 { font-weight: 400; letter-spacing: -0.008em; }
+
+/* Default links use indigo */
+a { color: var(--accent); transition: color var(--t-fast) var(--ease); }
+a:hover { color: var(--accent-hover); }
+
+/* Shared standalone spoke nav used by non-pixel-shell Smart Money pages. */
+body:not(.px-shell) .px-nav.px-nav-spoke {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+body:not(.px-shell) .px-nav.px-nav-spoke a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 6px 10px;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+body:not(.px-shell) .px-nav.px-nav-spoke a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+  body:not(.px-shell) .px-nav.px-nav-spoke {
+    gap: 6px;
+  }
+  body:not(.px-shell) .px-nav.px-nav-spoke a {
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+}

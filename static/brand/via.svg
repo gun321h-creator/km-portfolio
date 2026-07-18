@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Gold circuit via marker">
+  <!-- Gilded Circuit · via marker.
+       Outer ring carries 4 thermal-relief gaps (rotated 45°) — reads as both
+       a PCB thermal via and a Thai ดอกประจำยาม four-petal seed. -->
+  <g fill="none" stroke="#D4A947">
+    <circle cx="12" cy="12" r="9" stroke-width="2" pathLength="8" stroke-dasharray="1.55 0.45" stroke-dashoffset="-0.225" transform="rotate(45 12 12)"/>
+    <circle cx="12" cy="12" r="4.5" stroke-width="1.25"/>
+  </g>
+  <circle cx="12" cy="12" r="2" fill="#D4A947"/>
+</svg>

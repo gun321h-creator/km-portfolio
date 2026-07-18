@@ -1,0 +1,157 @@
+{% extends "pixel_chrome_base.html" %}
+{% block px_nav %}{# Gilded Circuit: the dashboard topbar is hidden by portfolio.css;
+   the portfolio renders its own header inside main_pane. Keep this override so
+   the spoke nav partial (with internal routes) is never included. #}{% endblock %}
+{# Suppress internal panels so portfolio stays isolated from dashboard routes #}
+{% block px_hud %}{% endblock %}
+{% block px_left %}{% endblock %}
+{% block px_right %}{% endblock %}
+{% block px_bottom %}{% endblock %}
+{% block title %}{{ p.name }} -- Portfolio{% endblock %}
+{% block extra_head %}
+  {# Phase B (public deploy): noindex REMOVED — GUN chose indexable so
+     recruiters/clients can find this via search. og:url + JSON-LD url now
+     point at the Render public host (was the private Tailscale hostname —
+     a leak on the public internet). Update PUBLIC_URL if the Render service
+     name changes at deploy (Phase D). #}
+  <!-- v1.2 D1: Open Graph + Twitter Card for link previews in LINE / Slack / email -->
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Kanokpon Mettasat -- ECE Honors @ VMI">
+  <meta property="og:description" content="Electrical &amp; Computer Engineering, Honors Program -- VMI Class of 2027. Builds dashboards, LINE bots, and quantitative trading research.">
+  <meta property="og:url" content="https://km-portfolio.onrender.com/portfolio">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kanokpon Mettasat -- ECE Honors @ VMI">
+  <meta name="twitter:description" content="Electrical &amp; Computer Engineering, Honors Program -- VMI Class of 2027. Dashboards, LINE bots, quant research.">
+  <!-- v1.5 SEO: JSON-LD Person schema -- helps chat-apps + AI crawlers build trust card -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Kanokpon Mettasat",
+    "alternateName": "KM",
+    "jobTitle": "Electrical and Computer Engineering student, Honors Program",
+    "affiliation": {
+      "@type": "EducationalOrganization",
+      "name": "Virginia Military Institute",
+      "address": {"@type": "PostalAddress", "addressLocality": "Lexington", "addressRegion": "VA"}
+    },
+    "url": "https://km-portfolio.onrender.com/portfolio",
+    "email": "mettasatk27@vmi.edu",
+    "knowsAbout": ["Electrical engineering", "Quantitative finance research", "FastAPI", "Python", "Test-driven development"]
+  }
+  </script>
+  {# v2 "Gilded Circuit": Bricolage Grotesque (Latin display) + Anuphan (Thai).
+     Same Google Fonts CDN convention as the base shell. #}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600;12..96,800&family=Anuphan:wght@300;400;500;600&display=swap">
+  <!-- v1.2 D2: SVG favicon -->
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="stylesheet" href="/static/portfolio.css?v={{ build }}">
+  <script type="module" src="/static/portfolio.js?v={{ build }}" defer></script>
+{% endblock %}
+{% block main_pane %}
+<div class="ide-page" data-page="{{ current_page_id }}">
+
+{# Skip-to-content link for keyboard / screen-reader users (kept from v1.2 F3). #}
+<a class="skip-link" href="#main-editor">Skip to content</a>
+
+<div class="gc-shell">
+
+  {# ── Gilded Circuit header ─────────────────────────────────────────
+     Replaces the v1.x IDE chrome (traffic-light dots / .md tabs / activity
+     bar / file tree). Kept JS hooks: .tabs .tab-source (view-source modal)
+     and .titlebar .kbd-hint (command palette opener) — same class names,
+     restyled by portfolio.css. #}
+  <header class="gc-header">
+    <div class="gc-header-inner">
+      <a class="gc-brand" href="/portfolio">
+        <img src="/static/brand/via.svg" alt="" width="20" height="20">
+        <span class="gc-brand-name">KANOKPON</span>
+        <span class="gc-brand-th">&middot; กนก = ทอง</span>
+      </a>
+      <nav class="tabs" aria-label="Sections">
+        <a href="/portfolio" data-page-id="home" class="gc-link{% if current_page_id == 'home' %} active{% endif %}"{% if current_page_id == 'home' %} aria-current="page"{% endif %}><img class="gc-via" src="/static/brand/via.svg" alt="">Home</a>
+        <a href="/portfolio/about" data-page-id="about" class="gc-link{% if current_page_id == 'about' %} active{% endif %}"{% if current_page_id == 'about' %} aria-current="page"{% endif %}><img class="gc-via" src="/static/brand/via.svg" alt="">About</a>
+        <a href="/portfolio/education" data-page-id="education" class="gc-link{% if current_page_id == 'education' %} active{% endif %}"{% if current_page_id == 'education' %} aria-current="page"{% endif %}><img class="gc-via" src="/static/brand/via.svg" alt="">Education</a>
+        <a href="/portfolio/projects" data-page-id="projects" class="gc-link{% if current_page_id == 'projects' or current_page_id.startswith('proj-') %} active{% endif %}"{% if current_page_id == 'projects' %} aria-current="page"{% endif %}><img class="gc-via" src="/static/brand/via.svg" alt="">Projects</a>
+        <a href="/portfolio/contact" data-page-id="contact" class="gc-link{% if current_page_id == 'contact' %} active{% endif %}"{% if current_page_id == 'contact' %} aria-current="page"{% endif %}><img class="gc-via" src="/static/brand/via.svg" alt="">Contact</a>
+        <span class="gc-nav-spacer"></span>
+        <button class="tab-source" aria-label="View page source data">{ } source</button>
+        <span class="titlebar"><button class="kbd-hint" type="button" title="Command palette (Ctrl+K)"><kbd>Ctrl</kbd>+<kbd>K</kbd></button></span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="editor" id="main-editor">
+    {% block main %}{% endblock %}
+  </main>
+
+  {# ── Recent updates (was the "Agent" sidebar changelog) ─────────── #}
+  {% if changelog %}
+  <section class="gc-changelog" aria-label="Recent updates">
+    <h2 class="gc-sec"><img src="/static/brand/via.svg" alt="">Recent updates <span class="gc-sec-th">&middot; อัปเดตล่าสุด</span></h2>
+    <ul class="changelog">
+      {% for e in changelog[:4] %}
+        <li>
+          <span class="cl-date">{{ e.date }}</span>
+          <span class="cl-file">{{ e.file }}</span>
+          {% if e.added is not none and e.removed is not none %}
+            <span class="cl-delta">+{{ e.added }} -{{ e.removed }}</span>
+          {% endif %}
+          {% if e.note %}<div class="cl-note">{{ e.note }}</div>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <noscript><p class="noscript-hint">JavaScript is off -- the command palette and activity grid stay hidden; every page still works as a plain link.</p></noscript>
+
+  {# ── Footer (kept JS hooks: .statusbar .now-playing / .deploy / .github-link) ── #}
+  <footer class="statusbar">
+    <span class="gc-foot-mark"><img src="/static/brand/via.svg" alt="" width="14" height="14">Gilded Circuit <span class="gc-foot-th">&middot; ลายรดน้ำ &times; ลายวงจร</span></span>
+    {% if p.contact_github %}
+      <a class="github-link" href="{{ p.contact_github }}" rel="noopener" target="_blank">GitHub</a>
+    {% endif %}
+    {% if now %}
+      <button class="now-playing" data-since="{{ now.since }}">&#9679; working on: {{ now.status }}</button>
+    {% else %}
+      <span class="ok">&#9679; online</span>
+    {% endif %}
+    <button class="deploy" data-deploy-iso="2026-05-23T00:00:00Z">last deploy 2026-05-23</button>
+  </footer>
+
+  <!-- Cmd-K palette (hidden) -->
+  <div class="palette" hidden role="dialog" aria-label="Command palette">
+    <input type="text" class="palette-input" placeholder="Jump to..." aria-label="Search pages">
+    <ul class="palette-results"></ul>
+  </div>
+
+  <!-- F1 cheat sheet (hidden) -->
+  <div class="cheatsheet" hidden role="dialog" aria-label="Keyboard shortcuts">
+    <h3>Keyboard shortcuts</h3>
+    <dl>
+      <dt><kbd>Ctrl</kbd>+<kbd>K</kbd> / <kbd>&#8984;</kbd>+<kbd>K</kbd></dt><dd>Jump to a page</dd>
+      <dt><kbd>?</kbd></dt><dd>This cheat sheet</dd>
+      <dt><kbd>&uarr;</kbd> / <kbd>&darr;</kbd></dt><dd>Navigate palette results</dd>
+      <dt><kbd>Enter</kbd></dt><dd>Select</dd>
+      <dt><kbd>Esc</kbd></dt><dd>Close any overlay</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Go home</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>Go to About</dd>
+      <dt><kbd>g</kbd> <kbd>e</kbd></dt><dd>Go to Education</dd>
+      <dt><kbd>g</kbd> <kbd>p</kbd></dt><dd>Go to Projects</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Go to Contact</dd>
+    </dl>
+  </div>
+
+  <!-- F3 source modal (hidden) -->
+  <div class="source-modal" hidden role="dialog" aria-label="View source">
+    <header>
+      <span>portfolio.json (slice)</span>
+      <button class="modal-copy" type="button" aria-label="Copy source to clipboard">Copy</button>
+      <button class="modal-close" aria-label="Close">&times;</button>
+    </header>
+    <pre class="source-pre"><code class="source-code"></code></pre>
+  </div>
+</div>
+</div>
+{% endblock %}

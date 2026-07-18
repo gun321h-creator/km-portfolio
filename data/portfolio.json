@@ -1,0 +1,740 @@
+{
+  "version": "1.0",
+  "name": "Kanokpon Mettasat",
+  "tagline": "Electrical & Computer Engineering, Honors Program",
+  "hero_subtitle_lines": [
+    "Virginia Military Institute, Class of 2027",
+    "Overall GPA 3.79 / Major GPA 4.00 -- Institute Honors Program"
+  ],
+  "contact_email": "mettasatk27@vmi.edu",
+  "contact_location": "Lexington, VA",
+  "contact_github": "https://github.com/gun321h-creator",
+  "about": "Originally a **Royal Thai Army cadet (Class 74)**, selected first in the cohort for the army's study-in-US program in 2022. After completing the University of Colorado Boulder's International English Center (Levels 4 through 7) in 2022-2023, enrolled at Virginia Military Institute reading Electrical and Computer Engineering. Beyond coursework, builds software (FastAPI services, LINE OA bots) and runs quantitative trading research as an independent practice -- pre-registered hypotheses, walk-forward out-of-sample validation, and explicit bias auditing. Recent 2026 work spans a personal-finance aggregator (Money Compass), a research-automation pipeline (Edge Factory), a Groq-narrated trading journal, and a low-latency group-karaoke web app.",
+  "education": [
+    {
+      "institution": "Virginia Military Institute",
+      "location": "Lexington, VA",
+      "degree_or_program": "BS, Electrical and Computer Engineering",
+      "dates": "Aug 2023 -- May 2027 (expected)",
+      "details": [
+        "Institute Honors Program, VMI (selected Jan 2024) -- Honors scholarship since Jul 2024, USD five thousand per academic year",
+        "Dean's List, multiple terms",
+        "Overall GPA 3.79 / Major GPA 4.00",
+        "Term GPA 4.00 (Year 2 Term 1)",
+        "Term GPA 4.00 (Year 2 Term 2, all-A semester)",
+        "Term GPA 3.81 (Year 3 Term 1)",
+        "Term GPA 3.70 (Year 3 Term 2)",
+        "Tau Beta Pi -- Engineering Honor Society, Virginia Chapter (inducted Nov 2025)",
+        "IEEE SoutheastCon 2026 -- 4th place, Undergraduate Circuit Design (Alabama, Mar 2026)",
+        "Tau Beta Pi Conference -- VMI representative (Mar 2026)",
+        "OGA Representative, Hotel Company -- oversees new-cadet orientation (May 2026)",
+        "Cadre Old Corps Corporal + Cadre Rat Challenge + MathLab Tutor (Year 2 onward)",
+        "Expert classification, Rifle (May 2025)",
+        "Commendation from the Chief of Defence Forces, US Reserve Command HQ (Apr 2024)",
+        "Community service in Puerto Rico with the VMI Glee Club (Mar 2024)",
+        "SAT 1260 (March 2023)"
+      ]
+    },
+    {
+      "institution": "University of Colorado Boulder",
+      "location": "Boulder, CO",
+      "degree_or_program": "International English Center, Levels 4-7",
+      "dates": "Aug 2022 -- May 2023",
+      "details": [
+        "Certificate of completion, English Programs"
+      ]
+    },
+    {
+      "institution": "Royal Thai Army Cadet School (Chulachomklao) -- Class 74",
+      "location": "Thailand",
+      "degree_or_program": "Army cadet, English Program (EP)",
+      "dates": "Mar 2022 -- Aug 2022 (pre-US dispatch)",
+      "details": [
+        "Selected #1 of 348 Army cadets for the army's study-in-US programme (May 2022)",
+        "Section Leader, Section A.1 (EP)",
+        "Dispatched on a 5-year Royal Thai Army scholarship to VMI (Aug 2022 -- May 2027)"
+      ]
+    },
+    {
+      "institution": "Armed Forces Academies Preparatory School (AFAPS) -- Class 63",
+      "location": "Thailand",
+      "degree_or_program": "Pre-cadet, Potential English Program (PEP)",
+      "dates": "Jul 2020 -- Feb 2022",
+      "details": [
+        "Ranked #1 of 348 Army cadets across multiple semesters (cumulative GPA 3.96-3.97)",
+        "Ranked #3-4 of 878 in the overall preparation class",
+        "Vice-President, Army cadet section + Honor Council insignia (Jul 2021)",
+        "Platoon Leader insignia, 2nd Squad / 2nd Battalion (Jun 2021)",
+        "Honorable Mention, 20th National Physics Olympiad (Dec 2021)",
+        "Outstanding Youth in Physics -- Science Association of Thailand under Royal Patronage (Dec 2021)",
+        "ALCPT silver medal + AFAPS completion certificate from the Commander-in-Chief (Feb 2022)",
+        "Seven academic certificates of appreciation (Feb 2022)"
+      ]
+    },
+    {
+      "institution": "Satit Patumwan Demonstration School -- Class 63",
+      "location": "Bangkok, Thailand",
+      "degree_or_program": "Lower-secondary",
+      "dates": "2014 -- 2020",
+      "details": [
+        "Passed first round of the Chang Phueak Air Force cadet scholarship (Dec 2019)",
+        "Honourable Mention, 5th Academic Excellence Award -- Thanawan tutorial (Jan 2020)"
+      ]
+    },
+    {
+      "institution": "Bangkok Christian College -- Class 168",
+      "location": "Bangkok, Thailand",
+      "degree_or_program": "Primary",
+      "dates": "2008 -- 2014",
+      "details": []
+    }
+  ],
+  "projects": [
+    {
+      "title": "Trading-research dashboard",
+      "summary": "FastAPI + Jinja2 monitoring and decision-support dashboard for a personal quantitative-trading workflow. Surfaces include project tracking, an editorial organisation chart, a Phaser 3 isometric office-RPG view of active research agents, an 11-edge live-demo monitor with a tail-concentration auditor, and a Smart Money Radar that scores 13F / Form-4 / political-disclosure signals (1-100). Deployed via Tailscale Funnel to a Windows VPS with a hard-restart deploy script.",
+      "stack": [
+        "Python",
+        "FastAPI",
+        "Jinja2",
+        "Phaser 3",
+        "pytest",
+        "PowerShell"
+      ],
+      "scale": "~679 tests, 12+ public/private pages, zero-downtime redeploy",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "A FastAPI dashboard that surfaces the live state of a multi-strategy quantitative trading research workflow. Each page is a thin Jinja2 view over JSON state files that a separate baker process refreshes on a schedule; the server itself is read-only and never opens MT5, mutates state, or toggles halt files.",
+      "architecture": "FastAPI server on 127.0.0.1:8765 mounts one route per concern (hub, office, projects, anchor, portfolio, chat). Each route imports a small loader module (BOT/dashboard/*.py) that reads a JSON file under BOT/dashboard/data/, validates required keys, and returns a dict that the matching Jinja2 template renders. Tailscale Funnel exposes the bind publicly; a PowerShell deploy script enumerates the file list explicitly (no globs), scps each, and hard-restarts the Windows service. Authenticated /api/* routes use HTTP Basic, fail-closed when DASHBOARD_PASSWORD is unset; static + healthz stay public.",
+      "architecture_diagram": "+----------------+      +----------------+      +---------------+\n| BOT/dashboard/ |----->|  server.py     |----->| Tailscale     |\n|  data/*.json   |      |  (FastAPI)     |      | Funnel (TLS)  |\n|  cached state  |      |  10 modules    |      | port 443      |\n+----------------+      +----------------+      +-------+-------+\n                              |                         |\n                              v                         v\n                        +-----------+            +------+-------+\n                        | Jinja2    |            | recruiter /  |\n                        | templates |            | grad reader  |\n                        +-----------+            +--------------+\n",
+      "lessons": [
+        "Server-side state baking beats live computation: a separate process refreshes JSON every cycle, so the request path stays under a few ms and survives broker outages without a runtime DB.",
+        "An explicit file list in the deploy script beats globs on Windows -- the same bug class (a new module silently not shipped) bit anchor.py, portfolio.py, and today.py before the rule was internalised.",
+        "Tests scale with surfaces: one pytest module per page, fail-closed 503 on schema invalidity, and an isolation guard that forbids public pages from linking to authenticated routes.",
+        "Two-stage subagent review caught defect classes that single-pass implementation missed: ZeroDivisionError on empty totals, BOM in PowerShell-written JSON, and $ErrorActionPreference=Stop aborting git on outside-repo globs."
+      ]
+    },
+    {
+      "title": "LINE Official Account bot",
+      "summary": "Multi-owner LINE Messaging API bot with scheduled reminders, daily SQLite snapshots, Sunday digest, and pre-alert dedupe. Designed to run unattended on a Windows VPS with a self-healing restart loop.",
+      "stack": [
+        "Python",
+        "FastAPI",
+        "SQLite",
+        "LINE Messaging API"
+      ],
+      "scale": "~201 tests, multi-tenant",
+      "link": null,
+      "link_label": null,
+      "image_w": 400,
+      "image_h": 866,
+      "image_portrait": true,
+      "deep_dive_intro": "A multi-owner LINE Official Account bot that holds a small social schedule, fires reminders ahead of deadlines, and issues a weekly digest -- with the operational discipline of a paid service even though it runs on a single Windows VPS.",
+      "architecture": "FastAPI webhook receives LINE Messaging API events; commands (/bind, /unbind, /list, /delete N, /retry) route into a SQLite store keyed by owner. A 60-second scheduler tick walks pending reminders, sends pre-alerts ~1 hour ahead on a dedicated thread with a prealert_sent_ts column to de-dupe, then the main reminder, then a Sunday digest. A nightly job runs SQLite's online backup API into logs/db_backup/bot-YYYY-MM-DD.db with a 7-day retention. A self-healing restart loop catches uncaught exceptions and brings the process back up.",
+      "architecture_diagram": "+------------+    POST    +-------------+   read    +----------+\n| LINE OA    |----------->| webhook     |---------->| owners.db|\n| webhook    |            | (FastAPI)   |   write   | (SQLite) |\n+------------+            +------+------+           +-----+----+\n                                 |                        |\n                          60s    |                        |\n                          tick   v                        |\n                          +------+------+    daily 18:00 BKK\n                          | scheduler   |<--------+       |\n                          | thread      |         |       |\n                          +------+------+         |       |\n                                 |                |       |\n                                 v                v       |\n                          +------+------+   +-----+----+  |\n                          | pre-alert   |   | digest   |<-+\n                          | (1h ahead)  |   | (Sundays)|\n                          +-------------+   +----------+\n",
+      "lessons": [
+        "De-dupe by timestamp column in the row, not by an in-memory set: process restarts must not double-fire a pre-alert the user already received.",
+        "Online SQLite backup (sqlite3.backup) survives a live writer; a naive file copy can race with the WAL and produce an unreadable snapshot.",
+        "Multi-owner before multi-tenant: a single SQLite file with an owner_id column shipped in days; a per-tenant database scheme would have shipped in months and not been any safer at this scale.",
+        "PowerShell 5.1 writes .ps1 files as LF unless you go through .NET WriteAllText with UTF8Encoding(false) -- the parser then chokes on multi-line here-strings during deploys. Learned the hard way mid-deploy."
+      ]
+    },
+    {
+      "title": "Quantitative trading research framework",
+      "summary": "60+ Python backtests across multi-asset OHLCV (FX majors, FX crosses, metals, indices, crypto) with pre-registered hypotheses, walk-forward out-of-sample validation, explicit bias auditing, and probabilistic Sharpe / deflated Sharpe gates. Companion literature review followed a PRISMA-style protocol across 63 IEEE papers with a multi-dimensional taxonomy.",
+      "stack": [
+        "Python",
+        "pandas",
+        "MetaTrader 5 API",
+        "pytest"
+      ],
+      "scale": "60+ backtests, PRISMA review of 63 IEEE papers",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "A pre-registered research framework for evaluating trading edges across many markets without fooling itself. Every claim is gated by statistical lower-bounds, every edge is tested out-of-sample on a held-out window, and every promotion to live capital requires an explicit written spec.",
+      "architecture": "Strategy modules under BOT/research_backtests/strategies/ each declare one family (entry, exit, sizing). A shared cost model applies broker-verified spread, commission, and slippage before any metric is computed. The runner sweeps capital and risk-per-trade grids, then computes block-bootstrap lower-bound Sharpe (SR_LB), Probabilistic Sharpe Ratio (PSR), and Deflated Sharpe Ratio (DSR) over the trade series; gates require SR_LB >= 1.00, PSR >= 0.95, and DSR >= 0.95 with multiple-testing haircut. A separate bias auditor inspects each candidate for lookahead, same-bar fills, profit concentration, and overfit. A companion PRISMA-style literature review classifies 63 IEEE papers across a multi-dimensional taxonomy with a coverage matrix.",
+      "architecture_diagram": "   data/*.csv           strategies/         shared/\n+--------------+    +----------------+    +---------------+\n| BTCUSD/XAU/  |--->| 60+ backtests  |--->| cost model    |\n| USDJPY etc.  |    | (family/file)  |    | (broker $/lot)|\n+--------------+    +-------+--------+    +------+--------+\n                            |                    |\n                            v                    v\n                    +-------+--------------------+----+\n                    | bias auditor                    |\n                    | (lookahead, fill, concentration)|\n                    +---------------+-----------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | SR_LB / PSR / DSR gates |\n                       +------------+------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | CANDIDATE / KILL label  |\n                       +-------------------------+\n",
+      "lessons": [
+        "Sharpe-lower-bound is leverage-invariant; CAGR is leverage-illusion. Ranking by SR_LB and choosing sizing after edge selection avoided multiple tail-driven false positives that ranked top by CAGR.",
+        "A same-day daily feature is lookahead in an intraday strategy: a carry-trend candidate looked PF 2.58 pre-audit and collapsed to PF 1.00 once the daily close was lagged. The bug-class rule now lives as a sacred rule.",
+        "Broker reality beats research defaults: forcing one micro-lot fill on every symbol surfaced a $6/lot round-turn commission that the research cost model had under-estimated by 5-8x for some pairs.",
+        "A tail-driven candidate cannot be forward-validated in human timeframes: if ~89% of the edge is in the top 1.5% of campaigns, 12 forward windows give ~84% probability of a zero-tail outcome -- a useful prior to retire the family early rather than wait years."
+      ]
+    },
+    {
+      "title": "SURI -- Systematic literature review (IEEE, PRISMA-style)",
+      "summary": "A pre-registered, PRISMA-style systematic mapping of quantum-computing threats to blockchain systems, organised around three research questions -- what quantum threats to Bitcoin and blockchain are studied, what defences are proposed, and how ready the ecosystem is to migrate. Sixty-three IEEE papers survive screening into the synthesis pool (from a wider identified/screened set, with non-IEEE and survey papers removed) and are coded against a multi-dimensional taxonomy and a five-category corpus grid feeding a coverage matrix. The corpus is Bitcoin-heavy and grounded in post-quantum cryptography: Shor against ECDSA, Grover against SHA-256 mining, and the NIST FIPS 203/204/205 schemes (Kyber/ML-KEM, Dilithium, SPHINCS+). Companion to the quant-research framework -- the same discipline applied to the literature side of the work.",
+      "stack": [
+        "IEEE Xplore",
+        "PRISMA protocol",
+        "Multi-dimensional taxonomy",
+        "Coverage matrix",
+        "Python (pipeline)"
+      ],
+      "scale": "63 included papers, 3 RQs, 5-category grid, single-coder + audit pass; manuscript in preparation",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "SURI is a systematic mapping of the research at the intersection of blockchain security and quantum computing, run with the same operating discipline as the trading-research framework: a pre-registered protocol, a transparent search log, single-coder plus audit pass, and a coverage matrix so blind spots in the corpus fall out of the table. The manuscript is being drafted in Overleaf toward IEEE Access.",
+      "architecture": "A search log records every database query (IEEE Xplore under institutional access as the primary source, plus Google Scholar, arXiv, and three free standards/community sources -- NIST, IETF/CFRG, and the Bitcoin Improvement Proposals) with filters, hits, and selection reasons. PRISMA-style screening (title -> abstract -> full text) records inclusion and exclusion at every stage down to the 63 papers that enter synthesis. Each paper is placed in one of five primary corpus categories (Threat Models, PQC Constructions, Quantum-Native Designs, Hybrid Migrations, Benchmarks/Implementations) mapped onto the three research questions, and coded against a multi-dimensional taxonomy (threat type, affected target, mitigation, performance impact, privacy and usability, standards and governance). A coverage matrix renders the taxonomy as a table so thin quadrants -- for example only two threat-modelling papers against forty-five defence papers -- are visible at a glance. An idempotent Python pipeline (build -> append -> repair -> categorise -> PRISMA) regenerates the workbook and screening figure from source. Outputs: methodology, RQ map, taxonomy, coverage matrix, reference list, and search log.",
+      "architecture_diagram": "  IEEE Xplore + NIST     PRISMA screening        5-category grid -> 3 RQs\n+-------------------+   +------------------+   +----------------------+\n| search log        |-->| title screen     |-->| Threat Models  (RQ1) |\n| (database + query |   | abstract screen  |   | PQC Constructions    |\n|  + hits + reason) |   | full text screen |   | Quantum-Native   RQ2 |\n+-------------------+   +--------+---------+   | Hybrid Migrations    |\n                                 |             | Benchmarks     (RQ3) |\n                                 v             +----------+-----------+\n                        +--------+---------+              |\n                        | 63 included      |------------->+\n                        | papers           |              v\n                        +------------------+   +----------+-----------+\n                                               | coverage matrix      |\n                                               | (multi-dim taxonomy, |\n                                               |  blind-spot map)     |\n                                               +----------------------+\n",
+      "lessons": [
+        "A flat keyword list cannot reveal blind spots. A multi-dimensional taxonomy plus a coverage matrix makes an imbalance like two threat-modelling papers against forty-five defence papers fall out of the table automatically, which is the whole point of doing the review.",
+        "Search log discipline is load-bearing: without database / query / filter / hits-found / hits-selected / reason for every search, the review is not reproducible and reviewer #2 finds gaps you cannot justify.",
+        "Included is not the same as identified: the headline paper count is the synthesis pool after non-IEEE and survey papers are screened out, so the number that anchors every claim is 63, not the larger identified/screened set.",
+        "Relevance and role are separate axes. Conflating them -- the tempting extra 'Type: Core / Supporting / Context' column -- created false agreement in coding decisions and was removed after the first audit."
+      ]
+    },
+    {
+      "title": "Money Compass -- personal wealth aggregator",
+      "summary": "A read-only personal-finance aggregator that pulls Bank of America and US credit-card transactions through the SimpleFIN Bridge and turns them into a cashflow, runway, and subscription view. It is a package inside the trading dashboard, exposed at an auth-gated /money route that fails closed and never renders financial figures on a public surface. A daily refresh task bakes the account state into a JSON snapshot so the request path never touches the bank API or the SQLite ledger directly. Phase 1 (ledger + cashflow + subscription detect) and Phase 2 (month-over-month, budget streak, goals, ranked CFO insights, spending-trend chart, savings tips, category drill-down) both ship and run live on the VPS.",
+      "stack": [
+        "Python",
+        "FastAPI",
+        "SQLite",
+        "SimpleFIN Bridge",
+        "Jinja2",
+        "uPlot",
+        "pytest"
+      ],
+      "scale": "40+ tests, Phase 1 + Phase 2 live, auth-gated + leak-guarded",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "Money Compass answers one question -- where is the money going and how long does it last -- from real bank and credit-card data rather than manual entry. It is built as a package inside the existing dashboard, so it inherits the same fail-closed, no-public-money-leak discipline as the rest of the surface.",
+      "architecture": "A SimpleFIN read-only client fetches transactions on a daily batch (the owner claims the setup token; the code never logs in to the bank and never logs the credential). Rows land in a SQLite ledger de-duplicated by transaction id, then a categorise step runs at read time so a new rule re-labels the whole history, not just new rows -- card-to-card payments are tagged as transfers and peer transfers (Zelle) are excluded so they cannot inflate income or expense. A refresh task bakes cashflow, runway, month-over-month, budget streak, goals, ranked insights, spending history, and savings tips into data/money_summary.json via an atomic write; the /money route and /api/money-summary read that snapshot behind HTTP Basic auth. /api/money-summary is enumerated in the dashboard's MONEY_API_ROUTES leak-guard, so a test fails the build if the route is ever left un-gated.",
+      "architecture_diagram": "  SimpleFIN Bridge        money/ package          dashboard\n+------------------+   +------------------+   +----------------+\n| BofA + US cards  |-->| simplefin client |-->| /money (auth)  |\n| (read-only, 1x/d)|   | store (SQLite)   |   | /api/money-... |\n+------------------+   | categorise       |   +-------+--------+\n                       | compass/insight  |           |\n                       +--------+---------+           v\n                                |             +-------+--------+\n                                v             | leak-guard     |\n                       money_summary.json --->| MONEY_API_...  |\n                       (atomic snapshot)      | (401 if public)|\n                                              +----------------+\n",
+      "lessons": [
+        "Categorise at read time, not on insert: applying rules inside the snapshot builder means a new rule instantly re-labels the entire history, which cut uncategorised spend from thousands of dollars to a few hundred without a backfill migration.",
+        "Card-to-card payments and peer transfers are not income or expense: an autopay between two of your own accounts double-counts on both sides and Zelle looks like salary unless you carve both into an excluded-category set shared by every consumer of the snapshot.",
+        "A credential can leak through an exception, not just a log line: a raw request error carried the Basic-auth access URL out through stderr, so the client now re-raises with HTTP status only -- diagnostics never carry the URL.",
+        "A leak-guard that enumerates every /api route by name is stronger than a code-review habit: the money summary route is only trustworthy on a public-facing dashboard because a test fails the build the moment it is not in the auth-gated list."
+      ]
+    },
+    {
+      "title": "Edge Factory -- research-automation pipeline",
+      "summary": "A thin Python orchestrator that runs a strategy candidate down a nine-station conveyor -- seed, expand, dedup, prescreen, backtest, bias-audit, statistical gate, dossier, human verdict -- so systematic-trading ideas are evaluated the same way every time. The design point is not generating many ideas but killing bad ones cheaply and early: a factory without a hard kill-gate just produces false positives at high speed. Two safety invariants are locked in code -- the pipeline always stops at the dossier and never has a path to live capital, and no agent can approve its own candidate. The MVP wires the dedup, prescreen, and statistical gate automatically around a reused fleet of existing research tools.",
+      "stack": [
+        "Python",
+        "pandas",
+        "pytest",
+        "pyright"
+      ],
+      "scale": "MVP v0.1 committed, 36 pytest passing, pyright 0, forbidden-import guard 0",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "Edge Factory is a conveyor for trading-research candidates. Each idea enters as a bundle with an economic rationale and either dies at an early kill-gate or reaches a full dossier that a human reads before any verdict -- the machine never promotes anything on its own.",
+      "architecture": "A single orchestrator (edge_factory.py) sequences nine stations but builds almost nothing new: it reuses an existing prescreen, a Sharpe go/no-go gate, a CPCV/PBO overfit check, a shared backtest harness, a bias auditor, and an experiment registry. A candidate first hits a hard dedup gate against a registry of already-NULL families; survivors run prescreen, then a backtest, then the statistical gate (block-bootstrap lower-bound Sharpe, PSR, and a deflated-Sharpe haircut whose multiple-testing penalty scales with how many variants were expanded). The pipeline then writes a dossier and STOPS -- there is no code path from a GO_CANDIDATE label to live execution, and the approve command is a separate human step. Candidates killed at prescreen short-circuit before a dossier is written, so the presence or absence of a dossier tells you exactly where a family died. Every kill and verdict is appended to an experiment registry CSV.",
+      "architecture_diagram": "  seed -> expand -> dedup-gate -> prescreen -> backtest\n                       |                          |\n                   (NULL family              (bad payoff\n                    KILL here)                 KILL here)\n                                                  |\n                                                  v\n                                            bias-audit\n                                                  |\n                                                  v\n                                     SR_LB / PSR / DSR gate\n                                                  |\n                                                  v\n                                    +-------------+---------+\n                                    | dossier = STOP        |\n                                    | (no path to live)     |\n                                    +-------------+---------+\n                                                  |\n                                                  v\n                                      human verdict (approve/reject)\n",
+      "lessons": [
+        "The scarce skill is killing, not generating: without a hard dedup gate against already-NULL families, a fast idea-generator just re-discovers the same dead edges, so the dedup step is a hard gate rather than an advisory warning.",
+        "Where a candidate dies is itself a signal: a prescreen kill short-circuits before any dossier is written while a gate rejection produces one, so the mere presence of a dossier tells you the family passed payoff sanity and failed on statistics.",
+        "The multiple-testing haircut has to scale with the search: the deflated-Sharpe penalty takes the number of expanded variants as N_trials, so a station that fans out more candidates automatically makes the gate harder to pass rather than easier.",
+        "A research pipeline needs a coded air-gap, not a policy: the dossier stage is the terminal node with no function that reaches an order path, so a GO_CANDIDATE label is a research annotation that cannot become a live trade by accident."
+      ]
+    },
+    {
+      "title": "Live web karaoke -- group mode",
+      "summary": "A no-install progressive web app that turns a phone into a karaoke microphone and streams the vocal to a TV or laptop over WebRTC, with a QR-code join flow and a group party mode as the core use case. The hard engineering problem was audio latency: the singer hears their own voice through the air instantly and again from the speaker late, so the app drives the receiver's jitter buffer down to remove the browser's default 100-200ms of playout padding. It is deployed live on Vercel and stays within YouTube's terms by embedding the official iframe player rather than scraping audio. A service worker caches the shell for offline-capable reloads, with an explicit cache-version discipline after a stale-render incident.",
+      "stack": [
+        "JavaScript (ES modules)",
+        "WebRTC",
+        "PeerJS",
+        "YouTube IFrame API",
+        "PWA / Service Worker",
+        "Vercel"
+      ],
+      "scale": "Live on Vercel, v0.5.1, group-mode validation in progress",
+      "link": "https://karaoke-web-prototype.vercel.app",
+      "link_label": "karaoke-web-prototype.vercel.app",
+      "deep_dive_intro": "This is a phone-as-microphone karaoke app where the wedge is zero install: scan a QR code, sing into the phone, hear it on the big screen. The interesting work is all in the audio path, where WebRTC's comfort-first defaults fight against live singing.",
+      "architecture": "The phone captures the microphone and opens a WebRTC audio call to the TV host via PeerJS; the TV plays the incoming stream alongside the YouTube IFrame player showing the backing track. On the receiver, every audio RTCRtpReceiver has playoutDelayHint set to 0 (feature-detected -- Chromium and Edge only, a no-op elsewhere) to strip the browser's default 100-200ms jitter padding, trading a little smoothness for live monitorability; the irreducible floor (Opus codec plus one-way WiFi plus OS output buffer) remains. The app loads the YouTube IFrame API dynamically only after registering its ready callback, because a static deferred module can miss the API-ready event and hang the player. A service worker precaches the app shell, and every CSS/JS change bumps both the asset query string and the service-worker CACHE_VERSION together, or the worker serves a stale render.",
+      "architecture_diagram": "  phone (mic)                     TV / laptop (host)\n+-------------+   WebRTC audio   +-------------------+\n| getUserMedia|---------------->| RTCRtpReceiver    |\n| PeerJS call |   (PeerJS)       | playoutDelayHint=0|\n+-------------+                  +---------+---------+\n      ^                                    |\n      | QR join                            v\n      |                          +---------+---------+\n+-----+-------+                  | YouTube IFrame    |\n| service     |                  | (backing track,   |\n| worker cache|                  |  ToS-compliant)   |\n+-------------+                  +-------------------+\n",
+      "lessons": [
+        "The audio delay was not the network -- it was the browser: the dominant lag in live WebRTC audio is the receiver's default jitter/playout buffer (~100-200ms of padding for smoothness), and setting playoutDelayHint to 0 on the receiver removes it where Chromium supports the hint.",
+        "There is a physical floor you cannot code away: Opus encode/decode plus one-way WiFi plus the OS output buffer is tens of milliseconds no matter what, so a phone held in the hand always doubles its own air-path voice against the late speaker -- true monitoring belongs on the phone, not across a round trip.",
+        "A deferred ES module can lose a race with a static third-party script: loading the YouTube IFrame API from inside the module after registering the ready callback fixed a player that hung whenever the API fired before the module was live.",
+        "A service worker will happily serve yesterday's build: after a stale render, the rule became bump the asset query string and CACHE_VERSION in the same commit, because bumping only one still ships the cached copy."
+      ]
+    },
+    {
+      "title": "Trading Journal -- decision-intelligence layer",
+      "summary": "A read-only decision-intelligence layer over a real-money trading track that scores whether the operator's manual closes actually beat the bot's own trailing exit, then narrates the day as a short desk note. It never touches the edge or any order path -- it only reads the realised trade log and the divergence report. The daily note is written by a Groq-hosted model as decorative prose while the numbers stay authoritative, and it is exposed at an auth-gated /journal route rendered as a desk-blotter page with a P&L calendar heatmap. Phase 1 (the deterministic scorecard) is live on the VPS with an hourly producer task.",
+      "stack": [
+        "Python",
+        "FastAPI",
+        "Groq API",
+        "Jinja2 / server-rendered HTML",
+        "Telegram",
+        "pytest"
+      ],
+      "scale": "Phase 1 live on VPS, 15 tests, auth-gated + metric-drift tripwire",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "The Trading Journal asks a narrow, honest question of a real trading track: when the operator overrode the bot and closed a position by hand, did that discretion add or subtract versus letting the bot's trail run? Everything else -- the narrative, the calendar -- hangs off that one measured number.",
+      "architecture": "An ingest module reads the realised trade rows and campaign metadata and reuses the existing per-campaign divergence computation; the counterfactual is the exit-slip R (realised price minus the paper exit price, per tier, in R units) rather than a naive gross-minus-paper subtraction that is identically zero by construction. A scorecard aggregates the manual-close delta with a bootstrap confidence interval and a verdict that never authorises a risk increase below a minimum sample. A producer runs on an hourly task and writes the scorecard JSON via an atomic write; a separate narrator builds a prompt and calls a Groq-hosted model to write a four-sentence Thai desk note, failing soft to a template when the model is unavailable, with the key scrubbed from any output. The dashboard loads both files fail-soft and renders /journal as a self-contained desk-blotter page -- rubber-stamp verdict, signature memo, and a month-grid P&L calendar coloured by dollar profit -- all behind HTTP Basic auth and enumerated in the money-route leak-guard.",
+      "architecture_diagram": "  realised.csv + divergence      e8 producers            dashboard\n+----------------------+   +------------------+   +------------------+\n| per-campaign         |-->| journal_ingest   |-->| /journal (auth)  |\n| exit-slip R          |   | journal_scorecard|   | desk-blotter +   |\n+----------------------+   +--------+---------+   | P&L calendar     |\n                                    |             +--------+---------+\n                                    v                      ^\n                           +--------+---------+            |\n                           | narrator (Groq)  |---> narrative.json\n                           | fail-soft->tmpl  |     + Telegram card\n                           +------------------+\n",
+      "lessons": [
+        "The obvious counterfactual was identically zero: subtracting a paper-R that is just a relabel of the realised R always yields nothing, so the real metric is the per-tier exit-slip R already computed for the divergence report -- reuse it, never recompute it.",
+        "A verdict on a real-money track has to refuse below a minimum sample: with too few manual closes the scorecard returns INSUFFICIENT_SAMPLE and explicitly does not authorise scaling risk, which is a safety property, not a UI state.",
+        "The prose is decorative and the numbers are authoritative: the model narrates the day but a rule forbids it from quoting raw field or JSON-key names, and the note fails soft to a deterministic template so a model outage never blocks the daily card.",
+        "A cross-tree import will 502 on deploy: the producer originally imported a dashboard helper that does not exist in the live-trading tree, so it was rewritten to an inline temp-plus-replace write to keep the two deployment trees independent."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "category": "Languages",
+      "items": [
+        "Python",
+        "JavaScript (ES2020)",
+        "TypeScript",
+        "PowerShell",
+        "Bash"
+      ]
+    },
+    {
+      "category": "Web / API",
+      "items": [
+        "FastAPI",
+        "Jinja2",
+        "HTML5 / CSS3",
+        "REST"
+      ]
+    },
+    {
+      "category": "Data / Quant",
+      "items": [
+        "pandas",
+        "NumPy",
+        "MetaTrader 5 API",
+        "Probabilistic Sharpe / Deflated Sharpe"
+      ]
+    },
+    {
+      "category": "Tooling",
+      "items": [
+        "pytest",
+        "pyright",
+        "Playwright",
+        "Git",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "category": "Infrastructure",
+      "items": [
+        "Windows Server",
+        "Tailscale Funnel",
+        "Scheduled Tasks",
+        "SQLite",
+        "LINE Messaging API"
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "date": "2026-05",
+      "title": "OGA Representative, Hotel Company -- new-cadet orientation lead",
+      "where": "VMI"
+    },
+    {
+      "date": "2026-03",
+      "title": "IEEE SoutheastCon 2026 -- 4th place, Undergraduate Circuit Design",
+      "where": "Alabama"
+    },
+    {
+      "date": "2026-03",
+      "title": "Tau Beta Pi Conference -- VMI representative",
+      "where": "Tau Beta Pi Society"
+    },
+    {
+      "date": "2025-11",
+      "title": "Tau Beta Pi -- Engineering Honor Society, Virginia Chapter",
+      "where": "VMI"
+    },
+    {
+      "date": "2025-05",
+      "title": "Expert classification, Rifle",
+      "where": "VMI"
+    },
+    {
+      "date": "2024-07",
+      "title": "VMI Institute Honors Program scholarship (USD five thousand / year)",
+      "where": "VMI"
+    },
+    {
+      "date": "2024-04",
+      "title": "Commendation from the Chief of Defence Forces",
+      "where": "US Reserve Command HQ"
+    },
+    {
+      "date": "2024-01",
+      "title": "Selected into the VMI Institute Honors Program",
+      "where": "VMI"
+    },
+    {
+      "date": "2022-05",
+      "title": "Selected #1 of 348 for the army study-in-US programme",
+      "where": "Royal Thai Army Cadet School"
+    },
+    {
+      "date": "2022-02",
+      "title": "AFAPS completion + ALCPT silver medal (Commander-in-Chief)",
+      "where": "AFAPS"
+    },
+    {
+      "date": "2021-12",
+      "title": "Honorable Mention, 20th National Physics Olympiad",
+      "where": "Thailand"
+    },
+    {
+      "date": "2021-07",
+      "title": "Vice-President, Army cadet section + Honor Council",
+      "where": "AFAPS"
+    }
+  ],
+  "footer_note": "Last updated: 2026-07-17. Content here is a public summary; the formal resume is available on request.",
+  "grad_school": {
+    "headline": "Graduate school -- ECE / quantitative methods",
+    "tagline": "Academic record, research interests, and references.",
+    "purpose": "This page is a focused single-view for graduate-school admissions readers. The same content lives across /portfolio/about, /portfolio/education, and /portfolio/projects, but here it is reorganised around the questions an admissions reader asks first: what is the academic record, what is the research direction, and who can vouch for the work.",
+    "sections": [
+      {
+        "title": "Academic record (VMI)",
+        "body": "Bachelor of Science in Electrical and Computer Engineering, Institute Honors Program of Virginia Military Institute, Class of 2027. Overall GPA 3.79 / Major GPA 4.00. Term GPA 4.00 in Year 2 Term 1 and Year 2 Term 2 (both all-A semesters). Term GPA 3.81 in Year 3 Term 1, Term GPA 3.70 in Year 3 Term 2. Coursework spans Discrete Mathematics, Digital Systems Design, Electrical Circuit Analysis, Computer Architecture, Microcontrollers, Electronics, Signal & System Analysis, Modern Physics I, Nuclear Reactor Engineering."
+      },
+      {
+        "title": "Honors and competitions",
+        "body": "Tau Beta Pi (Engineering Honor Society, Virginia Chapter) -- inducted Nov 2025. IEEE SoutheastCon 2026 -- 4th place, Undergraduate Circuit Design (Alabama, Mar 2026). Tau Beta Pi Conference -- VMI representative (Mar 2026). OGA Representative, Hotel Company -- new-cadet orientation lead (May 2026). Commendation from the Chief of Defence Forces at the US Reserve Command HQ (Apr 2024). VMI Institute Honors Program scholarship since Jul 2024. Selected first of 348 cadets at the Royal Thai Army Cadet School for the army's study-in-US programme (May 2022). Honorable Mention, 20th National Physics Olympiad (Dec 2021)."
+      },
+      {
+        "title": "Research direction",
+        "body": "Quantitative methods applied to financial time series: pre-registered hypotheses, walk-forward out-of-sample validation, probabilistic Sharpe and deflated Sharpe gates, block-bootstrap confidence intervals. Companion literature review followed a PRISMA-style protocol across 63 IEEE papers with a multi-dimensional taxonomy. Adjacent interests: digital signal processing, control systems applied to high-frequency decision making.",
+        "items": [
+          "Pre-registered hypotheses + held-out OOS validation",
+          "Block-bootstrap lower-bound Sharpe + PSR + DSR with multiple-testing haircut",
+          "Bias auditing (lookahead, fill realism, profit concentration, overfit)",
+          "Cost realism -- broker-verified spread / commission / slippage cross-checked against live demo execution"
+        ]
+      },
+      {
+        "title": "Statement of purpose (in preparation)",
+        "body": "A formal statement of purpose is in preparation. Email below for an early draft or for an in-person conversation."
+      },
+      {
+        "title": "References",
+        "body": "Available on request via email."
+      }
+    ],
+    "cta_links": [
+      {
+        "label": "Email for transcript / SoP draft",
+        "href": "mailto:mettasatk27@vmi.edu"
+      },
+      {
+        "label": "Download portfolio as PDF",
+        "href": "/portfolio.pdf",
+        "note": "single-file CV"
+      },
+      {
+        "label": "Full education page",
+        "href": "/portfolio/education"
+      }
+    ]
+  },
+  "blog": {
+    "headline": "Notes",
+    "tagline": "Short writeups on what I am learning -- updated occasionally.",
+    "posts": [
+      {
+        "id": "psr-dsr-why-cagr-lies",
+        "date": "2026-05-22",
+        "title": "PSR / DSR -- why CAGR lies under leverage",
+        "teaser": "Sharpe is leverage-invariant; CAGR is not. A 1000% backtest hides nothing more than a 100% one with 10x leverage.",
+        "body": "Across a quarter of research I kept ranking strategies by CAGR and kept being surprised when 'better' systems drew down more. The mistake is well-documented but worth re-deriving: under a fixed strategy, position-sizing by a factor L scales both CAGR and max drawdown ~linearly. So Sharpe (return / standard deviation) is invariant to L while CAGR is not. The corollary -- if I pick the highest-CAGR config without locking risk first, I am choosing the most leveraged version of an indeterminate edge. The fix is a single-line discipline: select by block-bootstrap lower-bound Sharpe, then choose the smallest risk_pct that meets the target. PSR (Probabilistic Sharpe) further accounts for skew + kurtosis; DSR (Deflated Sharpe) bolts on a multiple-testing haircut for the best-of-N search. With these two gates documented, the equity-curve nostalgia stops mattering."
+      },
+      {
+        "id": "subagent-driven-development",
+        "date": "2026-05-24",
+        "title": "Subagent-driven development -- two-stage review caught 80% of defects",
+        "teaser": "Across 14 SDD cycles on /portfolio v1.0-v1.4, every commit went through implementer + spec-compliance + code-quality reviewer. Hit rate was higher than self-review.",
+        "body": "The pattern is simple. Each task in the implementation plan gets THREE subagent runs: (1) an implementer who writes the code + appends tests, (2) a spec-compliance reviewer who confirms the code matches the plan verbatim or justifies deviation, (3) a code-quality reviewer who looks for defects the implementer missed. The implementer commits; the reviewers do NOT mutate code, only emit reports. Across 14 review cycles on this portfolio project, 8 ended with REQUEST_CHANGES or APPROVE_WITH_NITS that surfaced real bugs (listener leaks, cache poisoning on non-200, off-by-one in 365d cap, ambiguous test assertions, dead variables). Self-review by the implementer caught maybe 30% of these. Two-stage review caught the rest. The cost is real -- each task is 3x the LLM tokens of just-write-it -- but the defect-escape rate is low enough that I now treat it as the default for non-trivial work."
+      },
+      {
+        "id": "building-portfolio-multi-page",
+        "date": "2026-05-24",
+        "title": "Building /portfolio v1.0 -> v1.4 in 24 commits over one weekend",
+        "teaser": "Day 1: parchment editorial page. Day 2: IDE Inspector redesign. Day 3: multi-page split + polish. Day 4: audience-specific routes. The arc.",
+        "body": "v1 was a single editorial page on Saturday: parchment background, serif body, KM avatar. It worked but felt indistinguishable from any other student portfolio. v1.1 was the IDE Inspector redesign: title bar + file tree + tabs + status bar, with five wow features (keyboard cheat sheet, commit-activity grid, view-source modal, print stylesheet, now-playing status). v1.2 was the multi-page split -- one 6000-pixel scroll became five routes with proper navigation. v1.3 added per-project deep-dives + SVG illustrations + the latest.md gap-closer. v1.4 added the two audience-specific share URLs (/grad-school + /recruit) for recruiters and grad-school admissions readers. Each version: spec doc + implementation plan + SDD task-by-task + push + deploy. The deploy script had to learn three lessons the hard way -- PS5.1 redirects on native exes are fatal, scp does not glob, and new static subdirs need explicit ship rules."
+      },
+      {
+        "id": "honest-numbers-only",
+        "date": "2026-05-24",
+        "title": "Honest numbers only -- prop-firm $-figures stay out of public pages",
+        "teaser": "Test test_route_portfolio_no_pnl_numbers regexes the rendered HTML for dollar-digit patterns and fails the build if anything leaks.",
+        "body": "Prop-firm rules forbid posting account balances and P&L figures in public. The portfolio page is public. So a single test sits in test_portfolio.py and regexes the rendered HTML across all 10 routes for any dollar-prefixed digit substring. If anything matches -- a stray account-size mention from a Now-Playing status, a per-month figure in a project summary, a per-lot commission figure -- the test fails the build. It has fired twice in this codebase (once during F5 Now Playing implementation, once during a project-summary edit). Each time the fix was to rephrase without the figure. The rule is fail-loud in CI, not policed by code review. That is the right level of automation for a prop-firm-adjacent public surface."
+      },
+      {
+        "id": "fail-closed-public-surface",
+        "date": "2026-05-24",
+        "title": "Fail-closed by default -- a 503 beats a wrong page",
+        "teaser": "Every route on this dashboard returns 503 on schema invalidity rather than rendering a partial page. The bug class it prevents is worse than downtime.",
+        "body": "When a JSON config goes bad -- a missing key, a corrupted file, a typo -- the wrong response is to render a half-page with defaults. The right response is to return 503 and surface the underlying error. The /portfolio loader validates required keys before any render and raises PortfolioContentError, which the route maps to a 503 with the message body. Same pattern lives in /projects (fail-closed on schema invalidity) and /anchor (fail-closed on missing rules file). Cost: rare false-positive outages when a deploy ships a malformed file. Benefit: never a silent page-rendered-but-wrong incident. Tests assert the 503 path with a monkey-patched bad source: if a future refactor swallows the error and renders a stub, the test fires. The whole approach is uglier on the happy path and stronger on the unhappy one -- which is the right tradeoff for a public surface that a recruiter or admissions reader might be looking at right now."
+      }
+    ]
+  },
+  "reading": {
+    "headline": "Reading list",
+    "tagline": "Books and papers that shaped how I think about engineering + quant research. One-line takeaway each.",
+    "items": [
+      {
+        "kind": "book",
+        "title": "Advances in Financial Machine Learning",
+        "author": "Marcos Lopez de Prado",
+        "year": "2018",
+        "takeaway": "Deflated Sharpe + walk-forward + bias auditing as default discipline -- gave me the framework for /portfolio/projects/quant."
+      },
+      {
+        "kind": "book",
+        "title": "Antifragile",
+        "author": "Nassim Nicholas Taleb",
+        "year": "2012",
+        "takeaway": "Convex tinkering: many small bets, kill quickly, scale survivors. Maps directly to the candidate-gate workflow."
+      },
+      {
+        "kind": "paper",
+        "title": "The Probabilistic Sharpe Ratio",
+        "author": "Bailey, Lopez de Prado",
+        "year": "2012",
+        "takeaway": "Sharpe + skew + kurtosis -> a P(true SR > 0) figure. Non-normality changes the answer more than you think."
+      },
+      {
+        "kind": "paper",
+        "title": "Deflated Sharpe Ratio",
+        "author": "Bailey, Lopez de Prado",
+        "year": "2014",
+        "takeaway": "Multiple-testing haircut for best-of-N search. Closes the door on overfit-by-search."
+      },
+      {
+        "kind": "book",
+        "title": "The Pragmatic Programmer",
+        "author": "Hunt, Thomas",
+        "year": "2019 (20th anniv ed)",
+        "takeaway": "DRY, broken-window theory, and a thousand small habits. Re-read every couple of years."
+      },
+      {
+        "kind": "book",
+        "title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "year": "2017",
+        "takeaway": "How databases actually work + tradeoffs in distributed systems. Influenced the Tailscale-Funnel + SQLite-snapshot decisions in /portfolio/projects/line-bot."
+      },
+      {
+        "kind": "paper",
+        "title": "Adversarial Risks in Backtesting",
+        "author": "Bailey et al.",
+        "year": "2014",
+        "takeaway": "Backtest-overfit warning: with enough trials, you will find a winner from pure noise. Why my candidate gates lock SR_LB + PSR + DSR together."
+      }
+    ]
+  },
+  "internship": {
+    "headline": "Internship portfolio -- summer 2027 + 2028",
+    "tagline": "What I can ship in 10-12 weeks, what I am open to, and how to reach me.",
+    "purpose": "This page is for technical-internship recruiters (SWE, ML, infra, quant-research). Goal: in two minutes a hiring manager can decide whether my profile fits their team's bench for the next intern slot. The /portfolio/recruit page is broader (full-time-recruit-focused); this one focuses on what an intern can deliver in a single summer.",
+    "sections": [
+      {
+        "title": "Shippable summer projects (what I have actually built)",
+        "body": "Three full-stack projects, all running today. Each was built in 4-8 weeks of focused effort and includes deployment + tests.",
+        "items": [
+          "FastAPI + Jinja2 dashboard with 12+ modules + ~679 tests + Tailscale Funnel deploy. See /portfolio/projects/dashboard.",
+          "LINE Official Account bot with multi-owner + daily SQLite snapshots + scheduler. See /portfolio/projects/line-bot.",
+          "Quantitative trading research framework with 60+ backtests + PRISMA literature review (SURI, 63 IEEE papers). See /portfolio/projects/quant and /portfolio/projects/suri."
+        ]
+      },
+      {
+        "title": "Tech I can show up productive on Day 1",
+        "items": [
+          "Python (FastAPI, pytest, pyright) -- production-shipped",
+          "Test-driven + subagent-driven development workflow",
+          "Windows + Linux ops (Tailscale, scheduled tasks, systemd-style restart loops)",
+          "Git + branch hygiene (SDD task-by-task commits + two-stage review)",
+          "JSON-first data design (schemas in code, validators in tests)"
+        ]
+      },
+      {
+        "title": "Tech I am learning + open to",
+        "items": [
+          "Rust (control-systems projects on the horizon)",
+          "PyTorch / JAX for the ML side of quant research",
+          "C / FPGA (Vivado) -- VMI ECE coursework feeds this",
+          "Distributed systems patterns (Kleppmann)"
+        ]
+      },
+      {
+        "title": "Working preference",
+        "body": "Remote OK (Bangkok, GMT+7) or on-site in the US. Available May-August summer windows (VMI academic calendar). Comfortable with async + screen-share + Loom video reviews. Subagent-driven dev for big features; pair-programming for unfamiliar tech."
+      },
+      {
+        "title": "How to reach me",
+        "body": "Email below for the formal CV (single-file PDF) + a 30-min intro call. I respond within 24h."
+      }
+    ],
+    "cta_links": [
+      {
+        "label": "Email",
+        "href": "mailto:mettasatk27@vmi.edu"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/gun321h-creator"
+      },
+      {
+        "label": "Download portfolio as PDF",
+        "href": "/portfolio.pdf",
+        "note": "single-file CV"
+      },
+      {
+        "label": "Full recruiter page",
+        "href": "/portfolio/recruit"
+      }
+    ]
+  },
+  "pa": {
+    "headline": "Personal Assistant -- finance x content x admin",
+    "tagline": "TikTok-built audience + prop-firm research + systematic operations.",
+    "purpose": "This page is a focused single-view for Personal Assistant roles in a financial-advisory / content / business context. The shape of value here is an intersection rarely found together: a Thai young-professional audience built from zero (11.3K TikTok followers), real skin-in-the-game investment experience (passed round one of a six-figure prop-firm challenge), and an operating discipline of running systematic personal infrastructure (dashboard, automation, multi-project tracking that does not drop balls).",
+    "sections": [
+      {
+        "title": "Content production -- audience built from zero",
+        "body": "TikTok @gunkanokpon (น้องกันวีเอ็มไอ) -- 11.3K followers, 132K total likes. Content theme: Thai cadet at Virginia Military Institute (VMI) sharing journey, mindset, and what scholarship-student-abroad life is actually like. Audience demographic: Thai young people interested in studying abroad, military path, personal development -- the same demographic a finance creator who scales content for next-generation Thai earners is trying to reach. This skill transfers directly: knowing what hook makes a Thai young viewer stop scrolling, what tone keeps them watching, and how to translate a complex idea into a sixty-second story.",
+        "items": [
+          "Script writing -- shortform Thai language, hook-first structure",
+          "Story-led framing (vs technical-lecture framing) -- matches a story-teller editorial philosophy",
+          "Audience insight: what young Thais actually consume vs scroll past",
+          "Comfortable in front of camera + in editing software"
+        ]
+      },
+      {
+        "title": "Investment + finance -- real skin in the game",
+        "body": "Independent quantitative trading research: Python backtesting framework (60+ backtests across FX, crypto, metals, indices), walk-forward out-of-sample validation, probabilistic Sharpe + deflated Sharpe gates. Passed round one of a six-figure-account prop-firm challenge -- not paper-trading. Comfortable discussing market structure, position sizing, drawdown discipline, and bias in research methodology with anyone who runs a real book. Reads filings (e.g. the recent SpaceX S-1 with corporate BTC treasury disclosure) and can summarise market events into a brief for a client meeting.",
+        "items": [
+          "Reads market commentary, 10-K, and S-1 filings",
+          "Can summarise market events into FA-client-ready brief notes",
+          "Understands FA workflow because the side-project is the same problem space",
+          "Comfortable with Bloomberg-style data tables, Excel, and pandas"
+        ]
+      },
+      {
+        "title": "Operations + admin -- systems that do not drop balls",
+        "body": "Personal infrastructure: a dashboard with 11 surfaces, automation scheduled tasks, multi-project tracking, daily SQLite backups, a LINE Official Account bot, all running unattended on a Windows VPS. The point is not the tech stack -- the point is the operating discipline. Tasks tracked end-to-end, follow-ups scheduled in advance, nothing forgotten because there is a system.",
+        "items": [
+          "Calendar + follow-up management (client meetings, content deadlines)",
+          "Document organisation + version control",
+          "Coordination between SG and TH timezones",
+          "Light data entry, spreadsheet work, pandas-fluent",
+          "Trip + travel + booking logistics"
+        ]
+      },
+      {
+        "title": "Honest constraints",
+        "body": "Final-year cadet at the Royal Thai Army Cadet Academy (Chulachomklao) -- returned from VMI to complete commissioning. Availability is part-time only: evenings (after 18:00 BKK), weekends, and approved leave periods. Commissioning expected late 2026 / early 2027 -- availability expands then. Cannot do daytime full-time presence right now. If the role requires daytime full-time, I am not the fit. If it can work with evening + weekend cadence first and expand later, I am ready to commit."
+      },
+      {
+        "title": "Why this role specifically",
+        "body": "I have followed the page for a while. The reason I am applying is not because PA is a generic resume line -- it is because the intersection of finance, content, and business that the page operates in is exactly the intersection I am building my own career around. Working alongside someone whose work I already pay attention to compresses five years of learning into one. I would rather take a part-time role here than a full-time role somewhere I have no interest in."
+      }
+    ],
+    "cta_links": [
+      {
+        "label": "Email -- gun321h@hotmail.com",
+        "href": "mailto:gun321h@hotmail.com"
+      },
+      {
+        "label": "Download PA-fit CV (PDF)",
+        "href": "/portfolio_pa.pdf",
+        "note": "single-page PDF"
+      },
+      {
+        "label": "TikTok @gunkanokpon (11.3K followers)",
+        "href": "https://www.tiktok.com/@gunkanokpon",
+        "note": "audience proof"
+      },
+      {
+        "label": "Instagram @gguunn.knp",
+        "href": "https://www.instagram.com/gguunn.knp"
+      },
+      {
+        "label": "Phone -- 080-964-3456",
+        "href": "tel:+66809643456"
+      },
+      {
+        "label": "LINE -- kanokpon008",
+        "href": "https://line.me/ti/p/~kanokpon008"
+      }
+    ]
+  },
+  "recruit": {
+    "headline": "Engineering portfolio -- 1-pager",
+    "tagline": "Top skills, top 3 projects, hire-evaluation pointers.",
+    "purpose": "This page is a focused single-view for tech recruiters and hiring managers. Goal: in two minutes a reader can decide whether to schedule a call. Full breadth is on /portfolio/projects and /portfolio/about; this is the boiled-down version.",
+    "sections": [
+      {
+        "title": "Top 5 skills",
+        "body": "Skills graded by what shows up in shipped code, not what is on a CV. Each is exercised in at least one of the three projects below.",
+        "items": [
+          "Python (FastAPI services, pytest, pyright; ~7k production LOC across dashboard + LINE bot)",
+          "Quant research tooling (pandas, MetaTrader 5 API, probabilistic Sharpe + deflated Sharpe gates)",
+          "Test-driven development (~679 dashboard tests; two-stage review discipline)",
+          "Windows ops (Tailscale Funnel, scheduled tasks, PowerShell deploy scripts)",
+          "API integrations (LINE Messaging API multi-owner; HTTP Basic Auth fail-closed)"
+        ]
+      },
+      {
+        "title": "Top 3 projects",
+        "body": "Each is real, shipped, and running today. Click through for deep-dives.",
+        "items": [
+          "Trading-research dashboard -- 12+ modules, ~679 tests, Tailscale Funnel public deploy. See /portfolio/projects/dashboard.",
+          "LINE Official Account bot -- multi-owner, daily SQLite snapshots, pre-alert dedupe, self-healing restart loop. See /portfolio/projects/line-bot.",
+          "Quantitative trading research framework -- 60+ backtests, walk-forward OOS, DSR/PSR gates. See /portfolio/projects/quant.",
+          "SURI -- PRISMA-style systematic literature review of 63 IEEE papers + multi-dimensional taxonomy. See /portfolio/projects/suri."
+        ]
+      },
+      {
+        "title": "How to evaluate this",
+        "body": "Three concrete checks for a hiring read:",
+        "items": [
+          "Read one deep-dive (link above) -- architecture + lessons learned are explicit.",
+          "Check the GitHub repo (link below) -- commit history, test count, deploy script all visible.",
+          "Email for a 30-minute call -- happy to walk through any project on screen-share."
+        ]
+      },
+      {
+        "title": "Working style",
+        "body": "Subagent-driven development with two-stage code review for non-trivial work. Test-first when the contract is clear; spike-then-test when exploring. Honest commits -- bug fixes labelled fix, breaking changes flagged in the message. Per-task /portfolio sessions on this branch averaged 8-9 commits with explicit pre-task HEAD logging."
+      }
+    ],
+    "cta_links": [
+      {
+        "label": "Email",
+        "href": "mailto:mettasatk27@vmi.edu"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/gun321h-creator"
+      },
+      {
+        "label": "Download portfolio as PDF",
+        "href": "/portfolio.pdf",
+        "note": "single-file CV"
+      },
+      {
+        "label": "Full projects list",
+        "href": "/portfolio/projects"
+      }
+    ],
+    "qr": {
+      "caption": "Print or screenshot this page? Scan to reach my live presence -- socials, latest videos, and this portfolio in one tap.",
+      "url_label": "gunvmi.vercel.app"
+    }
+  }
+}

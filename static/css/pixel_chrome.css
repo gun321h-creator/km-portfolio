@@ -1,0 +1,402 @@
+/* pixel_chrome.css
+ *
+ * Chrome shell layout metrics — clean, minimal, Inter Variable typography.
+ * In the public portfolio build the shell chrome is hidden by portfolio.css;
+ * only the base layout metrics below are used. Mobile (<1280px) renders
+ * pages natively with the chrome fully retracted.
+ */
+
+/* :root color tokens removed — they now flow from theme_sage.css
+ * (loaded before this file). The legacy --px-* / --bone / --surface
+ * aliases declared in theme_sage.css map old names → new sage values,
+ * so existing var(--px-bg) etc. references in this file still resolve.
+ * Only per-shell layout metrics live here. */
+:root {
+  /* metrics */
+  --px-topbar-h:  40px;
+  --px-left-w:    220px;
+  --px-right-w:   260px;
+  --px-bottom-h:  104px;
+  /* type (kept here for backcompat — also declared in theme_sage.css) */
+  --px-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* --px-pixel retired: Press Start 2P dropped in favour of var(--display) */
+}
+
+/* ────────  shell base  ───────────────────────────────────────────── */
+
+body.px-shell {
+  margin: 0; padding: 0;
+  font-family: var(--display);  /* was var(--px-mono) — now Inter Variable */
+  background: var(--px-bg);
+  color: var(--px-text);
+  font-size: 12px;
+  line-height: 1.45;
+  min-height: 100vh;
+}
+
+/* ────────  topbar — the always-visible pixel-game HUD  ─────────── */
+
+.px-topbar {
+  position: sticky; top: 0; z-index: 100;
+  height: var(--px-topbar-h);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 0 18px;
+  background: var(--bg);                /* was gradient — flat Stripe-Light */
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.px-brand {
+  font-family: var(--display);          /* was var(--px-pixel) / Press Start 2P */
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  background: transparent;              /* drop gradient/accent-dim background */
+  border: none;
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.px-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.px-nav a {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: var(--r-sm);
+  color: var(--ink-2);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 13px;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.px-nav a:hover {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+.px-nav a:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+.px-nav a.px-back { color: var(--mute); }
+.px-nav a.px-anchor { color: var(--bad); }
+.px-nav a.px-anchor:hover { background: var(--bad-dim); color: var(--bad); }
+.px-nav a.is-active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-weight: 600;
+}
+.px-nav a.is-active:hover { background: var(--accent-dim); color: var(--accent); }
+
+/* Hub nav: inline groups separated by hairline dividers */
+.px-nav-hub { flex-wrap: wrap; }
+.px-nav-group {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+}
+.px-nav-sep {
+  display: inline-block;
+  width: 1px;
+  height: 16px;
+  background: var(--line);
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+.px-hud {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--px-mono);  /* keep mono for numbers — data-dense */
+  font-size: 11px;
+  white-space: nowrap;
+}
+.px-hud > * {
+  padding: 3px 8px;
+  border: 0.5px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--panel);
+}
+.px-coins {
+  color: var(--px-green);
+}
+.px-level {
+  color: var(--accent);
+}
+
+/* ────────  asides — rendered only when pages don't strip them  ──── */
+
+.px-left, .px-right {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px;
+  font-size: 11px;
+  color: var(--px-text);
+}
+.px-left {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.px-right {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.px-panel-title {
+  font-family: var(--display);          /* was var(--px-pixel) / Press Start 2P */
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+  border-bottom: 1px solid var(--line); /* was dashed */
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.px-agent-list { list-style: none; margin: 0; padding: 0; }
+.px-agent-row {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 0.5px solid var(--line);  /* was dashed */
+  font-size: 10px;
+}
+.px-agent-row:last-child { border-bottom: none; }
+.px-agent-avatar {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 0.5px solid var(--line);
+  background: var(--px-bg);
+}
+.px-agent-meta { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.px-agent-name {
+  color: var(--px-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.px-agent-status {
+  color: var(--px-text-mute);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+.px-agent-row.is-working .px-agent-status { color: var(--px-green); }
+.px-agent-bubble {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding: 3px 6px;
+  background: var(--px-bg);
+  border: 0.5px solid var(--line);      /* was 1px solid px-border */
+  border-radius: var(--r-sm);           /* was 2px */
+  font-size: 9px;
+  color: var(--px-text-mute);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.px-stat-row {
+  display: flex; justify-content: space-between;
+  padding: 4px 0;
+  font-size: 11px;
+  color: var(--px-text);
+}
+.px-stat-row strong {
+  font-weight: 600;
+  color: var(--px-cyan);
+}
+.px-sep { border: none; border-top: 0.5px solid var(--line); margin: 8px 0; } /* was dashed */
+.px-dd-bar {
+  height: 6px;
+  background: var(--px-bg);
+  border: 0.5px solid var(--line);      /* was 1px dashed px-border */
+  border-radius: var(--r-sm);           /* was 1px */
+  overflow: hidden;
+  margin: 4px 0 8px;
+}
+.px-dd-fill { background: var(--px-amber); height: 100%; }
+
+/* ────────  main pane — fills the remaining space ───────────────── */
+
+.px-main {
+  /* Block layout (NOT fixed positioning) so pages that strip the
+     asides + bottom get a clean full-width canvas, and pages that
+     keep them just flow normally underneath the sticky topbar. */
+  min-height: calc(100vh - var(--px-topbar-h));
+  background: var(--px-bg);
+}
+
+/* When asides + bottom ARE rendered, lay them out as a 3-column grid
+   below the topbar. Detected by :has() so we don't need a body class. */
+body.px-shell:has(.px-left):has(.px-right) {
+  display: grid;
+  grid-template-columns: var(--px-left-w) 1fr var(--px-right-w);
+  grid-template-rows: var(--px-topbar-h) 1fr auto;
+  grid-template-areas:
+    "topbar topbar topbar"
+    "left   main   right"
+    "bottom bottom bottom";
+  min-height: 100vh;
+}
+body.px-shell:has(.px-left):has(.px-right) .px-topbar { grid-area: topbar; position: static; }
+body.px-shell:has(.px-left):has(.px-right) .px-left   { grid-area: left;   overflow-y: auto; }
+body.px-shell:has(.px-left):has(.px-right) .px-right  { grid-area: right;  overflow-y: auto; }
+body.px-shell:has(.px-left):has(.px-right) .px-main   { grid-area: main;   overflow: auto; min-height: 0; }
+body.px-shell:has(.px-bottom) .px-bottom              { grid-area: bottom; }
+
+/* ────────  bottom panel — console + lofi  ──────────────────────── */
+
+.px-bottom {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 10px;
+  height: var(--px-bottom-h);
+  padding: 10px 14px;
+  background: var(--panel);             /* was px-panel-bg */
+  border-top: 0.5px solid var(--line);  /* was 1px solid px-border */
+}
+.px-console {
+  background: var(--px-bg);
+  border: 0.5px solid var(--line);      /* was 1px solid px-border */
+  border-radius: var(--r-sm);           /* was 2px */
+  padding: 8px 10px;
+  overflow-y: auto;
+  font-family: var(--px-mono);          /* keep mono — log lines are code-like */
+  font-size: 10px;
+  line-height: 1.5;
+}
+.px-log-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 1px 0;
+}
+.px-log-green { color: var(--px-green); }
+.px-log-amber { color: var(--px-amber); }
+.px-log-cyan  { color: var(--px-cyan); }
+.px-log-gray  { color: var(--px-text-mute); }
+.px-log-red   { color: var(--px-red); }
+
+.px-lofi {
+  background: var(--px-bg);
+  border: 0.5px solid var(--line);      /* was 1px dashed px-border */
+  border-radius: var(--r-sm);           /* was 2px */
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.px-lofi-card {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+.px-lofi-art {
+  width: 32px; height: 32px;
+  background: var(--accent-dim);        /* was gradient — flat indigo tint */
+  color: var(--accent);
+  display: grid; place-items: center;
+  font-size: 14px;
+  border-radius: var(--r-sm);           /* was 2px */
+  box-shadow: var(--shadow);
+}
+.px-lofi-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 10px;
+  min-width: 0;
+}
+.px-lofi-meta strong { color: var(--px-text); font-weight: 600; }
+.px-lofi-meta span   { color: var(--px-text-mute); font-size: 9px; }
+.px-lofi-ctrl {
+  text-align: center;
+  font-size: 14px;
+  color: var(--px-text-mute);
+  letter-spacing: 0.3em;
+  user-select: none;
+}
+
+/* ────────  reduced-motion override  ────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .px-nav a,
+  .px-topbar,
+  .px-lofi-art {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ────────  mobile fallback (<1280px) — strip chrome  ───────────── */
+
+@media (max-width: 1279px) {
+  .px-left, .px-right, .px-bottom { display: none; }
+  body.px-shell:has(.px-left):has(.px-right) {
+    display: block;
+    grid-template-columns: none;
+    grid-template-areas: none;
+  }
+  .px-main {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: transparent !important;
+    min-height: 0 !important;
+  }
+  body.px-shell {
+    overflow: auto !important;
+    height: auto !important;
+    background: transparent !important;
+    color: inherit !important;
+    font-family: var(--display) !important;  /* keep Inter on mobile */
+  }
+  .px-topbar { position: sticky; }
+  .px-nav { flex-wrap: wrap; gap: 2px; }
+  .px-nav a { padding: 0 6px; font-size: 10px; }
+  .px-hud { display: none; }
+}
+
+/* ────────  phone breakpoint (<=700px) — tappable chrome  ────────── */
+/* Tap-target audit 2026-06-06: navbar links rendered at 22-26px on
+   375x812 phones, below Apple HIG 44pt and Material 48dp guidelines.
+   This narrower breakpoint widens .px-nav a (and .px-back, which
+   inherits) without rewriting the dense pixel aesthetic, and lets the
+   topbar grow with the wrapped nav row so links don't get clipped. */
+@media (max-width: 700px) {
+  .px-topbar {
+    height: auto;
+    min-height: var(--px-topbar-h);
+    padding: 6px 12px;
+    gap: 12px;
+  }
+  .px-nav { gap: 4px; }
+  .px-nav a {
+    min-height: 44px;
+    height: auto;
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+}

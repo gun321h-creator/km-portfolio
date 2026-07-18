@@ -1,0 +1,147 @@
+{# BOT/dashboard/templates/pixel_chrome_base.html #}
+{# Pixel chrome shell. Required context vars: build, chrome (dict from chrome.collect_chrome). #}
+{# Child templates may override px_nav / px_left / px_right / px_hud / px_bottom #}
+{# to strip panels not appropriate for that page (e.g. portfolio suppresses px_left/px_right). #}
+{% import "_partials/icons.html" as ic with context %}
+<!doctype html>
+<html lang="th" data-theme="sage">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}KM -- {{ build }}{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/static/css/theme_sage.css">
+<link rel="stylesheet" href="/static/css/_icons.css">
+<link rel="stylesheet" href="/static/css/pixel_chrome.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/static/css/sage_premium.css">
+<link rel="stylesheet" href="/static/css/cinematic.css">
+<link rel="stylesheet" href="/static/css/terminal_mode.css">
+<link rel="stylesheet" href="/static/css/tv_tables.css">
+<link rel="stylesheet" href="/static/css/polish_pack.css">
+<link rel="stylesheet" href="/static/css/linear_theme.css">
+{# Phase D: dashboard component stylesheets (aurora_glow / sme_heatmap /
+   bento_hub / stripe_mesh_treemap) removed from the public build — the
+   Gilded Circuit portfolio renders none of those components, and their
+   comments referenced internal dashboard route names. #}
+{# Phase B: dashboard-only command-menu assets are not shipped in the public
+   build. The portfolio's own Ctrl+K palette (portfolio.js) is unaffected.
+   (Jinja comment — deliberately NOT an HTML comment, so nothing about the
+   internal build reaches the public page source.) #}
+<!-- V3-PICK2-EMPTY-STATES-BEGIN -->
+<link rel="stylesheet" href="/static/css/_empty_states.css">
+<!-- V3-PICK2-EMPTY-STATES-END -->
+<!-- V3-PICK3-FRESHNESS-BEGIN -->
+<link rel="stylesheet" href="/static/css/_freshness.css">
+<!-- V3-PICK3-FRESHNESS-END -->
+<!-- WAVE2-TOOLTIP-BEGIN -->
+<link rel="stylesheet" href="/static/css/_tooltip.css">
+<!-- WAVE2-TOOLTIP-END -->
+<!-- KPI-ANATOMY-BEGIN -->
+<link rel="stylesheet" href="/static/css/_kpi.css">
+<!-- KPI-ANATOMY-END -->
+{% block extra_head %}{% endblock %}
+</head>
+<body class="px-shell">
+{% include "_partials/icon_sprite.html" %}
+{# Theme toggle hidden — easter-egg via T-key combos. T,T = Linear dark · T,T,T = Bloomberg terminal. #}
+<div id="mm-theme-toggle" hidden aria-hidden="true" data-easter-egg="true">
+  <button type="button" data-theme-val="sage"></button>
+  <button type="button" data-theme-val="linear"></button>
+  <button type="button" data-theme-val="terminal"></button>
+</div>
+{# Phase B: dashboard-only command-menu script not shipped (see head note). #}
+<!-- V3-PICK3-FRESHNESS-JS-BEGIN -->
+<script defer src="/static/js/_freshness.js"></script>
+<!-- V3-PICK3-FRESHNESS-JS-END -->
+<script defer src="/static/js/sage_premium.js"></script>
+<script defer src="/static/js/cinematic.js"></script>
+{# Phase B: terminal_mode.js NOT shipped — it fetched an internal dashboard API.
+   Portfolio has no terminal ticker. #}
+<script defer src="/static/js/spark_util.js"></script>
+<script defer src="/static/js/polish_pack.js"></script>
+{# Phase B: apex_charts_init.js NOT shipped — portfolio renders no charts and the
+   file referenced internal dashboard routes in comments. #}
+
+<header class="px-topbar" id="px-topbar">
+  <div class="px-brand">KM</div>
+  {% block px_nav %}
+  {% set nav_mode = 'spoke' %}{% include "_partials/nav.html" %}
+  {% endblock %}
+  {% block px_hud %}
+  <div class="px-hud">
+    <span class="px-coins">{{ ic.icon('coins') }} ${{ "%+0.2f"|format(chrome.coins) }} TODAY</span>
+    <span class="px-level">{{ ic.icon('zap') }} Lv {{ chrome.lv }} &middot; {{ chrome.xp }}/100 XP</span>
+  </div>
+  {% endblock %}
+</header>
+
+{% block px_left %}
+<aside class="px-left" id="px-agents">
+  <div class="px-panel-title">[ ทีม AI &middot; {{ chrome.agents|selectattr('working')|list|length }} กำลังทำงาน ]</div>
+  <ul class="px-agent-list">
+    {% for a in chrome.agents %}
+    <li class="px-agent-row {% if a.working %}is-working{% else %}is-idle{% endif %}">
+      <img class="px-agent-avatar" src="/static/images/agents/{{ a.name }}.png"
+           alt="{{ a.name }}" onerror="this.style.visibility='hidden'">
+      <div class="px-agent-meta">
+        <span class="px-agent-name">{{ a.name }}</span>
+        <span class="px-agent-status">{% if a.working %}&#9679; กำลังทำ{% else %}&#9675; ว่าง{% endif %}</span>
+        {% if a.last_msg %}<div class="px-agent-bubble">{{ a.last_msg }}</div>{% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</aside>
+{% endblock %}
+
+{% block px_right %}
+<aside class="px-right" id="px-status">
+  <div class="px-panel-title">[ สถานะระบบ ]</div>
+  <div class="px-stat-row"><span>วันนี้</span><strong>${{ "%+0.2f"|format(chrome.right_panel.today_usd) }}</strong></div>
+  <div class="px-stat-row"><span>สัปดาห์</span><strong>${{ "%+0.2f"|format(chrome.right_panel.week_usd) }}</strong></div>
+  <div class="px-stat-row"><span>เดือน</span><strong>${{ "%+0.2f"|format(chrome.right_panel.month_usd) }}</strong></div>
+  <hr class="px-sep">
+  <div class="px-stat-row">
+    <span>FORWARD DD</span>
+    {% if chrome.right_panel.dd_pct is not none %}
+      <strong>{{ "%.1f"|format(chrome.right_panel.dd_pct) }}% / {{ "%.0f"|format(chrome.right_panel.dd_cap_pct) }}% cap</strong>
+    {% else %}<strong>&#8212;</strong>{% endif %}
+  </div>
+  {% if chrome.right_panel.dd_fill_pct is not none %}
+  <div class="px-dd-bar"><div class="px-dd-fill" style="width: {{ chrome.right_panel.dd_fill_pct }}%"></div></div>
+  {% endif %}
+  <div class="px-stat-row"><span>Edges เปิด</span><strong>{{ chrome.right_panel.edges_open if chrome.right_panel.edges_open is not none else '&#8212;' }} / 11</strong></div>
+  <div class="px-stat-row"><span>รอบล่าสุด</span><strong>{{ chrome.right_panel.last_cycle_utc or '&#8212;' }}</strong></div>
+</aside>
+{% endblock %}
+
+<main class="px-main" id="px-main">
+{% block main_pane %}{% endblock %}
+</main>
+
+{% block px_bottom %}
+<footer class="px-bottom">
+  <div class="px-console" id="px-console">
+    <div class="px-panel-title">[ คอนโซลระบบ ]</div>
+    {% for c in chrome.console %}
+    <div class="px-log-line px-log-{{ c.color }}">&gt; {{ c.iso[11:16] }}  {{ c.sha }}  {{ c.subject }}</div>
+    {% endfor %}
+  </div>
+  <div class="px-lofi" id="px-lofi">
+    <div class="px-panel-title">[ &#9835; กำลังเล่น ]</div>
+    <div class="px-lofi-card">
+      <div class="px-lofi-art">&#9835;&#9834;</div>
+      <div class="px-lofi-meta">
+        <strong>{{ chrome.lofi.title }}</strong>
+        <span>{{ chrome.lofi.now_playing }} / {{ chrome.lofi.duration }}</span>
+      </div>
+    </div>
+    <div class="px-lofi-ctrl">&#9194;&#9194; &#9654; &#9193;&#9193;</div>
+  </div>
+</footer>
+{% endblock %}
+
+</body>
+</html>

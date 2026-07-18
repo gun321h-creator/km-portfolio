@@ -1,0 +1,20 @@
+{% extends "portfolio_base.html" %}
+
+{% block main %}
+  <section id="contact" data-tab="contact">
+    <h2 class="filesep">Contact <span class="fs-crumb">ติดต่อ</span></h2>
+    <div class="gc-contact-card">
+      <span class="corner" aria-hidden="true"></span>
+      <p class="gc-contact-line">
+        <a href="mailto:{{ p.contact_email }}" class="email">{{ p.contact_email }}</a>
+      </p>
+      <p class="gc-contact-line muted">{{ p.contact_location }}</p>
+      {% if p.contact_github %}
+      <p class="contact-line">
+        GitHub: <a href="{{ p.contact_github }}" rel="me noopener" target="_blank">{{ p.contact_github }}</a>
+      </p>
+      {% endif %}
+    </div>
+    <p class="footer-note muted">{{ p.footer_note | safe }}</p>
+  </section>
+{% endblock %}
