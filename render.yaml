@@ -8,3 +8,6 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn portfolio_app:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /healthz
+    # Push to main -> Render auto-deploys. Toggle also lives in
+    # Dashboard > km-portfolio > Settings > Build & Deploy > Auto-Deploy.
+    autoDeploy: true
