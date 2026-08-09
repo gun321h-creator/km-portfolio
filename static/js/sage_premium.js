@@ -67,11 +67,11 @@
     if (!targets.length) return;
 
     await loadScript(
-      'https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.umd.js',
+      '/static/vendor/countUp.umd.js',
       'CountUp'
     );
 
-    if (!window.CountUp) return; // CDN failed — degrade silently
+    if (!window.CountUp) return; // vendored script failed — degrade silently
 
     targets.forEach(el => {
       const raw = el.getAttribute('data-countup');
@@ -231,7 +231,7 @@
     if (!eligible.length) return;
 
     await loadScript(
-      'https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.umd.js',
+      '/static/vendor/countUp.umd.js',
       'CountUp'
     );
 

@@ -4,7 +4,7 @@
  * Polish Pack 5-in-1 — shared utility layer for the IC Markets dashboard.
  *
  * Provides:
- *   1. Lazy CDN loaders (NumberFlow vanilla, Toastify-JS, canvas-confetti)
+ *   1. Lazy VENDORED loaders (NumberFlow, Toastify-JS, canvas-confetti)
  *   2. Auto-promote [data-mm-flow] elements to <number-flow> web components
  *   3. Shimmer auto-apply on [data-loading="true"] / [aria-busy="true"]
  *   4. Pulse-halo auto-apply on live indicator dots
@@ -12,10 +12,13 @@
  *   6. 3-state theme toggle wiring (Sage / Linear / Terminal)
  *      — defers to terminal_mode.js if window.MMThemeToggle.bind exists
  *
- * CDN versions:
- *   @number-flow/vanilla  0.5.4  https://cdn.jsdelivr.net/npm/@number-flow/vanilla@0.5.4/dist/index.min.js
- *   toastify-js           1.12.0 https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js
- *   canvas-confetti       1.9.3  https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js
+ * VENDORED versions (static/vendor/ — no CDN; the VPS cannot reach one, and
+ * zone rule 3 requires vendoring. Fixed 2026-08-05: the old CDN URLs pointed at
+ * "@number-flow/vanilla", a package that does not exist on npm, so NumberFlow
+ * had never once loaded — it failed 404 and degraded silently on every page):
+ *   number-flow      0.6.2  static/vendor/number-flow.iife.min.js (esbuild IIFE bundle)
+ *   toastify-js      1.12.0 static/vendor/toastify/toastify.{js,css}
+ *   canvas-confetti  1.9.3  static/vendor/confetti.browser.js
  *
  * Browser support: ES2020+, Chrome 90+, Firefox 90+, Safari 15+.
  * Reduced-motion: number-flow auto-promotion and confetti are skipped; toasts remain.
@@ -31,10 +34,12 @@
      CONSTANTS
   ───────────────────────────────────────────────────────────── */
 
-  const CDN_NUMBER_FLOW = 'https://cdn.jsdelivr.net/npm/@number-flow/vanilla@0.5.4/dist/index.min.js';
-  const CDN_TOASTIFY_JS  = 'https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js';
-  const CDN_TOASTIFY_CSS = 'https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.css';
-  const CDN_CONFETTI     = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+  /* Vendored asset paths — served by this app, so they work on the VPS (which
+     has no route to a CDN) and satisfy zone rule 3 "charts/libs vendored". */
+  const VENDOR_NUMBER_FLOW = '/static/vendor/number-flow.iife.min.js';
+  const VENDOR_TOASTIFY_JS  = '/static/vendor/toastify/toastify.js';
+  const VENDOR_TOASTIFY_CSS = '/static/vendor/toastify/toastify.css';
+  const VENDOR_CONFETTI     = '/static/vendor/confetti.browser.js';
 
   const LS_KEY = 'mmTheme';
 
@@ -63,7 +68,7 @@
     return new Promise((resolve) => {
       if (globalCheck && window[globalCheck]) { resolve(); return; }
 
-      const existingId = 'pp-cdn-' + globalCheck;
+      const existingId = 'pp-vendor-' + globalCheck;
       if (document.getElementById(existingId)) {
         /* Already injected — poll for it to define the global */
         let attempts = 0;
@@ -83,7 +88,7 @@
       el.defer = true;
       el.onload  = () => { el.dataset.loaded = '1'; resolve(); };
       el.onerror = () => {
-        console.warn('[polish_pack] CDN load failed:', src, '— degrading gracefully');
+        console.warn('[polish_pack] vendored script failed to load:', src, '— degrading gracefully');
         resolve(); /* non-fatal */
       };
       document.head.appendChild(el);
@@ -104,7 +109,7 @@
 
 
   /* ─────────────────────────────────────────────────────────────
-     1.  LAZY CDN LOADERS
+     1.  LAZY VENDORED LOADERS
          (called on demand from MM.toast / initNumberFlow / MM.celebrate)
   ───────────────────────────────────────────────────────────── */
 
@@ -112,17 +117,22 @@
   let _toastifyLoadPromise = null;
   function ensureToastify() {
     if (_toastifyLoadPromise) return _toastifyLoadPromise;
-    loadCSS(CDN_TOASTIFY_CSS);
-    _toastifyLoadPromise = loadScript(CDN_TOASTIFY_JS, 'Toastify');
+    loadCSS(VENDOR_TOASTIFY_CSS);
+    _toastifyLoadPromise = loadScript(VENDOR_TOASTIFY_JS, 'Toastify');
     return _toastifyLoadPromise;
   }
 
-  /* NumberFlow — loaded during DOMContentLoaded if [data-mm-flow] found */
+  /* NumberFlow — loaded during DOMContentLoaded if [data-mm-flow] found.
+     npm ships number-flow as ESM/CJS only, and its ESM entry imports the bare
+     specifier "esm-env", which a browser cannot resolve without an import map.
+     The vendored file is therefore an esbuild IIFE bundle (see vendor/README),
+     loadable with a plain <script>. It registers <number-flow> on execution and
+     exports no global, so readiness is checked via the custom-element registry
+     rather than a window key. */
   let _numberFlowLoadPromise = null;
   function ensureNumberFlow() {
     if (_numberFlowLoadPromise) return _numberFlowLoadPromise;
-    /* @number-flow/vanilla registers <number-flow> custom element on load */
-    _numberFlowLoadPromise = loadScript(CDN_NUMBER_FLOW, '__numberFlowLoaded__');
+    _numberFlowLoadPromise = loadScript(VENDOR_NUMBER_FLOW, '__numberFlowLoaded__');
     return _numberFlowLoadPromise;
   }
 
@@ -130,7 +140,7 @@
   let _confettiLoadPromise = null;
   function ensureConfetti() {
     if (_confettiLoadPromise) return _confettiLoadPromise;
-    _confettiLoadPromise = loadScript(CDN_CONFETTI, 'confetti');
+    _confettiLoadPromise = loadScript(VENDOR_CONFETTI, 'confetti');
     return _confettiLoadPromise;
   }
 
@@ -164,7 +174,7 @@
 
     /* Verify the element was registered */
     if (!customElements || !customElements.get('number-flow')) {
-      /* CDN failed — elements keep their plain-text content */
+      /* Vendored module failed to load — elements keep their plain-text content */
       console.warn('[polish_pack] number-flow custom element not registered — degrading to plain text');
       return;
     }
@@ -180,18 +190,20 @@
       const num     = parseFloat(rawNum.replace(/[^0-9.\-]/g, ''));
       if (isNaN(num)) return;
 
+      /* Keep the server-rendered nodes so they can be restored if the swap does
+         not produce a visible number (see the verification below). Cloned nodes
+         rather than an innerHTML string — nothing is ever re-parsed as markup. */
+      const originalNodes = Array.prototype.map.call(
+        el.childNodes, (n) => n.cloneNode(true));
+
       try {
-        /* Create the <number-flow> element */
         const nf = document.createElement('number-flow');
-        nf.setAttribute('value', String(num));
+        /* Copy class names so .mm-num-flow typography applies */
+        nf.classList.add('mm-num-flow');
 
         /* Preserve prefix/suffix from data attributes if present */
         const prefix = el.dataset.mmFlowPrefix || '';
         const suffix = el.dataset.mmFlowSuffix || '';
-        if (prefix) nf.setAttribute('format', JSON.stringify({ style: 'decimal' }));
-
-        /* Copy class names so .mm-num-flow typography applies */
-        nf.classList.add('mm-num-flow');
 
         /* Wrap: replace element content with the web component */
         if (prefix || suffix) {
@@ -206,8 +218,22 @@
           el.innerHTML = '';
           el.appendChild(nf);
         }
+
+        /* number-flow renders on .update(), NOT from a value attribute — and it
+           must already be connected so the custom element has upgraded. Calling
+           it after append is what actually paints (and animates) the digits. */
+        nf.update(num);
+
+        /* A registered-but-broken component would leave an empty, zero-sized
+           box where a number used to be. Restoring the original markup keeps a
+           library regression from silently deleting data from the page. */
+        if (!nf.getBoundingClientRect().width) {
+          el.replaceChildren.apply(el, originalNodes);
+          console.warn('[polish_pack] number-flow rendered nothing — restored plain text on', el);
+        }
       } catch (e) {
-        /* Degrade silently — element keeps its server-rendered value */
+        /* Degrade to the server-rendered value rather than leaving a blank */
+        el.replaceChildren.apply(el, originalNodes);
         console.warn('[polish_pack] number-flow init error on element:', el, e);
       }
     });
@@ -333,7 +359,7 @@
 
     await ensureConfetti();
     if (!window.confetti) {
-      /* CDN failed — skip silently */
+      /* vendored confetti failed to load — skip silently */
       return;
     }
 
@@ -514,7 +540,7 @@
     applyPulseHalos();
 
     /* Pre-load Toastify CSS early (avoids FOUC on first toast) */
-    loadCSS(CDN_TOASTIFY_CSS);
+    loadCSS(VENDOR_TOASTIFY_CSS);
   }
 
   if (document.readyState === 'loading') {

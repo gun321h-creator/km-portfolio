@@ -67,9 +67,14 @@ _PROJECT_FILENAMES = (
 # (1200x800) captured via scripts/capture_office_screenshot.py; the
 # original dashboard.svg is preserved on disk as a fallback.
 # v1.6 Wave B-quant: real equity-curve PNG (rendered by
-# scripts/render_quant_equity_chart.py from the D1 Donchian PF 2.822
-# CANDIDATE trade CSV). Replaces the v1.3 hand-drawn SVG placeholder;
-# the .svg file is retained on disk for reference but no longer linked.
+# scripts/render_quant_equity_chart.py from a daily breakout candidate's
+# trade CSV). Replaces the v1.3 hand-drawn SVG placeholder; the .svg file is
+# retained on disk for reference but no longer linked.
+# 2026-08-09: the performance figure that used to sit in this comment was
+# removed. It was a research-stage number that never went through the cost
+# audit, and this file is published -- an unaudited figure in public source
+# undercuts the retraction the site now carries. Do not reinstate a headline
+# statistic here; the provenance is what this comment is for.
 _PROJECT_SVGS = (
     # 2026-07-17: the three illustration PNGs were never shipped in the
     # PUBLIC build (no static/projects/ dir) -- every page load logged three
@@ -233,6 +238,8 @@ _VALID_PAGE_IDS = (
     "internship",
     # v1.6: PA-specific audience route (NOT in tabs bar; share-only).
     "pa",
+    # v1.7: null registry (NOT in tabs bar; reachable from home links).
+    "nulls",
 )
 
 
@@ -304,6 +311,9 @@ def slice_for_view_source(doc: dict[str, Any], page_id: str) -> str:
         return json.dumps({"blog": doc.get("blog", {})}, indent=2)
     if page_id == "reading":
         return json.dumps({"reading": doc.get("reading", {})}, indent=2)
+    # v1.7: null-registry slice = the registry dict (protocol + families).
+    if page_id == "nulls":
+        return json.dumps({"null_registry": doc.get("null_registry", {})}, indent=2)
     if page_id == "internship":
         return json.dumps({"internship": doc.get("internship", {})}, indent=2)
     # v1.6: PA audience slice = the single audience dict.

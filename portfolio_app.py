@@ -206,6 +206,10 @@ _PAGE_ROUTES = {
     "/pa": "pa",
     "/blog": "blog",
     "/reading": "reading",
+    # v1.7: the null registry — every edge family the research gate rejected.
+    # page_id stays single-word so the `portfolio_{page_id}.html` fallback in
+    # _render_portfolio_page resolves (a hyphen would break it).
+    "/null-registry": "nulls",
 }
 
 

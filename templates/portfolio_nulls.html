@@ -1,0 +1,144 @@
+{% extends "portfolio_base.html" %}
+{% block main %}
+{% if p.null_registry %}
+{% set reg = p.null_registry %}
+<section id="nulls-hero" data-tab="nulls">
+  <h2 class="filesep">Null registry <span class="fs-crumb">ทะเบียนผลลบ</span></h2>
+  <h1 class="proj-title">{{ reg.headline }}</h1>
+  <p class="proj-tagline">{{ reg.tagline }}</p>
+
+  {% if reg.status_notice %}
+  <p class="nulls-notice"><strong>{{ reg.status_notice.label }}</strong>
+    {{ reg.status_notice.body }}</p>
+  {% endif %}
+
+  <p class="gc-page-lede">{{ reg.lede }}
+    {% if reg.lede_th %}<span class="th">{{ reg.lede_th }}</span>{% endif %}</p>
+</section>
+
+{% if reg.protocol %}
+<section id="nulls-protocol" data-tab="nulls">
+  <h2 class="filesep">The gate <span class="fs-crumb">เกณฑ์ตัดสิน</span></h2>
+  <p class="gc-page-lede">{{ reg.protocol.intro }}</p>
+  <ul class="nulls-protocol-list">
+    {% for rule in reg.protocol.rules %}
+    <li><span class="nulls-rule-name">{{ rule.name }}</span>
+      <span class="nulls-rule-body">{{ rule.body }}</span></li>
+    {% endfor %}
+  </ul>
+  {% if reg.protocol.note %}<p class="nulls-note">{{ reg.protocol.note }}</p>{% endif %}
+</section>
+{% endif %}
+
+{% if reg.instrument %}
+{% set inst = reg.instrument %}
+<section id="nulls-instrument" data-tab="nulls">
+  <h2 class="filesep">Instrument control <span class="fs-crumb">พิสูจน์ว่าเครื่องมือวัดเป็น</span></h2>
+  <h1 class="proj-title">{{ inst.headline }}</h1>
+  <p class="gc-page-lede">{{ inst.intro }}</p>
+  <div class="nulls-table-wrap">
+    <table class="tv-tbl is-compact">
+      <thead>
+        <tr>
+          <th scope="col">True annualised Sharpe</th>
+          <th scope="col" class="num">Passed ({{ inst.long_label }})</th>
+          <th scope="col" class="num">Passed ({{ inst.short_label }})</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in inst.rows %}
+        <tr>
+          <td><span class="ticker">{{ row.true_ann_sr }}</span></td>
+          <td class="num">{{ row.long_sample }}</td>
+          <td class="num">{{ row.short_sample }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <ul class="nulls-limits-list">
+    {% for f in inst.findings %}
+    <li>{{ f }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section id="nulls-table" data-tab="nulls">
+  <h2 class="filesep">Rejected families <span class="fs-crumb">ตระกูลที่ไม่ผ่าน</span></h2>
+  <div class="nulls-table-wrap">
+    <table class="tv-tbl is-compact">
+      <thead>
+        <tr>
+          <th scope="col">Family</th>
+          <th scope="col">Scope</th>
+          <th scope="col">Closed</th>
+          <th scope="col" class="num">z0 SR_LB</th>
+          <th scope="col">Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fam in reg.families %}
+        <tr>
+          <td><span class="ticker">{{ fam.name }}</span>
+            {% if fam.lesson %}<span class="muted nulls-lesson">{{ fam.lesson }}</span>{% endif %}
+          </td>
+          <td class="muted">{{ fam.asset_scope }}</td>
+          <td class="muted">{{ fam.closed_date or "--" }}</td>
+          <td class="num">{{ fam.z0_display or "--" }}</td>
+          <td><span class="pill {{ 'bad' if fam.verdict == 'NULL' else 'warn' }}">{{ fam.verdict }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="nulls-note">{{ reg.table_note }}</p>
+</section>
+
+{% if reg.surviving %}
+<section id="nulls-surviving" data-tab="nulls">
+  <h2 class="filesep">What survived <span class="fs-crumb">ตระกูลที่ไม่ถูกปฏิเสธ</span></h2>
+  <p class="gc-page-lede">{{ reg.surviving_intro }}</p>
+  <ul class="nulls-blocked-list">
+    {% for s in reg.surviving %}
+    <li><span class="nulls-rule-name">{{ s.name }}</span>
+      <span class="nulls-rule-body">{{ s.status }}</span></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if reg.blocked_lanes %}
+<section id="nulls-blocked" data-tab="nulls">
+  <h2 class="filesep">Untested, and why <span class="fs-crumb">เลนที่ทดสอบไม่ได้</span></h2>
+  <p class="gc-page-lede">{{ reg.blocked_intro }}</p>
+  <ul class="nulls-blocked-list">
+    {% for lane in reg.blocked_lanes %}
+    <li><span class="nulls-rule-name">{{ lane.name }}</span>
+      <span class="nulls-rule-body">{{ lane.reason }}</span></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if reg.limits %}
+<section id="nulls-limits" data-tab="nulls">
+  <h2 class="filesep">What this does not show <span class="fs-crumb">สิ่งที่หน้านี้ไม่ได้พิสูจน์</span></h2>
+  <ul class="nulls-limits-list">
+    {% for lim in reg.limits %}
+    <li>{{ lim }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if reg.falsification %}
+<section id="nulls-falsification" data-tab="nulls">
+  <h2 class="filesep">How to prove this page wrong <span class="fs-crumb">เงื่อนไขล้มหน้านี้</span></h2>
+  <p class="gc-page-lede">{{ reg.falsification }}</p>
+</section>
+{% endif %}
+{% else %}
+<section><p>Null registry not configured.</p></section>
+{% endif %}
+{% endblock %}

@@ -454,6 +454,20 @@
     "tagline": "Short writeups on what I am learning -- updated occasionally.",
     "posts": [
       {
+        "id": "a-cost-model-that-cannot-fail",
+        "date": "2026-08-09",
+        "title": "A cost model that cannot change the answer",
+        "teaser": "Sharpe is scale-invariant. Multiply every trade by a near-constant factor and the ratio does not move -- so a cost model built that way can look conservative for a year and be inert the whole time.",
+        "body": "Here is an error worth naming, because it hid in my own pipeline for a year and it is invisible by construction. Suppose you charge costs by keeping a fraction of each trade's gross return -- net = gross * k, with k somewhere near 0.92 depending on conditions. It reads as conservative. It cannot work. If k barely varies, multiplying every observation by it is a scale transform: mean and standard deviation move together and the ratio between them does not move at all. Sharpe is scale-invariant, so no amount of tightening that percentage will change the verdict. You can set the haircut anywhere you like and the answer is the same, which should have been the tell. Costs have to be charged per position, in the units the position actually pays, at the moment it pays them -- and they have to increase the magnitude of a loss, not reduce it. That second point is its own trap: a haircut written as net = gross * k quietly makes losing trades smaller, refunding the worst outcomes, and if most of your trades lose then the sign error flatters you exactly where it hurts most. I found both faults by auditing a headline of my own against a pass/fail bar written down before I looked. The corrected figure fell under my own gate and the result was withdrawn. Two adversarial review rounds then attacked the audit, and the second attacked the first. This was not a discovery about markets. It was a discovery about my own measurement, which is the more common kind and the one nobody publishes."
+      },
+      {
+        "id": "the-file-drawer-is-the-finding",
+        "date": "2026-08-09",
+        "title": "The file drawer is the finding",
+        "teaser": "Hou, Xue and Zhang found 65% of published anomalies fail a t>1.96 hurdle. Franco and co-authors found 10 of 48 null results reach print. The nulls are the part nobody ships.",
+        "body": "Over fifteen months I ran 81 strategy studies in roughly twenty families, each scored by a rule fixed before the test. Most were rejected. Publishing that is unusual in practice but it is exactly what the finance literature has been asking for. Harvey, Liu and Zhu showed that with hundreds of published factors a t-statistic of 2.0 means little and the hurdle sits nearer 3.0. Hou, Xue and Zhang found 65% of 452 anomalies fail even at 1.96. Franco, Malhotra and Simonovits measured the file drawer directly: 10 of 48 null results reached print against 56 of 91 strong ones. The Journal of Corporate Finance gave a 2025 special issue to statistically non-significant results for the same reason. Bailey and Lopez de Prado make the point sharpest -- the deflated Sharpe haircut is a function of how many configurations you tried, so a Sharpe is uninterpretable unless the trial count is known. A registry of rejections is how that denominator becomes honest. The counter-case deserves airtime too: Jensen, Kelly and Pedersen argue most factors do replicate under a Bayesian hierarchy, and I cannot adjudicate that from one lab. What I can do is publish my denominator."
+      },
+      {
         "id": "psr-dsr-why-cagr-lies",
         "date": "2026-05-22",
         "title": "PSR / DSR -- why CAGR lies under leverage",
@@ -744,5 +758,1114 @@
       "caption": "Print or screenshot this page? Scan to reach my live presence -- socials, latest videos, and this portfolio in one tap.",
       "url_label": "gunvmi.vercel.app"
     }
+  },
+  "null_registry": {
+    "headline": "A registry of everything that did not work",
+    "tagline": "81 strategy studies, scored by one decision rule that was fixed before each test and never adjusted after it. 71 rejected, 4 inconclusive, 6 blocked. A further 8 lanes never became studies at all.",
+    "status_notice": {
+      "label": "Draft. Partially validated.",
+      "body": "The statistics layer has now passed a positive control and the result is below -- it does not manufacture edges from noise, but it is far less sensitive than its threshold suggests. The engine layer has not been controlled: fills, cost accounting and lookahead are not covered, and an audit already found three defects there. Figures in the table are transcribed from an internal research log rather than regenerated from source. Treat every row as provisional."
+    },
+    "lede": "This is the output log of a measuring instrument, not a list of regrets. Each row was scored by the same gate, and the gate did not move between rows. An apparatus that never returns a null is an apparatus that cannot measure anything, so the rejections are the evidence that the gate has discriminating power.",
+    "lede_th": "หน้านี้คือบันทึกผลของเครื่องมือวัด ไม่ใช่รายการความล้มเหลว ทุกแถวถูกตัดสินด้วยเกณฑ์เดียวกันที่ไม่เคยขยับ",
+    "protocol": {
+      "intro": "Every family below was scored by the same decision rule, committed to before that family was tested.",
+      "rules": [
+        {
+          "name": "Zero-cost lower bound",
+          "body": "A block-bootstrap 5th-percentile Sharpe taken before any cost model is applied. Below 1.00 there is no edge for costs to erode, and no filter, window or overlay recovers it."
+        },
+        {
+          "name": "Probabilistic Sharpe",
+          "body": "PSR at or above 0.95, which prices skew and kurtosis instead of assuming returns are normal."
+        },
+        {
+          "name": "Deflated Sharpe",
+          "body": "DSR at or above 0.95 with the number of trials declared, so a best-of-N search pays a multiple-testing haircut."
+        },
+        {
+          "name": "Drawdown cap",
+          "body": "Bootstrapped 95th-percentile drawdown must sit inside a cap written down before the test, at the sizing chosen."
+        },
+        {
+          "name": "Costs first",
+          "body": "Measured spread and slippage enter before any statistic is computed, never as an afterwards adjustment."
+        }
+      ],
+      "note": "Selection is by Sharpe lower bound, never by CAGR. Position sizing scales return and drawdown together, so ranking by CAGR selects the most leveraged version of an undetermined edge."
+    },
+    "instrument": {
+      "headline": "Does the gate actually measure?",
+      "intro": "A registry of rejections is only evidence if the instrument that produced them can discriminate. A gate that rejects everything writes the same table as a gate that works. So the gate was given synthetic return series whose true Sharpe was fixed by construction, and asked to judge them. Each cell is the share of 100 independent draws that cleared all three thresholds.",
+      "rows": [
+        {
+          "true_ann_sr": "0.0",
+          "long_sample": "0%",
+          "short_sample": "0%"
+        },
+        {
+          "true_ann_sr": "1.0",
+          "long_sample": "4%",
+          "short_sample": "0%"
+        },
+        {
+          "true_ann_sr": "1.5",
+          "long_sample": "14%",
+          "short_sample": "1%"
+        },
+        {
+          "true_ann_sr": "2.0",
+          "long_sample": "43%",
+          "short_sample": "5%"
+        },
+        {
+          "true_ann_sr": "2.5",
+          "long_sample": "90%",
+          "short_sample": "8%"
+        },
+        {
+          "true_ann_sr": "3.0",
+          "long_sample": "99%",
+          "short_sample": "19%"
+        }
+      ],
+      "long_label": "~4 years daily",
+      "short_label": "~1 year daily",
+      "findings": [
+        "Specificity holds. On pure noise -- a true Sharpe of exactly zero -- the gate passed 0% of draws. It does not invent edges, so the rejections in the table below are not an artefact of a gate firing at random.",
+        "Sensitivity is much weaker than the threshold implies. The gate needs a true annualised Sharpe of about 2.5 before it passes more often than not on four years of daily data. At a true Sharpe of 1.5 -- a strategy most desks would run -- it passes 14% of the time. On one year of data it does not reach a coin flip even at a true Sharpe of 3.0.",
+        "So most rows below sit under the detection floor. They record that no effect large enough for this instrument to see was present at that sample size. They do not establish that no effect exists, and the summary phrase I had been using internally -- that the tractable search space was exhausted -- claims more than this evidence supports.",
+        "Scope: this controls the statistics layer only -- the lower-bound Sharpe, PSR and deflated-Sharpe estimators and their thresholds, imported unchanged. It does not control the backtest engine. The defects found by audit lived in the engine's cost path, and nothing in this control would have caught them."
+      ]
+    },
+    "families": [
+      {
+        "id": "opening-range-breakout",
+        "name": "Opening-range breakout (ORB) and index variants",
+        "category": "intraday-microstructure",
+        "closed_date": null,
+        "asset_scope": "Gold, BTC -- M1-M5",
+        "z0_sr_lb": null,
+        "z0_display": "<0.46",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Breakout entries showed no measurable edge even with costs set to zero, so no amount of cost, filter or exit tuning could have rescued the family."
+      },
+      {
+        "id": "srs-opening-range-index",
+        "name": "Opening-range breakout on a tech index (minute bars)",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-08",
+        "asset_scope": "NAS100 -- M1, 3 years (~1.02M bars)",
+        "z0_sr_lb": 0.6,
+        "z0_display": "z0 SR_LB +0.60 (net -0.26)",
+        "variants_tested": 24,
+        "verdict": "NULL",
+        "lesson": "A full 24-cell parameter sweep failed uniformly and the short leg was deeply negative while the long leg was positive, which identifies the apparent profit as index beta rather than a breakout edge."
+      },
+      {
+        "id": "intraday-sweep-codename-a",
+        "name": "Intraday sweep-continuation composite (internal codename)",
+        "category": "intraday-microstructure",
+        "closed_date": null,
+        "asset_scope": "Intraday FX/metals/crypto",
+        "z0_sr_lb": null,
+        "z0_display": "<0.46",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "One of the original intraday post-mortem families: every zero-cost Sharpe lower bound sat far below the go/no-go gate, establishing the family ceiling rather than a single bad recipe."
+      },
+      {
+        "id": "draw-on-liquidity",
+        "name": "Draw-on-liquidity (NY session liquidity draw), V1+V2",
+        "category": "market-structure-smc",
+        "closed_date": "2026-06",
+        "asset_scope": "Intraday, NY session",
+        "z0_sr_lb": null,
+        "z0_display": "<0.46",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "A structural V2 rebuild of the same premise counts as the same family attempt, so re-specifying the entry trigger did not produce a new hypothesis."
+      },
+      {
+        "id": "crt-amd-cycle",
+        "name": "Candle-range-theory / accumulation-manipulation-distribution cycle",
+        "category": "market-structure-smc",
+        "closed_date": "2026-06",
+        "asset_scope": "Intraday",
+        "z0_sr_lb": null,
+        "z0_display": "<0.46",
+        "variants_tested": 3,
+        "verdict": "NULL",
+        "lesson": "Adding a higher-timeframe trend alignment filter to a failing reversal rule changed the sample composition but never created positive expectancy."
+      },
+      {
+        "id": "ny-am-continuation",
+        "name": "New York AM session continuation",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-06",
+        "asset_scope": "Intraday",
+        "z0_sr_lb": null,
+        "z0_display": "<0.46",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Session-of-day conditioning is an overlay, not an edge type, and overlays inherit the null result of the underlying entry rule."
+      },
+      {
+        "id": "roughness-scalp",
+        "name": "Short-horizon roughness / fractality scalp",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-06",
+        "asset_scope": "BTC -- intraday",
+        "z0_sr_lb": null,
+        "z0_display": "<0.46",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "A statistically exotic signal built from the same OHLCV series carries no more directional information than the simple indicators already ruled out."
+      },
+      {
+        "id": "smc-fib71-fx",
+        "name": "Smart-money fib-71 retracement with fair-value-gap primitive",
+        "category": "market-structure-smc",
+        "closed_date": "2026-06",
+        "asset_scope": "FX majors/crosses + gold -- M15",
+        "z0_sr_lb": 0.67,
+        "z0_display": "0.67 in-sample, collapses out-of-sample",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "A positive but sub-gate zero-cost reading must always be taken out-of-sample, because in-sample positivity can come from overfitting rather than a thin sample, and moving to a new asset class or a new pattern primitive did not change the root failure."
+      },
+      {
+        "id": "inverse-fvg-reversal",
+        "name": "Inverse fair-value-gap reversal",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "Gold + BTC -- M15",
+        "z0_sr_lb": -2.41,
+        "z0_display": "-2.41 (gold) / -5.15 (BTC)",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Some published patterns are anti-edges rather than merely edgeless: both directions on both instruments were deeply negative before any cost was charged, so the rule reliably picks the wrong side."
+      },
+      {
+        "id": "no-wick-imbalance",
+        "name": "No-wick single-candle imbalance (enter vs wait-for-wick)",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "FX majors -- M15, 1 year",
+        "z0_sr_lb": -0.56,
+        "z0_display": "gross Sharpe -0.56 (win 49.2%)",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "A random-candle control beat the selected pattern, proving the selection criterion had negative value, and the widely quoted 70% fill rate was an artifact of having no baseline since price revisits almost every bar."
+      },
+      {
+        "id": "session-sweep-cascade",
+        "name": "Multi-session sweep cascade (bias, sweep, change-of-character, gap entry, runner)",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "Gold -- M15 + M5, 259 days",
+        "z0_sr_lb": -1.1,
+        "z0_display": "best -1.10, all 38 cells negative (-1.10 to -5.24)",
+        "variants_tested": 38,
+        "verdict": "NULL",
+        "lesson": "Stacking five confluence filters starves the sample until the best cell has too few trades to be decisive, and every cell was already gross-negative, so there was no positive path left to tune toward."
+      },
+      {
+        "id": "h1-fvg-m5-orderblock",
+        "name": "H1 fair-value-gap bias with M5 change-of-character and order-block limit entry",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "BTC -- M5, ~930 days",
+        "z0_sr_lb": -1.99,
+        "z0_display": "run #1 +3.89 (artifact) -> -1.99 after fix; all 8 cells -1.99 to -5.05",
+        "variants_tested": 8,
+        "verdict": "NULL",
+        "lesson": "An apparent pass came entirely from allowing take-profit to be booked on the same bar as the fill, and patching that inverted best cell into worst cell -- an A/B rerun caught what both a code read and a bias audit had passed."
+      },
+      {
+        "id": "rectangle-sweep-fade",
+        "name": "Rectangle sweep-fade setup, V1+V2",
+        "category": "market-structure-smc",
+        "closed_date": "2026-06",
+        "asset_scope": "Gold, BTC -- M1",
+        "z0_sr_lb": -0.27,
+        "z0_display": "gold -0.27 / BTC 0.64 (out-of-sample -3.6)",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "Advertised 9:1 and 17:1 payoff ratios were cherry-picked, and a high reward-to-risk ratio does not compensate for a low hit rate when the entry itself carries no directional information."
+      },
+      {
+        "id": "equal-highs-lows-fade",
+        "name": "Equal-highs / equal-lows sweep-fade",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "BTC -- M15, 362 days",
+        "z0_sr_lb": -3.15,
+        "z0_display": "-3.15 (fixed 1.5R) / -3.46 (floating target)",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "A discretionary rule remembered as roughly 75% accurate measured at 38.1% -- the recall gap was entirely the losing breakouts the fade rule misclassifies -- and a negative result cannot be faked by lookahead, which only inflates upward."
+      },
+      {
+        "id": "single-candle-order-block",
+        "name": "Single 4H candle order-block retrace",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "BTC -- M5, ~930 days",
+        "z0_sr_lb": -5.7,
+        "z0_display": "best -5.70, all 8 measurable cells -5.70 to -6.81",
+        "variants_tested": 8,
+        "verdict": "NULL",
+        "lesson": "Measured hit rate of 6-14% against a 33% breakeven survived even after removing every same-bar stop-out, so the verdict was robust to the most pessimistic fill assumption in the engine."
+      },
+      {
+        "id": "session-range-sweep-inverse-fvg",
+        "name": "Opening-hour range, key-level sweep, inverse fair-value-gap reversal",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "BTC + gold -- M5, ~6-8 months",
+        "z0_sr_lb": -2.29,
+        "z0_display": "best -2.29 (BTC) / -3.09 (gold), all 16 cells negative",
+        "variants_tested": 16,
+        "verdict": "NULL",
+        "lesson": "Gross breakeven on one instrument and gross-negative on the other means the trading cost is not the binding constraint -- the signal never generated surplus to pay it with."
+      },
+      {
+        "id": "session-sweep-fib-fade",
+        "name": "Session-range liquidity sweep with fib-retracement fade",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "BTC -- M5, ~930 days",
+        "z0_sr_lb": -0.23,
+        "z0_display": "best -0.23, all 48 cells negative (-0.23 to -2.36)",
+        "variants_tested": 48,
+        "verdict": "NULL",
+        "lesson": "The best cell looked near-breakeven on raw profit factor but failed the block-bootstrap lower bound because gains were concentrated, and the tight fib entry shrank the risk distance so proportional costs consumed the remainder."
+      },
+      {
+        "id": "gold-m1-tournament",
+        "name": "Gold M1 ten-strategy tournament (mean-reversion family)",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-06",
+        "asset_scope": "Gold -- M1",
+        "z0_sr_lb": 0.17,
+        "z0_display": "max 0.17",
+        "variants_tested": 10,
+        "verdict": "NULL",
+        "lesson": "Running ten distinct recipes at once closed an entire family (oscillator, band and volume-weighted mean reversion) in one pass instead of one disappointment at a time."
+      },
+      {
+        "id": "gold-daily-mean-reversion",
+        "name": "Gold daily swing mean-reversion",
+        "category": "classical-indicator",
+        "closed_date": "2026-06",
+        "asset_scope": "Gold -- D1, 10 years",
+        "z0_sr_lb": null,
+        "z0_display": "negative on every angle (0/5)",
+        "variants_tested": 5,
+        "verdict": "NULL",
+        "lesson": "Widening the stop lifted the win rate to 66-71% while shrinking reward proportionally, which is the cleanest demonstration that win rate alone is not evidence of an edge."
+      },
+      {
+        "id": "gold-m1-three-angle",
+        "name": "Gold M1 three-angle intraday composite",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-06",
+        "asset_scope": "Gold -- M1/M5",
+        "z0_sr_lb": -0.79,
+        "z0_display": "-0.79 out-of-sample",
+        "variants_tested": 3,
+        "verdict": "NULL",
+        "lesson": "A point-estimate Sharpe near 2.5 measured on 52 days evaporated when ported to a 259-day sample, which is why short-window point estimates are not admissible evidence."
+      },
+      {
+        "id": "pairs-cointegration",
+        "name": "Cross-asset pairs cointegration, V1+V2",
+        "category": "other",
+        "closed_date": "2026-06",
+        "asset_scope": "17 instruments -- D1",
+        "z0_sr_lb": null,
+        "z0_display": "V1 above 1.0 = R-explosion artifact; V2 fragile",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "The single pair that mechanically passed the gate had almost no stop-outs, an implausibly inflated profit factor and lost the pass when one sizing knob moved, so gate-passing is not the same as robustness."
+      },
+      {
+        "id": "cross-sectional-reversal",
+        "name": "Cross-sectional reversal across mixed asset classes",
+        "category": "cross-sectional-factor",
+        "closed_date": "2026-06",
+        "asset_scope": "17 instruments -- D1",
+        "z0_sr_lb": -0.73,
+        "z0_display": "-0.73",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "No edge existed even gross of costs, so the failure is in the ranking hypothesis rather than in execution or fees."
+      },
+      {
+        "id": "lead-lag-crypto",
+        "name": "Cross-asset lead-lag propagation",
+        "category": "other",
+        "closed_date": "2026-06",
+        "asset_scope": "17 instruments -- D1",
+        "z0_sr_lb": 0.54,
+        "z0_display": "0.54 / 0.40",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "A genuinely weak but real signal still dies once the deflated Sharpe ratio charges for the number of trials that produced it."
+      },
+      {
+        "id": "sleeve-hunt-xsec-momentum-carry",
+        "name": "Cross-sectional momentum / carry / time-series momentum sleeve hunt",
+        "category": "cross-asset-momentum",
+        "closed_date": "2026-06",
+        "asset_scope": "Multi-asset -- D1",
+        "z0_sr_lb": null,
+        "z0_display": "all sleeves rejected",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Volatility targeting, cluster collapse and a multi-market trend book were all rejected together, closing the sleeve concept rather than any single construction."
+      },
+      {
+        "id": "panic-reversion",
+        "name": "Behavioural panic reversion (oscillator extremes)",
+        "category": "sentiment-positioning",
+        "closed_date": "2026-06",
+        "asset_scope": "17 instruments -- D1",
+        "z0_sr_lb": -0.82,
+        "z0_display": "V1 -0.82 / V2 -0.90",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "The more extreme the panic threshold the worse the result, consistent with Nagel (2012), in which panic is a liquidity-provision premium paid by the impatient taker rather than a reversion opportunity."
+      },
+      {
+        "id": "vol-clustering-compression",
+        "name": "Volatility clustering / compression breakout",
+        "category": "volatility-regime",
+        "closed_date": "2026-06",
+        "asset_scope": "17 instruments -- D1",
+        "z0_sr_lb": 0.085,
+        "z0_display": "0.085 (approximately zero)",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Volatility clustering predicts magnitude, not direction, so a compression signal can be statistically real and still carry zero tradeable information."
+      },
+      {
+        "id": "cot-positioning",
+        "name": "Commitment-of-traders positioning follow / fade",
+        "category": "sentiment-positioning",
+        "closed_date": "2026-06",
+        "asset_scope": "11 instruments -- D1",
+        "z0_sr_lb": 0.436,
+        "z0_display": "0.436 (cleanest of the family, still <1.0)",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Following large speculative positioning was strongly negative while fading it was mildly positive, so the directional prior was inverted and the surviving version was still not tradeable net of costs."
+      },
+      {
+        "id": "night-effect",
+        "name": "Overnight / night-session return premium",
+        "category": "persistent-premia",
+        "closed_date": "2026-06",
+        "asset_scope": "17 instruments -- D1",
+        "z0_sr_lb": -0.59,
+        "z0_display": "-0.59 (negative in every cell)",
+        "variants_tested": null,
+        "verdict": "INCONCLUSIVE",
+        "lesson": "The data source synthesises each daily open from the prior close, so there is no true session gap to measure -- this is a data limitation, not a falsified hypothesis."
+      },
+      {
+        "id": "pre-event-drift",
+        "name": "Pre-scheduled-event drift (rate decisions, inflation and payroll prints)",
+        "category": "persistent-premia",
+        "closed_date": "2026-06",
+        "asset_scope": "Equity indices, BTC, gold -- D1",
+        "z0_sr_lb": 0.41,
+        "z0_display": "0.41",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "A timezone handling bug initially produced a false null, so the negative result was only trustworthy after the clock alignment was fixed and the test rerun."
+      },
+      {
+        "id": "vrp-regime-conditioning",
+        "name": "Variance-risk-premium regime conditioning on indices",
+        "category": "volatility-regime",
+        "closed_date": "2026-06",
+        "asset_scope": "Equity indices -- D1",
+        "z0_sr_lb": 0.11,
+        "z0_display": "0.11",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Using an implied-volatility measure as a conditioner produced no directional edge at the daily horizon, confirming that regime filters select conditions but do not create direction."
+      },
+      {
+        "id": "expanded-universe-momentum",
+        "name": "Momentum recipe expanded to 29 markets",
+        "category": "cross-asset-momentum",
+        "closed_date": "2026-06",
+        "asset_scope": "Indices, metals, energy, FX, crypto -- H4",
+        "z0_sr_lb": null,
+        "z0_display": "indices +1.0 to +3.2 in-sample, out-of-sample = beta",
+        "variants_tested": 29,
+        "verdict": "NULL",
+        "lesson": "All three full-sample lenses (zero-cost Sharpe, deflated Sharpe, portfolio delta) were fooled at once and only an out-of-sample long/short decomposition exposed the equity indices as bull-market beta, with short-side lower bounds far below zero."
+      },
+      {
+        "id": "popular-charting-indicators",
+        "name": "Most-popular charting indicators, broad symbol sweep",
+        "category": "classical-indicator",
+        "closed_date": "2026-06",
+        "asset_scope": "BTC + 35 instruments -- D1 (crypto, FX, index, metal, energy)",
+        "z0_sr_lb": null,
+        "z0_display": "105 cells, zero go; best trend variant 1.90 annualised collapses to SR_LB 0.47",
+        "variants_tested": 105,
+        "verdict": "NULL",
+        "lesson": "Every popular indicator is derived from the same price series, so a new indicator is a new formula over old information and cannot be a new edge -- one candidate passed both the probabilistic and deflated Sharpe screens and was only killed by the long/short beta decomposition."
+      },
+      {
+        "id": "trend-indicator-gold-replication",
+        "name": "Faithful replication of a published trend indicator on gold",
+        "category": "classical-indicator",
+        "closed_date": "2026-08",
+        "asset_scope": "Gold -- H1 resampled to 1H/2H/4H/1D, 10 years",
+        "z0_sr_lb": -0.036,
+        "z0_display": "0/11 cells; -0.036 at the advertised timeframe",
+        "variants_tested": 59,
+        "verdict": "NULL",
+        "lesson": "The advertised profit factor was computed with no commission, no slippage and no stop declared, and the charting platform silently truncated the sample to the most recent bull window, so the headline was a zero-cost result on a cherry-picked span; the strategy also lost to simply holding the asset."
+      },
+      {
+        "id": "onchain-directional-btc",
+        "name": "Free on-chain directional signals (valuation ratio, activity, exchange netflow)",
+        "category": "on-chain",
+        "closed_date": "2026-06",
+        "asset_scope": "BTC -- daily, 2017-2026",
+        "z0_sr_lb": 0.49,
+        "z0_display": "best 0.49 (netflow 7d MA), all 20 variants below gate",
+        "variants_tested": 20,
+        "verdict": "NULL",
+        "lesson": "On a single asset with a large secular uptrend every long signal is beta and every short signal loses, so a two-sided statistical edge is nearly impossible to isolate without a cross-section."
+      },
+      {
+        "id": "onchain-cross-sectional",
+        "name": "Cross-sectional on-chain activity, market-neutral",
+        "category": "on-chain",
+        "closed_date": "2026-06",
+        "asset_scope": "9 crypto -- D1, 2017-2026",
+        "z0_sr_lb": 0.112,
+        "z0_display": "best +0.112 (and that was the price-momentum control, not an on-chain signal)",
+        "variants_tested": 60,
+        "verdict": "NULL",
+        "lesson": "Removing market beta by construction did not reveal a hidden signal -- every genuine on-chain feature was negative -- which rules out beta contamination as the explanation for the earlier directional null."
+      },
+      {
+        "id": "paid-onchain-sweep",
+        "name": "Paid on-chain and derivatives-positioning comprehensive sweep",
+        "category": "on-chain",
+        "closed_date": "2026-07",
+        "asset_scope": "4 crypto -- daily, 365 days",
+        "z0_sr_lb": null,
+        "z0_display": "0 survivors; best blind alpha below the noise benchmark for the number of trials",
+        "variants_tested": 7958,
+        "verdict": "NULL",
+        "lesson": "A blind sweep of nearly eight thousand combinations must be scored against the best result luck alone would produce at that trial count, and the one signal with a directional prior turned out to be a recent-regime artifact that vanished when the last four months were removed."
+      },
+      {
+        "id": "prior-day-barrier-coinflip",
+        "name": "Prior-day high/low barrier targeting",
+        "category": "other",
+        "closed_date": "2026-06",
+        "asset_scope": "BTC -- H1",
+        "z0_sr_lb": -0.29,
+        "z0_display": "best -0.29 (range -0.29 to -2.78)",
+        "variants_tested": 12,
+        "verdict": "NULL",
+        "lesson": "Hit probability matched the random-walk prediction to the bucket across tens of thousands of cases, and the apparently attractive raw currency P&L was pure heteroskedastic beta that inverted once returns were expressed in risk units and block-bootstrapped."
+      },
+      {
+        "id": "manipulation-candle-fib-fade",
+        "name": "Manipulation-candle fib fade on an index proxy, V1+V2",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-07",
+        "asset_scope": "Index ETF proxy -- 1-min and 5-min, 251 days",
+        "z0_sr_lb": null,
+        "z0_display": "V1 negative everywhere; V2 passed every gate but was an artifact",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "A configuration passing every quantitative gate with a Sharpe above 10 and a 98% win rate was a phantom-stop artifact -- the stop sat almost six times farther away than the target and was essentially never touched, so returns were being divided by risk the position never actually took; an intraday Sharpe above 2.5 with a win rate above 98% is a red flag, and the target/stop hit rates and distance ratio must be inspected directly."
+      },
+      {
+        "id": "turn-of-month-equity",
+        "name": "Turn-of-the-month pension-flow effect on a broad equity index",
+        "category": "calendar-seasonal",
+        "closed_date": "2026-07",
+        "asset_scope": "US equity index ETF -- D1, 1993-2026",
+        "z0_sr_lb": 0.47,
+        "z0_display": "Sharpe 0.47, below buy-and-hold 0.55",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "The effect was clearly present in the training era and collapsed in the test era with a decade-by-decade decay, which is the post-publication arbitrage decay documented by McLean and Pontiff (2016) and shows that identifying a real forced-flow counterparty is necessary but not sufficient."
+      },
+      {
+        "id": "calendar-seasonal-batch",
+        "name": "Calendar and seasonal anomaly batch (day-of-week, holiday, expiry-week, sell-in-May, year-end)",
+        "category": "calendar-seasonal",
+        "closed_date": "2026-07",
+        "asset_scope": "US equity index ETF -- D1, 1993-2026 (8419 days)",
+        "z0_sr_lb": null,
+        "z0_display": "0/12 survivors, 0/12 beat buy-and-hold Sharpe 0.55",
+        "variants_tested": 12,
+        "verdict": "NULL",
+        "lesson": "Batching an entire published-anomaly lane into one screen with a reproducing anchor validates the screen and closes the lane at once; zero-cost scoring makes the null conservative because costs can only worsen it."
+      },
+      {
+        "id": "ratio-momentum-spread",
+        "name": "Ratio momentum / relative-strength spread, dollar-neutral",
+        "category": "cross-asset-momentum",
+        "closed_date": "2026-07",
+        "asset_scope": "ETH/BTC and silver/gold ratios -- D1",
+        "z0_sr_lb": 0.136,
+        "z0_display": "best +0.136, remaining five cells -0.21 to -0.46",
+        "variants_tested": 6,
+        "verdict": "NULL",
+        "lesson": "The hypothesis that a price ratio escapes bull beta failed because the small profit came entirely from one leg outperforming, and the short-ratio side was negative, so the result was one-sided drift rather than two-sided alpha."
+      },
+      {
+        "id": "betting-against-beta",
+        "name": "Betting-against-beta / cross-sectional low volatility",
+        "category": "volatility-regime",
+        "closed_date": "2026-07",
+        "asset_scope": "17 mixed instruments -- D1 (FX, indices, commodities, crypto)",
+        "z0_sr_lb": -0.512,
+        "z0_display": "best -0.512, all 8 cells -0.51 to -1.73",
+        "variants_tested": 8,
+        "verdict": "NULL",
+        "lesson": "The leverage-constraint anomaly of Frazzini and Pedersen (2014) needs a full equity cross-section with real margin structure to exist; on a seventeen-instrument mixed-class slice the premium inverted, and within-class tests confirmed it was not merely a cross-class artifact."
+      },
+      {
+        "id": "turn-of-month-multi-asset",
+        "name": "Turn-of-month calendar on a multi-asset basket",
+        "category": "calendar-seasonal",
+        "closed_date": "2026-07",
+        "asset_scope": "17 instruments -- D1",
+        "z0_sr_lb": 0.377,
+        "z0_display": "best +0.377 (positive but far below gate)",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Demeaning positions removed the entire apparent premium, exposing it as market beta, and the strongly positive raw P&L and profit factor sat alongside a negative risk-adjusted lower bound -- precisely why the gate is defined on the bootstrapped lower bound and not on P&L."
+      },
+      {
+        "id": "retail-channel-indicator-dump",
+        "name": "Full back-test of one retail education channel's indicator systems",
+        "category": "classical-indicator",
+        "closed_date": "2026-07",
+        "asset_scope": "Three FX majors -- H1 and H4, 2024-2026",
+        "z0_sr_lb": -1.42,
+        "z0_display": "best system -0.64 / +0.42 / -0.73; 76 configurations, zero go",
+        "variants_tested": 76,
+        "verdict": "NULL",
+        "lesson": "Claimed win rates of 73-75% measured at 34-42%, and the one near-positive system was a small-sample single-currency carry artifact that inverted between training and test -- the episode motivated adding a vendor smell-test (published Sharpe, total pips, worst drawdown, sibling products) ahead of any back-test."
+      },
+      {
+        "id": "breakout-support-resistance-retest",
+        "name": "Breakout with support/resistance retest, fixed 1:1 target",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-07",
+        "asset_scope": "FX/index -- 15-min",
+        "z0_sr_lb": null,
+        "z0_display": "not run -- killed by payoff arithmetic",
+        "variants_tested": 0,
+        "verdict": "INCONCLUSIVE",
+        "lesson": "A fixed 1:1 reward-to-risk structure requires better than a 50% hit rate merely to break even before costs and roughly 55% after spread, so the arithmetic alone kills it without spending a back-test."
+      },
+      {
+        "id": "smc-h4-full-cascade",
+        "name": "Full smart-money cascade at H4 (bias, sweep, displacement, gap entry, liquidity target)",
+        "category": "market-structure-smc",
+        "closed_date": "2026-07",
+        "asset_scope": "BTC -- H4, ~2910 days",
+        "z0_sr_lb": null,
+        "z0_display": "not built -- rejected before implementation",
+        "variants_tested": 0,
+        "verdict": "INCONCLUSIVE",
+        "lesson": "Raising the timeframe to reduce cost cannot rescue a family whose zero-cost signal already collapses out-of-sample, because the zero-cost reading contains no cost to remove."
+      },
+      {
+        "id": "multi-timeframe-alignment",
+        "name": "Multi-timeframe alignment stack with 2:1 target",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-07",
+        "asset_scope": "Gold -- M1, 3 years (4218 trades)",
+        "z0_sr_lb": -0.1,
+        "z0_display": "-0.10 (long +0.40 / short -1.40)",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "Fixing a bad exit ratio cannot help when the entry carries no signal: requiring five timeframes to agree is a trend filter, and on a rising metal that is beta, which the long/short split exposed immediately."
+      },
+      {
+        "id": "fx-carry",
+        "name": "FX cross-sectional interest-rate carry",
+        "category": "persistent-premia",
+        "closed_date": "2026-07",
+        "asset_scope": "7 currencies -- D1, 2003-2026",
+        "z0_sr_lb": -0.12,
+        "z0_display": "best -0.12, all 8 cells -0.12 to -0.32",
+        "variants_tested": 8,
+        "verdict": "NULL",
+        "lesson": "Three implementation bugs each moved the answer materially -- omitting the carry accrual itself, an unbounded inverse-volatility weight that caused return explosions, and holiday gap bars producing impossible single-day moves -- so the premium can only be judged after the accounting is right, and even then it was two-sided but statistically flat, consistent with the post-crisis decay documented in the literature."
+      },
+      {
+        "id": "fx-value-ppp",
+        "name": "FX cross-sectional value / purchasing-power-parity reversion",
+        "category": "persistent-premia",
+        "closed_date": "2026-07",
+        "asset_scope": "7 currencies -- D1, 2003-2026",
+        "z0_sr_lb": -0.185,
+        "z0_display": "best -0.185, all 8 cells -0.19 to -0.33; out-of-sample -0.86 to -1.18",
+        "variants_tested": 8,
+        "verdict": "NULL",
+        "lesson": "Value and momentum are structurally opposed, and in a trend-dominated sample the currency that looks persistently cheap keeps weakening -- which is the same reason a momentum construction survived screening where a value construction did not."
+      },
+      {
+        "id": "btc-hour-of-week-seasonality",
+        "name": "Hour-of-week seasonality with mean-reversion in quiet windows",
+        "category": "calendar-seasonal",
+        "closed_date": "2026-07",
+        "asset_scope": "BTC -- H1, 2016-2026 (70k bars)",
+        "z0_sr_lb": -0.756,
+        "z0_display": "-0.756 full sample; training +0.112 then test -1.881",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "The quiet-window premise was confirmed statistically (bucket activity ranks persisted across train and test with rank correlation 0.60) yet produced no payoff, because low activity lowers variance without creating direction."
+      },
+      {
+        "id": "vix-term-structure-carry",
+        "name": "Volatility term-structure carry / short-volatility timing",
+        "category": "volatility-regime",
+        "closed_date": "2026-07",
+        "asset_scope": "Volatility ETFs -- D1, 2011-2026",
+        "z0_sr_lb": 0.454,
+        "z0_display": "+0.454 and +0.027; net out-of-sample negative in every cell",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "The signal behaved exactly as theory predicts and still failed, because the term structure is in the profitable state roughly 92% of the time, so a binary rule is almost always on and is therefore indistinguishable from static exposure -- the beta guard (does it beat always-on?) is what separates a timing alpha from a risk premium."
+      },
+      {
+        "id": "legislator-disclosure-copy",
+        "name": "Naive copying of legislator stock disclosures",
+        "category": "information-disclosure",
+        "closed_date": "2026-07",
+        "asset_scope": "US equities -- daily, 2012-2020 (2678 events)",
+        "z0_sr_lb": null,
+        "z0_display": "median excess -0.51% at 90d / -0.58% at 180d; beats benchmark 47.6% of the time",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Published copy-trading results measure from the transaction date, which only the original trader can access, whereas a copier can only enter after the disclosure lag -- and a positive mean alongside a below-coin-flip hit rate signals a few right-skewed winners rather than a book-wide edge."
+      },
+      {
+        "id": "treasury-auction-supply",
+        "name": "Government-bond auction supply pressure (dealer inventory concession)",
+        "category": "event-study",
+        "closed_date": "2026-07",
+        "asset_scope": "Long-bond ETF and note future -- daily, 2002-2026 (434 auctions)",
+        "z0_sr_lb": 0.195,
+        "z0_display": "+0.195 and -0.350",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "The real basis-point concession documented by Lou, Yan and Zhang (2013) can be undetectable through an aggregate long-duration vehicle, and a central bank acting as a dominant buyer for much of the sample absorbs exactly the concession the trade was designed to harvest."
+      },
+      {
+        "id": "post-news-impulse-momentum",
+        "name": "Post-news impulse momentum continuation",
+        "category": "event-study",
+        "closed_date": "2026-07",
+        "asset_scope": "Gold M1 (3 years) and EURUSD M1 (4.4 years)",
+        "z0_sr_lb": -0.63,
+        "z0_display": "best -0.63, 0/216 configurations",
+        "variants_tested": 216,
+        "verdict": "NULL",
+        "lesson": "Price mean-reverts rather than continues after a spike, both directions lost, and crucially the news-window result was statistically indistinguishable from the non-news window -- knowing when a release lands is worthless when the move depends on the surprise, whose sign is unknowable in advance."
+      },
+      {
+        "id": "hour-of-day-session-scan",
+        "name": "Hour-of-day and session-window directional scan (European session)",
+        "category": "calendar-seasonal",
+        "closed_date": "2026-07",
+        "asset_scope": "EURUSD -- M1, 4.5 years (1.66M bars), 32 buckets",
+        "z0_sr_lb": -0.16,
+        "z0_display": "session buckets -0.16 to -1.57; two teasing buckets +1.20 / +1.08 before costs",
+        "variants_tested": 32,
+        "verdict": "NULL",
+        "lesson": "The two buckets that passed were a single-regime currency-bear beta that inverted in later years and died against a sub-basis-point cost, and an adversarial review of the scanner itself found a session-open gap leak, selection contamination and a daylight-saving misalignment that invalidated the fixed-window cells."
+      },
+      {
+        "id": "asia-session-archetypes",
+        "name": "Asia-session edge archetype scan",
+        "category": "other",
+        "closed_date": "2026-07",
+        "asset_scope": "Asia-session FX and index concepts",
+        "z0_sr_lb": null,
+        "z0_display": "13 of 16 archetypes were duplicates of already-closed families",
+        "variants_tested": 16,
+        "verdict": "NULL",
+        "lesson": "Screening a whole session's worth of ideas against the closed-family registry before touching data eliminated 13 of 16 candidates for free, leaving only one with a genuine forced-flow counterparty to actually test."
+      },
+      {
+        "id": "index-m5-trend-pullback",
+        "name": "Index M5 trend-pullback at swing levels",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-07",
+        "asset_scope": "NAS100 -- M5, 710 days (205k bars)",
+        "z0_sr_lb": -1.04,
+        "z0_display": "-1.04 at 1:1 / +0.05 at 2:1",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "Win rates landed on the coin-flip breakeven for each reward ratio almost exactly (49.9% against 50%, 34.8% against 33.3%), which is the signature of a random entry and shows the swing-level pullback adds nothing."
+      },
+      {
+        "id": "tokyo-fixing-flow",
+        "name": "Tokyo morning fixing-flow (five-and-ten day effect)",
+        "category": "calendar-seasonal",
+        "closed_date": "2026-07",
+        "asset_scope": "USDJPY -- M1, 4.5 years",
+        "z0_sr_lb": -0.41,
+        "z0_display": "best -0.41 before cost",
+        "variants_tested": 6,
+        "verdict": "NULL",
+        "lesson": "A pre-registered early/late sample split killed it cleanly -- positive in the early half, sharply negative in the recent half -- and a placebo on non-fixing days matched or beat the real signal, proving the drift was currency beta and not the fixing flow."
+      },
+      {
+        "id": "insider-cluster-buy-drift",
+        "name": "Insider cluster-buy post-filing drift",
+        "category": "information-disclosure",
+        "closed_date": "2026-07",
+        "asset_scope": "US equities -- daily, 2013-2025 (22k clusters, ~1300 tickers)",
+        "z0_sr_lb": 0.7,
+        "z0_display": "hedged peak 0.67-0.70; raw long-only 0.48-0.58 = beta",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Conviction slices got monotonically worse as the number of participating insiders rose, which is the signature of no signal (a real edge strengthens with conviction), and the portfolio-level lower bound of 0.70 came from diversification rather than per-event signal quality, which was approximately zero."
+      },
+      {
+        "id": "leveraged-etf-rebalance-flow",
+        "name": "Leveraged-ETF end-of-day rebalance flow",
+        "category": "other",
+        "closed_date": "2026-07",
+        "asset_scope": "Two US index ETFs -- 1-min, 251 trading days",
+        "z0_sr_lb": -0.46,
+        "z0_display": "gross Sharpe +1.22 but SR_LB(p5) -0.46",
+        "variants_tested": 4,
+        "verdict": "NULL",
+        "lesson": "The forced-flow mechanism was genuinely visible in the data (two-sided continuation concentrated on high-volatility days, exactly as Cheng and Madhavan (2009) describe) and still failed on three independent walls: the profit came from a handful of tail days so the bootstrapped lower bound was negative, the gross edge per day was smaller than round-trip cost, and the venue we can actually trade offers neither the instrument nor the closing auction the edge lives in."
+      },
+      {
+        "id": "post-earnings-drift-analyst",
+        "name": "Post-earnings-announcement drift (analyst-surprise definition)",
+        "category": "information-disclosure",
+        "closed_date": "2026-07",
+        "asset_scope": "39 US large-caps -- daily, 2002-2026 (3673 events)",
+        "z0_sr_lb": null,
+        "z0_display": "long +1.39% abnormal at 63d, t=5.40; crude Sharpe 0.71-0.87",
+        "variants_tested": null,
+        "verdict": "INCONCLUSIVE",
+        "lesson": "The only long side in dozens of probes that was not null, but the short leg was dead and the free data covers only surviving companies, so the honest ceiling is well below the gate and resolving it requires point-in-time survivorship-free data."
+      },
+      {
+        "id": "post-earnings-drift-sue",
+        "name": "Post-earnings drift, seasonal-random-walk (standardised unexpected earnings) definition",
+        "category": "information-disclosure",
+        "closed_date": "2026-08",
+        "asset_scope": "39 US large-caps -- daily, 2004-2026 (3096 scored events)",
+        "z0_sr_lb": null,
+        "z0_display": "long +0.79% at 63d, t=2.01; long-short not significant at any horizon",
+        "variants_tested": 3,
+        "verdict": "NULL",
+        "lesson": "Deciding whether to buy data is itself a testable question: the affordable survivorship-free vendor carries no analyst estimates, so it could only ever measure the weaker seasonal-random-walk definition of Foster, Olsen and Shevlin (1984) and Bernard and Thomas (1989), and the middle quintile outperformed the top one -- non-monotonic response is the same no-signal signature seen in the insider-conviction work."
+      },
+      {
+        "id": "short-volume-ratio",
+        "name": "Daily short-volume ratio (order-flow proxy)",
+        "category": "information-disclosure",
+        "closed_date": "2026-07",
+        "asset_scope": "39 US large-caps -- daily, 2024-2026 (9756 stock-days)",
+        "z0_sr_lb": null,
+        "z0_display": "high-ratio -0.27% abnormal at 21d, t=-2.18; long-short t=1.12 not significant",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Short volume is a flow measure and not the short-interest position measure used by Diether, Lee and Werner (2009); the informed-short direction was correct but one-sided and smaller than the borrow fee, so it is real yet not tradeable."
+      },
+      {
+        "id": "london-fix-month-end",
+        "name": "Month-end benchmark-fix rebalancing drift",
+        "category": "calendar-seasonal",
+        "closed_date": "2026-07",
+        "asset_scope": "EURUSD -- M1, 2022-2026 (46-47 month-ends)",
+        "z0_sr_lb": null,
+        "z0_display": "full-sample t=-2.10 collapses to t=+0.29 out-of-sample",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "With roughly 47 events the test of the Melvin and Prins (2015) rebalancing flow was underpowered by construction, and the one strong full-sample reading was an in-sample trend artifact -- the regulatory widening of the fixing window plus bank and high-frequency arbitrage removed whatever was left."
+      },
+      {
+        "id": "post-macro-event-daily-drift",
+        "name": "Post-macro-event daily drift (1-3 day hold)",
+        "category": "event-study",
+        "closed_date": "2026-07",
+        "asset_scope": "US equity index ETF -- D1, 2015-2026 (219 events)",
+        "z0_sr_lb": null,
+        "z0_display": "all horizons t=-0.96 to -1.31, continuation rate 44-47%",
+        "variants_tested": 3,
+        "verdict": "NULL",
+        "lesson": "The mean was negative rather than merely insignificant, matching the intraday post-news result that price reverts after events; an audit also caught a cost-sign inversion that had been fabricating a positive short leg."
+      },
+      {
+        "id": "dealer-quoted-spread-channel",
+        "name": "Dealer quoted-spread dynamics as a signal (not as a cost)",
+        "category": "spread-liquidity",
+        "closed_date": "2026-08",
+        "asset_scope": "15 instruments -- H4, 6942 bars, 2021-2026",
+        "z0_sr_lb": 0.062,
+        "z0_display": "0/3 go; gross Sharpe +0.062 / -0.002 / -0.884; pooled rank IC +0.016 / -0.005 / -0.004",
+        "variants_tested": 3,
+        "verdict": "NULL",
+        "lesson": "Switching the decisive read from Sharpe to information coefficient turned a soft null into a permanent closure: an IC of 0.016 with this breadth implies an information-ratio ceiling near 0.3, so no construction, universe or timeframe could reach the gate -- and quoted spread on equity indices turns out to be a clock (time-of-day explains up to 66% of its variance) rather than the adverse-selection gauge of Glosten and Milgrom, so failing to de-seasonalise would have relabelled a closed time-of-day family as a new edge."
+      },
+      {
+        "id": "path-geometry-statistics",
+        "name": "Path-geometry statistics (irreversibility, signature area, tail asymmetry, self-excitation, topology, ordinal patterns, curvature, excursions)",
+        "category": "path-geometry",
+        "closed_date": "2026-08",
+        "asset_scope": "4 crypto -- H4, 13562 aligned bars, 2017-2026",
+        "z0_sr_lb": null,
+        "z0_display": "0/10 equations, all 30 measurements empty; best information-ratio ceiling 0.912",
+        "variants_tested": 10,
+        "verdict": "NULL",
+        "lesson": "Measuring the raw signal's rank information coefficient before writing any trading rule is what finally closed a lane that had been reopened three times, because an optimistic ceiling below 1.0 (the Grinold fundamental-law bound) proves no rule construction could reach the gate; three measurement lessons came with it -- time-series hypotheses must be scored pooled rather than cross-sectionally (the sign can flip), a truncation-based causality probe cannot detect a backfilled warm-up leak so a perturbation probe with a negative control is required, and breadth must be counted on the holding clock."
+      },
+      {
+        "id": "gaussian-baseline-controls",
+        "name": "Gaussian / normal-distribution baseline controls",
+        "category": "other",
+        "closed_date": "2026-08",
+        "asset_scope": "4 crypto -- H4 (same universe as the path-geometry round)",
+        "z0_sr_lb": null,
+        "z0_display": "3 cost-eaten, 1 empty; measured round-turn cost 28.84 bps",
+        "variants_tested": 4,
+        "verdict": "NULL",
+        "lesson": "Running known-null baselines as controls exposed a hole in the screen itself -- the information-ratio ceiling is a gross number, so the gate was blind to cost and rated a closed mean-reversion family as a pass -- and a skip-a-bar discriminator in the sense of Roll (1984) showed roughly 80% of the one-bar signal was bid-ask bounce; measured cost was six times the intuitive guess, so cost must be read from the data, never estimated mentally."
+      },
+      {
+        "id": "classic-candlestick-patterns",
+        "name": "Classic candlestick patterns (fifteen named formations)",
+        "category": "classical-indicator",
+        "closed_date": "2026-08",
+        "asset_scope": "BTC and gold -- H4 and D1, 10 years",
+        "z0_sr_lb": 0.5,
+        "z0_display": "0/180 pass the gate; best SR_LB 0.50; rank IC empty in all 6 measurements",
+        "variants_tested": 180,
+        "verdict": "NULL",
+        "lesson": "Cost was ruled out as the excuse because the cheapest instrument (0.57 bps round turn) failed identically, the short side was negative in all twelve slots while the long side was positive (textbook beta), and a drift-adjusted edge column showed the best-looking pattern actually underperformed doing nothing; separately, seven of fifteen patterns require an overnight gap that a 24/7 contract never produces, so most cells were structurally unmeasurable."
+      },
+      {
+        "id": "value-area-fade",
+        "name": "Value-area (VAH/VAL) fade in the first fifteen minutes",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-07",
+        "asset_scope": "US index ETF 1-min and NAS100 3-year multi-year validation",
+        "z0_sr_lb": -1.02,
+        "z0_display": "fade gross -0.151R (Sharpe -2.62); continuation -0.020R (coin flip); reject-only variant SR_LB -1.02",
+        "variants_tested": 3,
+        "verdict": "NULL",
+        "lesson": "Changing the exit to a trailing stop flipped the result from strongly negative to apparently excellent, but a random-direction control with the same trailing exit scored nearly as well, showing about two-thirds of the improvement was an exit-management artifact rather than an entry edge -- and the one promising variant on a single year inverted on a three-year multi-market re-test."
+      },
+      {
+        "id": "second-level-trailing-scalp",
+        "name": "Second-resolution trailing-stop scalp with continuous re-entry",
+        "category": "intraday-microstructure",
+        "closed_date": "2026-06",
+        "asset_scope": "BTC -- M1, one month (34k bars), observed spread",
+        "z0_sr_lb": null,
+        "z0_display": "gross edge positive, net deeply negative in every configuration",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "A small but genuine micro-momentum edge existed gross and was roughly one third of the round-trip cost, and cost-sensitivity was decisive: even cutting the spread to a quarter of the observed level left it losing, so the conclusion is structural rather than an artifact of the cost assumption."
+      },
+      {
+        "id": "futures-tsmom-cta",
+        "name": "Diversified futures time-series momentum, built to CTA standard",
+        "category": "cross-asset-momentum",
+        "closed_date": "2026-07",
+        "asset_scope": "28 futures across 6 sectors -- daily, 2000-2026",
+        "z0_sr_lb": 0.15,
+        "z0_display": "best net SR_LB +0.15 (Sharpe 0.49); zero-cost +0.31",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "Building the Moskowitz, Ooi and Pedersen (2012) construction properly (volatility-targeted risk parity with a portfolio-level overlay) rather than porting a raw recipe reproduced the industry trend benchmark almost exactly, which is the point: retail momentum on futures earns beta at benchmark level, and dropping equities from the book collapsed the result."
+      },
+      {
+        "id": "futures-xsmom",
+        "name": "Cross-sectional momentum on the same futures universe, dollar-neutral",
+        "category": "cross-asset-momentum",
+        "closed_date": "2026-07",
+        "asset_scope": "28 futures across 6 sectors -- daily, 2000-2026",
+        "z0_sr_lb": -0.25,
+        "z0_display": "best -0.32 net / -0.25 zero-cost, all 8 cells negative",
+        "variants_tested": 8,
+        "verdict": "NULL",
+        "lesson": "A measured market beta of 0.002 confirms the neutrality was real, so this is a clean absence of relative-strength alpha rather than a beta artifact -- pairing the directional and neutral variants closes the momentum-on-futures question in both directions at once."
+      },
+      {
+        "id": "vol-regime-conditioning",
+        "name": "Volatility-regime directional conditioning",
+        "category": "volatility-regime",
+        "closed_date": "2026-07",
+        "asset_scope": "BTC -- H1",
+        "z0_sr_lb": -2.14,
+        "z0_display": "calendar slice test -1.88; direct low-realised-volatility gate test -2.14",
+        "variants_tested": 2,
+        "verdict": "NULL",
+        "lesson": "Two independent ways of selecting the same quiet conditions both failed, confirming the general principle that a filter can select conditions but cannot create direction."
+      },
+      {
+        "id": "swap-rate-curve-proxy",
+        "name": "swap-rate/rollover rates as a free commodity-curve proxy",
+        "category": "spread-liquidity",
+        "closed_date": "2026-08",
+        "asset_scope": "Energy, metals and crypto -- daily snapshots, 72 days",
+        "z0_sr_lb": null,
+        "z0_display": "not measurable -- signal updates roughly monthly",
+        "variants_tested": null,
+        "verdict": "NULL",
+        "lesson": "The proxy fails on cadence, not on concept: energy swap rates move as a step function about once a month (steps account for over 98% of all movement, with plateaus of 25-31 days), so even eighteen months of collection would yield far too few independent observations, while a contrast control on metals confirmed the collector itself was healthy and crypto swap rates were a constant markup carrying no information at all."
+      },
+      {
+        "id": "merger-arbitrage-spread",
+        "name": "Cash-deal merger-arbitrage spread convergence",
+        "category": "other",
+        "closed_date": "2026-07",
+        "asset_scope": "US equities -- daily",
+        "z0_sr_lb": null,
+        "z0_display": "not measurable",
+        "variants_tested": 0,
+        "verdict": "BLOCKED",
+        "lesson": "A survivorship-free deal universe is the whole test -- free sources drop delisted targets and provide no failed-deal list, so the available sample is biased toward completed deals and below the pre-registered minimum deal count."
+      },
+      {
+        "id": "closed-end-fund-discount",
+        "name": "Closed-end-fund discount-to-NAV mean reversion",
+        "category": "other",
+        "closed_date": "2026-07",
+        "asset_scope": "US closed-end funds -- daily",
+        "z0_sr_lb": null,
+        "z0_display": "not measurable",
+        "variants_tested": 0,
+        "verdict": "BLOCKED",
+        "lesson": "Prices were obtainable for most of the universe but net asset value was not, and the signal is defined as the difference between them, so the engine was completed and parked pending a NAV feed rather than run on a proxy."
+      },
+      {
+        "id": "options-dealer-gamma",
+        "name": "Options dealer-gamma exposure positioning",
+        "category": "other",
+        "closed_date": null,
+        "asset_scope": "BTC and ETH options",
+        "z0_sr_lb": null,
+        "z0_display": "not measurable on free history",
+        "variants_tested": 0,
+        "verdict": "BLOCKED",
+        "lesson": "Historical open-interest by strike is not available free and cannot be backfilled, so the only free path is a forward snapshot collector whose earliest usable read is roughly two years out; the structural concern is that crypto options notional is small relative to perpetuals, so the dealer-hedging channel may be swamped."
+      },
+      {
+        "id": "crypto-funding-carry",
+        "name": "Crypto perpetual funding carry",
+        "category": "other",
+        "closed_date": null,
+        "asset_scope": "Crypto perpetuals",
+        "z0_sr_lb": null,
+        "z0_display": "not measurable on free history",
+        "variants_tested": 0,
+        "verdict": "BLOCKED",
+        "lesson": "Exchange endpoints are geographically restricted or offer only a few months of history, so the hypothesis remains untested rather than falsified -- it must not be recorded as a null."
+      },
+      {
+        "id": "commodity-term-structure-carry",
+        "name": "Commodity term-structure carry",
+        "category": "persistent-premia",
+        "closed_date": null,
+        "asset_scope": "Energy and agricultural futures curves",
+        "z0_sr_lb": null,
+        "z0_display": "not measurable on current free history",
+        "variants_tested": 0,
+        "verdict": "BLOCKED",
+        "lesson": "The one free source with genuine individual contract months ends in 1999, so it can only cover the era before the anomaly decayed and carries no decision value for today."
+      },
+      {
+        "id": "order-flow-microstructure",
+        "name": "Order-flow / true microstructure",
+        "category": "intraday-microstructure",
+        "closed_date": null,
+        "asset_scope": "All instruments on the available feed",
+        "z0_sr_lb": null,
+        "z0_display": "not measurable",
+        "variants_tested": 0,
+        "verdict": "BLOCKED",
+        "lesson": "The feed reports zero real volume on every file, so anything requiring genuine traded volume or order flow is structurally impossible on this data rather than untried."
+      }
+    ],
+    "table_note": "z0 SR_LB is the zero-cost Sharpe lower bound, the reading taken before costs. A family below 1.00 there was rejected without a cost model being run. INCONCLUSIVE marks a positive reading that did not survive out-of-sample testing or a sample too thin to score.",
+    "blocked_intro": "These lanes were closed without a verdict. Recording why a question could not be asked is part of the record.",
+    "blocked_lanes": [
+      {
+        "name": "Order-flow and true microstructure",
+        "reason": "The available price feed reports zero real volume on every instrument, so volume-based and order-flow constructions cannot be computed at all."
+      },
+      {
+        "name": "Crypto perpetual funding carry",
+        "reason": "Funding-history endpoints are either geographically blocked or expose only a few months of history; a paid or differently hosted feed would be required."
+      },
+      {
+        "name": "Options dealer-gamma positioning",
+        "reason": "Historical open-interest by strike is not published free and cannot be backfilled; free dashboards show current state only. A forward-only snapshot collector is running, with the earliest usable sample roughly two years away."
+      },
+      {
+        "name": "Commodity term-structure carry (current curve)",
+        "reason": "The only free source with individual contract months stops at 1999; recent curve data requires a paid or key-registered feed. A free swap-rate proxy was measured and rejected on update cadence."
+      },
+      {
+        "name": "Merger-arbitrage deal universe",
+        "reason": "Free sources drop delisted targets and publish no failed-deal list, so a survivorship-free universe -- the core requirement of the test -- cannot be assembled."
+      },
+      {
+        "name": "Closed-end-fund net asset values",
+        "reason": "Prices are freely available but the NAV series needed to compute the discount is not scrapable; the signal is undefined without it."
+      },
+      {
+        "name": "Point-in-time survivorship-free equity fundamentals with analyst estimates",
+        "reason": "The affordable survivorship-free products carry no analyst estimate history, and the products that do are enterprise-tier; this blocks a clean re-test of the one equity event study whose long side was not null."
+      },
+      {
+        "name": "Full-cycle paid on-chain and derivatives history",
+        "reason": "The accessible subscription tier covers a single bear regime of about one year; multi-cycle history sits behind a higher tier that was judged not worth buying given the one-year result."
+      }
+    ],
+    "surviving_intro": "Two families were not rejected. They are listed because a registry that publishes only its failures and quietly keeps its survivors is the selection bias this page exists to argue against. Neither is a claim: no performance figure is reported for either.",
+    "surviving": [
+      {
+        "name": "Momentum / herding",
+        "status": "The one family this gate did not reject. Its previously published headline statistics were withdrawn on an internal cost audit and are not restated here. It is not claimed as validated, and no performance figure is reported."
+      },
+      {
+        "name": "Post-earnings-announcement drift (analyst-surprise definition)",
+        "status": "Not closed, not validated. On free data the long side remained statistically significant; the short side did not."
+      }
+    ],
+    "limits": [
+      "That these families do not work anywhere. Each row is a scoped claim: this construction, on these instruments, over this sample window, under this cost stack, did not clear this gate. A counterexample built differently does not contradict it.",
+      "That an absent effect is the same as an undetectable one. The control above puts this gate's detection floor near a true annualised Sharpe of 2.5 on four years of daily data. Any real edge weaker than that would have been rejected here too, so most of these rows are silence rather than absence.",
+      "That the engine is correct. The control covers the statistics only. Three defects have already been found in the cost-accounting path by audit, and no control yet exists for fills, costs or lookahead -- so a null could still be a measurement failure rather than a finding.",
+      "That the samples are long. Several families were tested on the longest history obtainable for that instrument, which is sometimes short enough that the bootstrap interval is wide.",
+      "Any claim about what is tradeable. This is backtest research on historical price data. Nothing here is a recommendation, and no result on this page should be read as one."
+    ],
+    "falsification": "If the positive control fails, this page is withdrawn rather than defended. If any family listed here is later shown to clear the gate under a corrected implementation, that entry is retracted in place, dated, with the original text left visible rather than deleted."
   }
 }

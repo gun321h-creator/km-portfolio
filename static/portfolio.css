@@ -873,6 +873,51 @@ main.editor { animation: portfolio-fade-in 200ms ease-out; }
   main.editor section[id] { scroll-margin-top: 16px; }
 }
 
+/* ── null registry ──────────────────────────────────────────────────── */
+.nulls-notice {
+  max-width: 760px; margin: 14px 0 18px; padding: 12px 14px;
+  border: 1px solid var(--gold-faint); border-left: 3px solid var(--gold);
+  background: rgba(212,169,71,0.05);
+  color: var(--ivory-soft); font-size: 0.9rem; line-height: 1.65;
+}
+.nulls-notice strong { color: var(--gold); font-family: var(--latin); }
+
+.nulls-protocol-list, .nulls-blocked-list { list-style: none; padding: 0; margin: 16px 0; max-width: 760px; }
+.nulls-protocol-list li, .nulls-blocked-list li { padding: 10px 0; border-bottom: 1px solid rgba(212,169,71,0.12); }
+.nulls-protocol-list li:last-child, .nulls-blocked-list li:last-child { border-bottom: none; }
+.nulls-rule-name { display: block; font-family: var(--latin); font-size: 0.86rem; color: var(--gold); margin-bottom: 3px; }
+.nulls-rule-body { display: block; color: var(--ivory-soft); font-size: 0.9rem; line-height: 1.6; }
+
+.nulls-limits-list { margin: 16px 0; padding-left: 20px; max-width: 760px; color: var(--ivory-soft); }
+.nulls-limits-list li { margin-bottom: 10px; line-height: 1.65; font-size: 0.92rem; }
+
+.nulls-note { max-width: 760px; margin: 12px 0 0; color: var(--ivory-mut); font-size: 0.82rem; line-height: 1.6; }
+
+/* The registry table is wide; let it scroll rather than break the page box. */
+.nulls-table-wrap { overflow-x: auto; margin: 16px 0; }
+.nulls-table-wrap .tv-tbl { min-width: 720px; }
+
+/* tv_tables.css is inherited from the dashboard: it paints text with the
+   dashboard's --ink token (undefined in this theme) and sizes rows for
+   single-line dense data. Both break here -- the family name rendered nearly
+   invisible and multi-line lesson text overflowed its row onto the next one.
+   Re-theme and re-flow inside this wrapper only, so the dashboard's own tables
+   are untouched. */
+.nulls-table-wrap .tv-tbl thead th { color: var(--gold-dim); }
+.nulls-table-wrap .tv-tbl tbody tr { height: auto; }
+.nulls-table-wrap .tv-tbl td {
+  height: auto; padding: 12px 10px; vertical-align: top;
+  color: var(--ivory-soft); line-height: 1.55;
+}
+.nulls-table-wrap .tv-tbl .ticker {
+  display: block; color: var(--ivory);
+  font-family: var(--latin); font-size: 0.9rem; line-height: 1.45;
+}
+.nulls-table-wrap .tv-tbl .num { color: var(--gold); font-family: var(--mono); font-size: 0.82rem; }
+.nulls-table-wrap .tv-tbl td:nth-child(3) { white-space: nowrap; }
+.nulls-table-wrap .tv-tbl .muted { color: var(--ivory-mut); font-size: 0.84rem; }
+.nulls-lesson { display: block; margin-top: 5px; font-size: 0.8rem; line-height: 1.55; max-width: 52ch; white-space: normal; color: var(--ivory-mut); }
+
 /* ── print (recruiter Cmd-P -> clean light document) ────────────────── */
 @media print {
   html, body, body.px-shell { background: #fff; color: #111; font-size: 12px; }
@@ -899,6 +944,23 @@ main.editor { animation: portfolio-fade-in 200ms ease-out; }
   .edu-node-program, .edu-milestone { color: #222; }
   .edu-milestone.edu-win { color: #000; }
   .edu-lede { color: #222; }
+  /* Null registry: the on-screen palette is gold/ivory on near-black, which
+     prints as pale-on-white. Force ink, and let the wide table wrap instead
+     of scrolling into a cut-off edge. */
+  .nulls-notice { border: 1px solid #999; border-left: 3px solid #6b5417; background: none; color: #222; }
+  .nulls-notice strong { color: #000; }
+  .nulls-rule-name { color: #6b5417; }
+  .nulls-rule-body, .nulls-limits-list, .nulls-limits-list li { color: #222; }
+  .nulls-note, .nulls-lesson { color: #444; }
+  .nulls-table-wrap { overflow-x: visible; }
+  .nulls-table-wrap .tv-tbl { min-width: 0; width: 100%; }
+  .nulls-table-wrap .tv-tbl thead th { color: #000; border-bottom: 1px solid #999; }
+  .nulls-table-wrap .tv-tbl td { color: #222; }
+  .nulls-table-wrap .tv-tbl .ticker { color: #000; }
+  .nulls-table-wrap .tv-tbl .num { color: #6b5417; }
+  .nulls-table-wrap .tv-tbl .muted { color: #555; }
+  .nulls-table-wrap .tv-tbl tr { page-break-inside: avoid; break-inside: avoid; }
+
   .gc-shell { max-width: 100%; padding: 0; }
   .gc-hero { padding: 0 0 12px; margin: 0; text-align: left; }
   .gc-hero-inner { padding: 0; max-width: 100%; }
