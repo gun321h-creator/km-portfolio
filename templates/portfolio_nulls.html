@@ -61,6 +61,23 @@
     <li>{{ f }}</li>
     {% endfor %}
   </ul>
+
+  {% if inst.engine %}
+  {% set eng = inst.engine %}
+  <h2 class="filesep">{{ eng.headline }} <span class="fs-crumb">แล้ว engine ล่ะ</span></h2>
+  <p class="gc-page-lede">{{ eng.intro }}</p>
+  <ul class="nulls-blocked-list">
+    {% for f in eng.failures %}
+    <li><span class="nulls-rule-name">{{ f.name }}</span>
+      <span class="nulls-rule-body">{{ f.detail }}</span></li>
+    {% endfor %}
+  </ul>
+  <ul class="nulls-limits-list">
+    {% for r in eng.reading %}
+    <li>{{ r }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 </section>
 {% endif %}
 

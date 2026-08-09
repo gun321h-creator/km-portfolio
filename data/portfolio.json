@@ -764,7 +764,7 @@
     "tagline": "81 strategy studies, scored by one decision rule that was fixed before each test and never adjusted after it. 71 rejected, 4 inconclusive, 6 blocked. A further 8 lanes never became studies at all.",
     "status_notice": {
       "label": "Draft. Partially validated.",
-      "body": "The statistics layer has now passed a positive control and the result is below -- it does not manufacture edges from noise, but it is far less sensitive than its threshold suggests. The engine layer has not been controlled: fills, cost accounting and lookahead are not covered, and an audit already found three defects there. Figures in the table are transcribed from an internal research log rather than regenerated from source. Treat every row as provisional."
+      "body": "Both layers have now been controlled and both results are below. The statistics do not manufacture edges from noise but are far less sensitive than the threshold suggests. The engine has three confirmed defects -- all optimistic, all named below. Because every family here was rejected, an optimistic engine makes those rejections firmer rather than weaker; it is the survivors and the inconclusive rows that it cannot vouch for. Figures in the table are transcribed from an internal research log rather than regenerated from source. Treat every row as provisional."
     },
     "lede": "This is the output log of a measuring instrument, not a list of regrets. Each row was scored by the same gate, and the gate did not move between rows. An apparatus that never returns a null is an apparatus that cannot measure anything, so the rejections are the evidence that the gate has discriminating power.",
     "lede_th": "หน้านี้คือบันทึกผลของเครื่องมือวัด ไม่ใช่รายการความล้มเหลว ทุกแถวถูกตัดสินด้วยเกณฑ์เดียวกันที่ไม่เคยขยับ",
@@ -835,8 +835,32 @@
         "Specificity holds. On pure noise -- a true Sharpe of exactly zero -- the gate passed 0% of draws. It does not invent edges, so the rejections in the table below are not an artefact of a gate firing at random.",
         "Sensitivity is much weaker than the threshold implies. The gate needs a true annualised Sharpe of about 2.5 before it passes more often than not on four years of daily data. At a true Sharpe of 1.5 -- a strategy most desks would run -- it passes 14% of the time. On one year of data it does not reach a coin flip even at a true Sharpe of 3.0.",
         "So most rows below sit under the detection floor. They record that no effect large enough for this instrument to see was present at that sample size. They do not establish that no effect exists, and the summary phrase I had been using internally -- that the tractable search space was exhausted -- claims more than this evidence supports.",
-        "Scope: this controls the statistics layer only -- the lower-bound Sharpe, PSR and deflated-Sharpe estimators and their thresholds, imported unchanged. It does not control the backtest engine. The defects found by audit lived in the engine's cost path, and nothing in this control would have caught them."
-      ]
+        "Scope: the above controls the statistics layer -- the lower-bound Sharpe, PSR and deflated-Sharpe estimators and their thresholds, imported unchanged. The engine layer is covered separately, below."
+      ],
+      "engine": {
+        "headline": "And does the engine fill and cost correctly?",
+        "intro": "The statistics can be right while the simulator underneath is wrong, so the fill, cost and lookahead paths were put through the same treatment: bars constructed so the correct answer is arithmetic. 9 of 12 cases pass. 3 do not, and they are named here rather than left for a reader to discover.",
+        "failures": [
+          {
+            "name": "A stop on a gapped bar fills at the stop price",
+            "detail": "Given a bar that opens well beyond the stop, the simulator still books the stop level. The real fill is the open, so the loss is understated -- in the control fixture, -1R reported against -4R actual."
+          },
+          {
+            "name": "The entry bar is never scanned for stops",
+            "detail": "A trade whose own entry bar trades through the stop is not closed there; it survives to later bars. Trades that should have died immediately are given a second chance."
+          },
+          {
+            "name": "Resampling pulls in one bar of the future",
+            "detail": "Rows are indexed by bar open time, but the resampler labels right and closes right, so the aggregated bar labelled T includes the sub-bar that opens at T. Any study that resampled to a higher timeframe saw one sub-bar it should not have."
+          }
+        ],
+        "reading": [
+          "All three lean the same way: they make results look better than they were. Losses are understated, doomed trades survive, and a sliver of future information is visible.",
+          "That direction matters for how this page should be read. Every family in the table below was REJECTED under those defects. Correcting them can only push a result down, so a rejection stands -- if anything it becomes firmer. The nulls survive their own engine's bugs.",
+          "What the defects can manufacture is the opposite outcome. The two survivors and the four inconclusive entries are exactly the rows an optimistic fill could have produced, and this control does not clear them. They are not claimed as validated anywhere on this page, and that is why.",
+          "Cost accounting passed on all three checks: the charge matches the declared model, it makes a losing trade worse rather than better, and it scales inversely with stop distance instead of behaving like a constant fraction. The cost defect found by an earlier audit is not present on this path."
+        ]
+      }
     },
     "families": [
       {
@@ -1862,7 +1886,7 @@
     "limits": [
       "That these families do not work anywhere. Each row is a scoped claim: this construction, on these instruments, over this sample window, under this cost stack, did not clear this gate. A counterexample built differently does not contradict it.",
       "That an absent effect is the same as an undetectable one. The control above puts this gate's detection floor near a true annualised Sharpe of 2.5 on four years of daily data. Any real edge weaker than that would have been rejected here too, so most of these rows are silence rather than absence.",
-      "That the engine is correct. The control covers the statistics only. Three defects have already been found in the cost-accounting path by audit, and no control yet exists for fills, costs or lookahead -- so a null could still be a measurement failure rather than a finding.",
+      "That the engine is correct. It is not: three defects are confirmed and described above. They bias optimistically, which is why the rejections still stand, but a page listing rows produced by a simulator with known bugs should say so plainly rather than let a reader assume otherwise.",
       "That the samples are long. Several families were tested on the longest history obtainable for that instrument, which is sometimes short enough that the bootstrap interval is wide.",
       "Any claim about what is tradeable. This is backtest research on historical price data. Nothing here is a recommendation, and no result on this page should be read as one."
     ],
