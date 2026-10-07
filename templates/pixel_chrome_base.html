@@ -41,7 +41,15 @@
 <!-- KPI-ANATOMY-END -->
 {% block extra_head %}{% endblock %}
 </head>
-<body class="px-shell">
+{# `data-page` MUST live on <body>: portfolio.js `wireSourceModal` reads
+   `document.body.dataset.page` to scope the view-source fetch to
+   `/portfolio-source.json?page=<id>`. It used to sit on the inner
+   `.ide-page` div, where that lookup returned undefined -> the query was
+   dropped -> the modal served the ENTIRE portfolio.json on every page.
+   Pages rendered without a `current_page_id` (e.g. the standalone CV
+   template does not use this shell) simply emit an empty value, which the
+   script already treats as "no slice". #}
+<body class="px-shell"{% if current_page_id %} data-page="{{ current_page_id }}"{% endif %}>
 {% include "_partials/icon_sprite.html" %}
 {# Theme toggle hidden — easter-egg via T-key combos. T,T = Linear dark · T,T,T = Bloomberg terminal. #}
 <div id="mm-theme-toggle" hidden aria-hidden="true" data-easter-egg="true">
@@ -65,7 +73,13 @@
 <header class="px-topbar" id="px-topbar">
   <div class="px-brand">KM</div>
   {% block px_nav %}
-  {% set nav_mode = 'spoke' %}{% include "_partials/nav.html" %}
+  {# `_partials/nav.html` does not exist in this tree -- it was left behind when the
+     public site was split out of the dashboard. It is dead today because every page
+     reaches this base through portfolio_base.html, which overrides px_nav, so the
+     include never renders. `ignore missing` keeps it that way on purpose: the first
+     page that ever forgets to override px_nav would otherwise 500 rather than simply
+     render without a nav. #}
+  {% set nav_mode = 'spoke' %}{% include "_partials/nav.html" ignore missing %}
   {% endblock %}
   {% block px_hud %}
   <div class="px-hud">

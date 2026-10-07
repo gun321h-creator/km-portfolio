@@ -1,15 +1,15 @@
 {
   "version": "1.0",
   "name": "Kanokpon Mettasat",
-  "tagline": "Electrical & Computer Engineering, Honors Program",
+  "tagline": "Electrical & Computer Engineering, Institute Honors Program -- post-quantum cryptography & blockchain security research",
   "hero_subtitle_lines": [
     "Virginia Military Institute, Class of 2027",
-    "Overall GPA 3.79 / Major GPA 4.00 -- Institute Honors Program"
+    "Overall GPA 3.81 / Major GPA 4.00 -- Institute Honors Program"
   ],
   "contact_email": "mettasatk27@vmi.edu",
   "contact_location": "Lexington, VA",
   "contact_github": "https://github.com/gun321h-creator",
-  "about": "Originally a **Royal Thai Army cadet (Class 74)**, selected first in the cohort for the army's study-in-US program in 2022. After completing the University of Colorado Boulder's International English Center (Levels 4 through 7) in 2022-2023, enrolled at Virginia Military Institute reading Electrical and Computer Engineering. Beyond coursework, builds software (FastAPI services, LINE OA bots) and runs quantitative trading research as an independent practice -- pre-registered hypotheses, walk-forward out-of-sample validation, and explicit bias auditing. Recent 2026 work spans a personal-finance aggregator (Money Compass), a research-automation pipeline (Edge Factory), a Groq-narrated trading journal, and a low-latency group-karaoke web app.",
+  "about": "Electrical and Computer Engineering cadet at **Virginia Military Institute** (Class of 2027, Institute Honors Program, major GPA 4.00), applying to MS programs in Electrical Engineering for Fall 2027 with a focus on **secure and embedded systems and post-quantum cryptographic engineering** for resource-constrained devices. Research: undergraduate researcher with Dr. Efat Fathalla (VMI ECE) on quantum-resistant blockchain security -- first-author paper accepted at **IEEE UEMCON 2026**, a second under revision at Computers (MDPI), and a third manuscript in preparation from the Institute Honors thesis. Engineering: hardware lead on a KiCad PCB from schematic to fabricated board; team lead at IEEE SoutheastCon 2026 Undergraduate Circuit Design (top seven of forty teams); sole developer of **Officer Parker**, a real-time voice agent for mock US visa interviews; senior design capstone on a wearable sensor sock. Independent work: a Python statistical research platform for financial time series, bound to acceptance thresholds registered before any experiment ran. Service: President of Eta Kappa Nu (IEEE-HKN) at VMI for 2026-27; math tutor in the VMI Open Mathematics Laboratory since 2024. Before VMI: Chulachomklao Royal Military Academy (Class 74) and the Armed Forces Academies Preparatory School, Thailand, where I ranked first of 348 Army cadets; selected first of the class for the Royal Thai Army's overseas study programme to the United States.",
   "education": [
     {
       "institution": "Virginia Military Institute",
@@ -17,22 +17,23 @@
       "degree_or_program": "BS, Electrical and Computer Engineering",
       "dates": "Aug 2023 -- May 2027 (expected)",
       "details": [
-        "Institute Honors Program, VMI (selected Jan 2024) -- Honors scholarship since Jul 2024, USD five thousand per academic year",
+        "Institute Honors Program, VMI (selected Jan 2024) -- Honors scholarship since Jul 2024",
         "Dean's List, multiple terms",
-        "Overall GPA 3.79 / Major GPA 4.00",
+        "Overall GPA 3.81 / Major GPA 4.00",
         "Term GPA 4.00 (Year 2 Term 1)",
         "Term GPA 4.00 (Year 2 Term 2, all-A semester)",
         "Term GPA 3.81 (Year 3 Term 1)",
         "Term GPA 3.70 (Year 3 Term 2)",
+        "President, Eta Kappa Nu (IEEE-HKN), VMI chapter (2026 -- 2027)",
         "Tau Beta Pi -- Engineering Honor Society, Virginia Chapter (inducted Nov 2025)",
         "IEEE SoutheastCon 2026 -- top 7 of 40 teams, Undergraduate Circuit Design (Alabama, Mar 2026)",
-        "Tau Beta Pi Conference -- VMI representative (Mar 2026)",
-        "OGA Representative, Hotel Company -- oversees new-cadet orientation (May 2026)",
-        "Cadre Old Corps Corporal + Cadre Rat Challenge + MathLab Tutor (Year 2 onward)",
-        "Expert classification, Rifle (May 2025)",
-        "Commendation from the Chief of Defence Forces, US Reserve Command HQ (Apr 2024)",
+        "Tau Beta Pi Convention -- VMI representative (Mar 2026)",
+        "OGA Representative, Hotel Company -- oversees new-cadet orientation (May 2026 -- present)",
+        "Cadre Old Corps Corporal + Cadre Rat Challenge (2024 -- 2025); MathLab tutor, VMI library (2024 -- present)",
+        "Expert classification, Rifle (May 2025); 9 mm pistol qualification (2025)",
+        "Commendation from the Chief of Defence Forces, Royal Thai Armed Forces (Apr 2024)",
         "Community service in Puerto Rico with the VMI Glee Club (Mar 2024)",
-        "SAT 1260 (March 2023)"
+        "Coursework: Signal & System Analysis, Computer Architecture, Digital Systems Design, Microcontrollers, Electronics, Probability & Statistics for Engineers, Discrete Mathematics, Differential Equations; Senior Design Capstone (EE-421X, in progress)"
       ]
     },
     {
@@ -45,14 +46,13 @@
       ]
     },
     {
-      "institution": "Royal Thai Army Cadet School (Chulachomklao) -- Class 74",
+      "institution": "Chulachomklao Royal Military Academy (CRMA) -- Class 74",
       "location": "Thailand",
-      "degree_or_program": "Army cadet, English Program (EP)",
+      "degree_or_program": "Army cadet, English Program (graduating class)",
       "dates": "Mar 2022 -- Aug 2022 (pre-US dispatch)",
       "details": [
-        "Selected #1 of 348 Army cadets for the army's study-in-US programme (May 2022)",
-        "Section Leader, Section A.1 (EP)",
-        "Dispatched on a 5-year Royal Thai Army scholarship to VMI (Aug 2022 -- May 2027)"
+        "Selected first of the class for the Royal Thai Army's overseas study programme to the United States (May 2022)",
+        "Section Leader, Section A.1 (EP)"
       ]
     },
     {
@@ -61,7 +61,7 @@
       "degree_or_program": "Pre-cadet, Potential English Program (PEP)",
       "dates": "Jul 2020 -- Feb 2022",
       "details": [
-        "Ranked #1 of 348 Army cadets across multiple semesters (cumulative GPA 3.96-3.97)",
+        "Ranked first of 348 Army cadets across multiple semesters (cumulative GPA 3.96-3.97)",
         "Ranked #3-4 of 878 in the overall preparation class",
         "Vice-President, Army cadet section + Honor Council insignia (Jul 2021)",
         "Platoon Leader insignia, 2nd Squad / 2nd Battalion (Jun 2021)",
@@ -70,26 +70,136 @@
         "ALCPT silver medal + AFAPS completion certificate from the Commander-in-Chief (Feb 2022)",
         "Seven academic certificates of appreciation (Feb 2022)"
       ]
-    },
-    {
-      "institution": "Satit Patumwan Demonstration School -- Class 63",
-      "location": "Bangkok, Thailand",
-      "degree_or_program": "Lower-secondary",
-      "dates": "2014 -- 2020",
-      "details": [
-        "Passed first round of the Chang Phueak Air Force cadet scholarship (Dec 2019)",
-        "Honourable Mention, 5th Academic Excellence Award -- Thanawan tutorial (Jan 2020)"
-      ]
-    },
-    {
-      "institution": "Bangkok Christian College -- Class 168",
-      "location": "Bangkok, Thailand",
-      "degree_or_program": "Primary",
-      "dates": "2008 -- 2014",
-      "details": []
     }
   ],
   "projects": [
+    {
+      "title": "Officer Parker -- real-time voice agent for mock US visa interviews",
+      "plain": "Practise a US visa interview out loud with an AI consular officer who already has your own form on screen -- and catches every place your answers stop matching it.",
+      "summary": "Browser voice agent that runs a two-minute mock US visa interview end to end: 24 kHz PCM capture, a speech-to-speech WebSocket session, and a structured report generated from the transcript. Grounded in the applicant's own DS-160 answers so the agent can surface contradictions between what was filed and what is said -- a check a generic mock-interview tool cannot make. Sole author of the architecture, front end, serverless functions, deployment and submission video. Submitted to the AssemblyAI Voice Agent Hackathon (Sep 2026); MIT-licensed and running in production.",
+      "stack": [
+        "JavaScript",
+        "Web Audio (AudioWorklet, 24 kHz PCM)",
+        "WebSocket speech-to-speech",
+        "Vercel serverless functions",
+        "AssemblyAI"
+      ],
+      "scale": "Sole developer, Aug -- Sep 2026; zero runtime dependencies; guard tests for the honesty constraint and the client-side rate limiter, each verified against a mutation battery",
+      "link": "https://officer-parker.vercel.app",
+      "link_label": "Live demo",
+      "links": [
+        {
+          "label": "Live demo",
+          "href": "https://officer-parker.vercel.app"
+        },
+        {
+          "label": "Source on GitHub (MIT)",
+          "href": "https://github.com/gun321h-creator/visa-coach"
+        }
+      ],
+      "deep_dive_intro": "Officer Parker turns a mock interview into something with a right answer. The applicant files a short DS-160, then faces a consular officer who already has that form on screen -- by voice, in real time. The agent's job is not to make conversation; it is to find where the person diverges from their own paperwork, which is what a real consular window does.",
+      "architecture": "A static front end (index.html, app.js, persona.js, worklet.js) captures 24 kHz PCM through an AudioWorklet and streams it over a speech-to-speech WebSocket session. Two Vercel serverless functions back it: token.js mints the short-lived session token and report.js scores the transcript into a structured report; both share lib/guard.js for a same-origin check and a per-IP rate limit. The applicant's DS-160 answers are handed to the officer persona as fenced, untrusted data, so contradictions between the form and the spoken answers are detected from the record rather than imagined. A sample replay (demo-session.js) runs the whole interview and report with no microphone, no socket and no API call, so judges and reviewers can see it without granting mic access.",
+      "architecture_diagram": "  browser (static)                       Vercel functions\n+-----------------------+   token    +------------------+\n| DS-160 intake (form)  |<---------->| api/token.js     |\n| AudioWorklet 24 kHz   |            +------------------+\n| WebSocket s2s session |   report   +------------------+\n| transcript -> report  |<---------->| api/report.js    |\n+-----------+-----------+            +---------+--------+\n            |                                  |\n            v                                  v\n   demo-session.js (replay,         lib/guard.js (same-origin\n   no mic / socket / API)            + per-IP rate limit)\n",
+      "lessons": [
+        "Ground the agent in the applicant's own filed data and the interview acquires a right answer: the officer looks for divergence from the form, not for conversational quality.",
+        "The honesty constraint is a test, not a prompt. The report rewriter may not invent facts, and that guard is asserted by tests verified against a mutation battery.",
+        "Rate limits belong on both sides: a same-origin check plus per-IP limiter on the serverless functions, and a client-side limiter locked to the measured free-tier throttle window."
+      ],
+      "summary_cv": "Browser voice agent: 24 kHz PCM capture, speech-to-speech WebSocket session, structured report from the transcript, grounded in the applicant's own DS-160 so contradictions surface. Sole developer; AssemblyAI Voice Agent Hackathon (Sep 2026); MIT-licensed, in production."
+    },
+    {
+      "title": "Statistical research platform for financial time series",
+      "plain": "A home-built science lab for testing ideas about market data: every hypothesis has to clear statistical thresholds that were fixed before the experiment ran.",
+      "summary": "Independent project, 2025 -- present. A Python research stack -- data pipeline, event-driven simulator with realistic transaction costs, telemetry -- bound to statistical acceptance thresholds registered before any experiment ran (bootstrapped lower-bound Sharpe ratio, deflated Sharpe ratio, multiple-testing correction). Over sixty hypotheses tested and rejected by the data rather than by discretion; automated audits for look-ahead and optimistic fills, and mutation-tested guards on the execution path.",
+      "stack": [
+        "Python",
+        "pandas / NumPy",
+        "Event-driven simulator",
+        "Block bootstrap",
+        "pytest + mutation testing"
+      ],
+      "scale": "60+ hypotheses tested; companion systematic mapping (SURI) on the literature side",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "A pre-registered research platform for evaluating hypotheses about financial time series without fooling itself. Every claim is gated by statistical lower bounds fixed before the experiment, every candidate is tested out-of-sample on a held-out window, and the execution path carries mutation-tested guards.",
+      "architecture": "Strategy modules under BOT/research_backtests/strategies/ each declare one family (entry, exit, sizing). A shared cost model applies broker-verified spread, commission, and slippage before any metric is computed. The runner sweeps capital and risk-per-trade grids, then computes block-bootstrap lower-bound Sharpe (SR_LB), Probabilistic Sharpe Ratio (PSR), and Deflated Sharpe Ratio (DSR) over the trade series; promotion is gated on all three statistics jointly, with a multiple-testing haircut (exact thresholds are pre-registered internally). A separate bias auditor inspects each candidate for lookahead, same-bar fills, profit concentration, and overfit. A companion systematic mapping (SURI) applies the same pre-registration discipline to the literature.",
+      "architecture_diagram": "   data/*.csv           strategies/         shared/\n+--------------+    +----------------+    +---------------+\n| multi-asset  |--->| 60+ backtests  |--->| cost model    |\n| OHLCV data   |    | (family/file)  |    | (broker $/lot)|\n+--------------+    +-------+--------+    +------+--------+\n                            |                    |\n                            v                    v\n                    +-------+--------------------+----+\n                    | bias auditor                    |\n                    | (lookahead, fill, concentration)|\n                    +---------------+-----------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | SR_LB / PSR / DSR gates |\n                       +------------+------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | CANDIDATE / KILL label  |\n                       +-------------------------+\n",
+      "lessons": [
+        "Sharpe-lower-bound is leverage-invariant; CAGR is leverage-illusion. Ranking by SR_LB and choosing sizing after edge selection avoided multiple tail-driven false positives that ranked top by CAGR.",
+        "A same-day daily feature is lookahead in an intraday strategy: a carry-trend candidate looked PF 2.58 pre-audit and collapsed to PF 1.00 once the daily close was lagged. The bug-class rule now lives as a sacred rule.",
+        "Broker reality beats research defaults: forcing one micro-lot fill on every symbol surfaced a $6/lot round-turn commission that the research cost model had under-estimated by 5-8x for some pairs.",
+        "A tail-driven candidate cannot be forward-validated in human timeframes: if ~89% of the edge is in the top 1.5% of campaigns, 12 forward windows give ~84% probability of a zero-tail outcome -- a useful prior to retire the family early rather than wait years."
+      ],
+      "summary_cv": "Python research stack bound to acceptance thresholds registered before any experiment ran (bootstrapped lower-bound Sharpe, deflated Sharpe, multiple-testing correction); 60+ hypotheses rejected by the data; mutation-tested guards."
+    },
+    {
+      "title": "SURI -- Systematic mapping of quantum-resistant blockchain security",
+      "plain": "I mapped what the research world knows about quantum computers threatening blockchains -- following a protocol written down before the search began, so anyone can rebuild the same map.",
+      "summary": "Undergraduate research with Dr. Efat Fathalla (VMI ECE), 2025 -- present. A systematic mapping of quantum-resistant blockchain security: the literature was screened and classified against a pre-registered protocol with a full search log of 76+ queries, so the corpus is reproducible rather than curated by hand. The review pipeline is implemented in Python as idempotent build / append / repair / categorise stages, allowing the entire corpus to be rebuilt from the search log after any protocol amendment. A mid-study reclassification was reconciled by correcting the earlier categorisation rather than defending it, and documented in the protocol record. Output so far: a first-author paper accepted at IEEE UEMCON 2026 (Armonk, NY) and a second paper under revision at Computers (MDPI).",
+      "stack": [
+        "IEEE Xplore",
+        "Pre-registered protocol (PRISMA-style)",
+        "Multi-dimensional taxonomy",
+        "Coverage matrix",
+        "Python pipeline"
+      ],
+      "scale": "63 included papers, 3 research questions, 5-category grid; search log of 76+ queries; two papers (one accepted, one under revision)",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "SURI is a systematic mapping of the research at the intersection of blockchain security and quantum computing, run with a pre-registered protocol, a transparent search log, single-coder plus audit pass, and a coverage matrix so blind spots in the corpus fall out of the table. The first paper, \"Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family\", is accepted at IEEE UEMCON 2026; the second, \"A Systematic Mapping of Quantum Threats and Defenses for Blockchain\", is under revision at Computers (MDPI).",
+      "architecture": "A search log records every database query (IEEE Xplore under institutional access as the primary source, plus Google Scholar, arXiv, and three free standards/community sources -- NIST, IETF/CFRG, and the Bitcoin Improvement Proposals) with filters, hits, and selection reasons. PRISMA-style screening (title -> abstract -> full text) records inclusion and exclusion at every stage down to the 63 papers that enter synthesis. Each paper is placed in one of five primary corpus categories (Threat Models, PQC Constructions, Quantum-Native Designs, Hybrid Migrations, Benchmarks/Implementations) mapped onto the three research questions, and coded against a multi-dimensional taxonomy (threat type, affected target, mitigation, performance impact, privacy and usability, standards and governance). A coverage matrix renders the taxonomy as a table so thin quadrants -- for example only two threat-modelling papers against forty-five defence papers -- are visible at a glance. An idempotent Python pipeline (build -> append -> repair -> categorise -> PRISMA) regenerates the workbook and screening figure from source. Outputs: methodology, RQ map, taxonomy, coverage matrix, reference list, and search log.",
+      "architecture_diagram": "  IEEE Xplore + NIST     PRISMA screening        5-category grid -> 3 RQs\n+-------------------+   +------------------+   +----------------------+\n| search log        |-->| title screen     |-->| Threat Models  (RQ1) |\n| (database + query |   | abstract screen  |   | PQC Constructions    |\n|  + hits + reason) |   | full text screen |   | Quantum-Native   RQ2 |\n+-------------------+   +--------+---------+   | Hybrid Migrations    |\n                                 |             | Benchmarks     (RQ3) |\n                                 v             +----------+-----------+\n                        +--------+---------+              |\n                        | 63 included      |------------->+\n                        | papers           |              v\n                        +------------------+   +----------+-----------+\n                                               | coverage matrix      |\n                                               | (multi-dim taxonomy, |\n                                               |  blind-spot map)     |\n                                               +----------------------+\n",
+      "lessons": [
+        "A flat keyword list cannot reveal blind spots. A multi-dimensional taxonomy plus a coverage matrix makes an imbalance like two threat-modelling papers against forty-five defence papers fall out of the table automatically, which is the whole point of doing the review.",
+        "Search log discipline is load-bearing: without database / query / filter / hits-found / hits-selected / reason for every search, the review is not reproducible and reviewer #2 finds gaps you cannot justify.",
+        "Included is not the same as identified: the headline paper count is the synthesis pool after non-IEEE and survey papers are screened out, so the number that anchors every claim is 63, not the larger identified/screened set.",
+        "Relevance and role are separate axes. Conflating them -- the tempting extra 'Type: Core / Supporting / Context' column -- created false agreement in coding decisions and was removed after the first audit."
+      ],
+      "summary_cv": "Undergraduate research with Dr. Efat Fathalla (VMI ECE): literature screened against a pre-registered protocol with a 76+ query search log; idempotent Python pipeline rebuilds the corpus from the log. Paper accepted at IEEE UEMCON 2026; second under revision at Computers (MDPI)."
+    },
+    {
+      "title": "IEEE SoutheastCon 2026 -- Undergraduate Circuit Design (team lead)",
+      "plain": "A circuit-design competition where the problem is handed out that morning and the board has to work by the afternoon.",
+      "summary": "Team lead and principal designer. Designed, built and tested a digital circuit -- combinational logic with a microcontroller -- on site from a problem released that morning, under a half-day limit, leading a team of three. Top seven of forty teams from universities across the southeastern United States (Alabama, Mar 2026).",
+      "stack": [
+        "Combinational logic",
+        "Microcontroller",
+        "Breadboard prototyping",
+        "On-site debugging"
+      ],
+      "scale": "Top seven of forty teams; Mar 2026",
+      "link": null,
+      "link_label": null
+    },
+    {
+      "title": "Senior Design Capstone (EE-421X) -- wearable sensor sock",
+      "plain": "A year-long team project to design and build a sock with sensors in it, run the way a real engineering programme is run: requirements first, then design, then build.",
+      "summary": "Team member, Aug 2026 -- May 2027. Team project run as a formal systems-engineering process; contributed to the System Requirements Document and the September requirements review (concept of operations, functional block diagram, threshold and objective requirements); design and build follow.",
+      "stack": [
+        "Systems-engineering process",
+        "System Requirements Document",
+        "Concept of operations",
+        "Functional block diagram"
+      ],
+      "scale": "Aug 2026 -- May 2027; requirements review Sep 2026; design and build in progress",
+      "link": null,
+      "link_label": null
+    },
+    {
+      "title": "Motion-triggered novelty device (EE-382) -- schematic to fabricated PCB",
+      "plain": "A small gadget that senses light, sound and motion and plays audio back -- I designed the circuit board from scratch, had it manufactured and soldered it by hand.",
+      "summary": "Hardware lead, EE-382 Entrepreneurship for ECE, Spring 2026. Sole designer of the electronics: schematic and printed circuit board in KiCad, sent to fabrication, hand-assembled, and firmware for an Arduino-class microcontroller fusing light, sound and motion sensing to trigger audio playback. Debugged sensor and audio paths on the oscilloscope; teammates carried customer discovery and the business case.",
+      "stack": [
+        "KiCad (schematic + PCB)",
+        "Arduino-class microcontroller",
+        "Light / sound / motion sensors",
+        "Audio playback",
+        "Oscilloscope debugging"
+      ],
+      "scale": "Spring 2026; sole designer of the electronics; board fabricated and hand-assembled",
+      "link": null,
+      "link_label": null
+    },
     {
       "title": "Trading-research dashboard",
       "plain": "A live mission-control screen for my research projects -- one glance from any device shows what every system is doing right now.",
@@ -113,7 +223,8 @@
         "An explicit file list in the deploy script beats globs on Windows -- the same bug class (a new module silently not shipped) bit anchor.py, portfolio.py, and today.py before the rule was internalised.",
         "Tests scale with surfaces: one pytest module per page, fail-closed 503 on schema invalidity, and an isolation guard that forbids public pages from linking to authenticated routes.",
         "Two-stage subagent review caught defect classes that single-pass implementation missed: ZeroDivisionError on empty totals, BOM in PowerShell-written JSON, and $ErrorActionPreference=Stop aborting git on outside-repo globs."
-      ]
+      ],
+      "group": "earlier"
     },
     {
       "title": "LINE Official Account bot",
@@ -139,54 +250,8 @@
         "Online SQLite backup (sqlite3.backup) survives a live writer; a naive file copy can race with the WAL and produce an unreadable snapshot.",
         "Multi-owner before multi-tenant: a single SQLite file with an owner_id column shipped in days; a per-tenant database scheme would have shipped in months and not been any safer at this scale.",
         "PowerShell 5.1 writes .ps1 files as LF unless you go through .NET WriteAllText with UTF8Encoding(false) -- the parser then chokes on multi-line here-strings during deploys. Learned the hard way mid-deploy."
-      ]
-    },
-    {
-      "title": "Quantitative trading research framework",
-      "plain": "A home-built science lab for trading ideas: every idea is tested against years of market history, and only the honest survivors pass.",
-      "summary": "60+ Python backtests across multi-asset OHLCV (FX majors, FX crosses, metals, indices, crypto) with pre-registered hypotheses, walk-forward out-of-sample validation, explicit bias auditing, and probabilistic Sharpe / deflated Sharpe gates. Companion literature review followed a PRISMA-style protocol across 63 IEEE papers with a multi-dimensional taxonomy.",
-      "stack": [
-        "Python",
-        "pandas",
-        "MetaTrader 5 API",
-        "pytest"
       ],
-      "scale": "60+ backtests, PRISMA review of 63 IEEE papers",
-      "link": null,
-      "link_label": null,
-      "deep_dive_intro": "A pre-registered research framework for evaluating trading edges across many markets without fooling itself. Every claim is gated by statistical lower-bounds, every edge is tested out-of-sample on a held-out window, and every promotion to live capital requires an explicit written spec.",
-      "architecture": "Strategy modules under BOT/research_backtests/strategies/ each declare one family (entry, exit, sizing). A shared cost model applies broker-verified spread, commission, and slippage before any metric is computed. The runner sweeps capital and risk-per-trade grids, then computes block-bootstrap lower-bound Sharpe (SR_LB), Probabilistic Sharpe Ratio (PSR), and Deflated Sharpe Ratio (DSR) over the trade series; promotion is gated on all three statistics jointly, with a multiple-testing haircut (exact thresholds are pre-registered internally). A separate bias auditor inspects each candidate for lookahead, same-bar fills, profit concentration, and overfit. A companion PRISMA-style literature review classifies 63 IEEE papers across a multi-dimensional taxonomy with a coverage matrix.",
-      "architecture_diagram": "   data/*.csv           strategies/         shared/\n+--------------+    +----------------+    +---------------+\n| multi-asset  |--->| 60+ backtests  |--->| cost model    |\n| OHLCV data   |    | (family/file)  |    | (broker $/lot)|\n+--------------+    +-------+--------+    +------+--------+\n                            |                    |\n                            v                    v\n                    +-------+--------------------+----+\n                    | bias auditor                    |\n                    | (lookahead, fill, concentration)|\n                    +---------------+-----------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | SR_LB / PSR / DSR gates |\n                       +------------+------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | CANDIDATE / KILL label  |\n                       +-------------------------+\n",
-      "lessons": [
-        "Sharpe-lower-bound is leverage-invariant; CAGR is leverage-illusion. Ranking by SR_LB and choosing sizing after edge selection avoided multiple tail-driven false positives that ranked top by CAGR.",
-        "A same-day daily feature is lookahead in an intraday strategy: a carry-trend candidate looked PF 2.58 pre-audit and collapsed to PF 1.00 once the daily close was lagged. The bug-class rule now lives as a sacred rule.",
-        "Broker reality beats research defaults: forcing one micro-lot fill on every symbol surfaced a $6/lot round-turn commission that the research cost model had under-estimated by 5-8x for some pairs.",
-        "A tail-driven candidate cannot be forward-validated in human timeframes: if ~89% of the edge is in the top 1.5% of campaigns, 12 forward windows give ~84% probability of a zero-tail outcome -- a useful prior to retire the family early rather than wait years."
-      ]
-    },
-    {
-      "title": "SURI -- Systematic literature review (IEEE, PRISMA-style)",
-      "plain": "I read 63 research papers on how quantum computers could one day threaten Bitcoin -- and organised everything the field knows into one clear map.",
-      "summary": "A pre-registered, PRISMA-style systematic mapping of quantum-computing threats to blockchain systems, organised around three research questions -- what quantum threats to Bitcoin and blockchain are studied, what defences are proposed, and how ready the ecosystem is to migrate. Sixty-three IEEE papers survive screening into the synthesis pool (from a wider identified/screened set, with non-IEEE and survey papers removed) and are coded against a multi-dimensional taxonomy and a five-category corpus grid feeding a coverage matrix. The corpus is Bitcoin-heavy and grounded in post-quantum cryptography: Shor against ECDSA, Grover against SHA-256 mining, and the NIST FIPS 203/204/205 schemes (Kyber/ML-KEM, Dilithium, SPHINCS+). Companion to the quant-research framework -- the same discipline applied to the literature side of the work.",
-      "stack": [
-        "IEEE Xplore",
-        "PRISMA protocol",
-        "Multi-dimensional taxonomy",
-        "Coverage matrix",
-        "Python (pipeline)"
-      ],
-      "scale": "63 included papers, 3 RQs, 5-category grid, single-coder + audit pass; manuscript in preparation",
-      "link": null,
-      "link_label": null,
-      "deep_dive_intro": "SURI is a systematic mapping of the research at the intersection of blockchain security and quantum computing, run with the same operating discipline as the trading-research framework: a pre-registered protocol, a transparent search log, single-coder plus audit pass, and a coverage matrix so blind spots in the corpus fall out of the table. The manuscript is being drafted in Overleaf toward IEEE Access.",
-      "architecture": "A search log records every database query (IEEE Xplore under institutional access as the primary source, plus Google Scholar, arXiv, and three free standards/community sources -- NIST, IETF/CFRG, and the Bitcoin Improvement Proposals) with filters, hits, and selection reasons. PRISMA-style screening (title -> abstract -> full text) records inclusion and exclusion at every stage down to the 63 papers that enter synthesis. Each paper is placed in one of five primary corpus categories (Threat Models, PQC Constructions, Quantum-Native Designs, Hybrid Migrations, Benchmarks/Implementations) mapped onto the three research questions, and coded against a multi-dimensional taxonomy (threat type, affected target, mitigation, performance impact, privacy and usability, standards and governance). A coverage matrix renders the taxonomy as a table so thin quadrants -- for example only two threat-modelling papers against forty-five defence papers -- are visible at a glance. An idempotent Python pipeline (build -> append -> repair -> categorise -> PRISMA) regenerates the workbook and screening figure from source. Outputs: methodology, RQ map, taxonomy, coverage matrix, reference list, and search log.",
-      "architecture_diagram": "  IEEE Xplore + NIST     PRISMA screening        5-category grid -> 3 RQs\n+-------------------+   +------------------+   +----------------------+\n| search log        |-->| title screen     |-->| Threat Models  (RQ1) |\n| (database + query |   | abstract screen  |   | PQC Constructions    |\n|  + hits + reason) |   | full text screen |   | Quantum-Native   RQ2 |\n+-------------------+   +--------+---------+   | Hybrid Migrations    |\n                                 |             | Benchmarks     (RQ3) |\n                                 v             +----------+-----------+\n                        +--------+---------+              |\n                        | 63 included      |------------->+\n                        | papers           |              v\n                        +------------------+   +----------+-----------+\n                                               | coverage matrix      |\n                                               | (multi-dim taxonomy, |\n                                               |  blind-spot map)     |\n                                               +----------------------+\n",
-      "lessons": [
-        "A flat keyword list cannot reveal blind spots. A multi-dimensional taxonomy plus a coverage matrix makes an imbalance like two threat-modelling papers against forty-five defence papers fall out of the table automatically, which is the whole point of doing the review.",
-        "Search log discipline is load-bearing: without database / query / filter / hits-found / hits-selected / reason for every search, the review is not reproducible and reviewer #2 finds gaps you cannot justify.",
-        "Included is not the same as identified: the headline paper count is the synthesis pool after non-IEEE and survey papers are screened out, so the number that anchors every claim is 63, not the larger identified/screened set.",
-        "Relevance and role are separate axes. Conflating them -- the tempting extra 'Type: Core / Supporting / Context' column -- created false agreement in coding decisions and was removed after the first audit."
-      ]
+      "group": "earlier"
     },
     {
       "title": "Money Compass -- personal wealth aggregator",
@@ -212,7 +277,8 @@
         "Card-to-card payments and peer transfers are not income or expense: an autopay between two of your own accounts double-counts on both sides and Zelle looks like salary unless you carve both into an excluded-category set shared by every consumer of the snapshot.",
         "A credential can leak through an exception, not just a log line: a raw request error carried the Basic-auth access URL out through stderr, so the client now re-raises with HTTP status only -- diagnostics never carry the URL.",
         "A leak-guard that enumerates every /api route by name is stronger than a code-review habit: the money summary route is only trustworthy on a public-facing dashboard because a test fails the build the moment it is not in the auth-gated list."
-      ]
+      ],
+      "group": "earlier"
     },
     {
       "title": "Edge Factory -- research-automation pipeline",
@@ -235,7 +301,8 @@
         "Where a candidate dies is itself a signal: a prescreen kill short-circuits before any dossier is written while a gate rejection produces one, so the mere presence of a dossier tells you the family passed payoff sanity and failed on statistics.",
         "The multiple-testing haircut has to scale with the search: the deflated-Sharpe penalty takes the number of expanded variants as N_trials, so a station that fans out more candidates automatically makes the gate harder to pass rather than easier.",
         "A research pipeline needs a coded air-gap, not a policy: the dossier stage is the terminal node with no function that reaches an order path, so a GO_CANDIDATE label is a research annotation that cannot become a live trade by accident."
-      ]
+      ],
+      "group": "earlier"
     },
     {
       "title": "Live web karaoke -- group mode",
@@ -260,7 +327,8 @@
         "There is a physical floor you cannot code away: Opus encode/decode plus one-way WiFi plus the OS output buffer is tens of milliseconds no matter what, so a phone held in the hand always doubles its own air-path voice against the late speaker -- true monitoring belongs on the phone, not across a round trip.",
         "A deferred ES module can lose a race with a static third-party script: loading the YouTube IFrame API from inside the module after registering the ready callback fixed a player that hung whenever the API fired before the module was live.",
         "A service worker will happily serve yesterday's build: after a stale render, the rule became bump the asset query string and CACHE_VERSION in the same commit, because bumping only one still ships the cached copy."
-      ]
+      ],
+      "group": "earlier"
     },
     {
       "title": "Trading Journal -- decision-intelligence layer",
@@ -285,7 +353,8 @@
         "A verdict on a real-money track has to refuse below a minimum sample: with too few manual closes the scorecard returns INSUFFICIENT_SAMPLE and explicitly does not authorise scaling risk, which is a safety property, not a UI state.",
         "The prose is decorative and the numbers are authoritative: the model narrates the day but a rule forbids it from quoting raw field or JSON-key names, and the note fails soft to a deterministic template so a model outage never blocks the daily card.",
         "A cross-tree import will 502 on deploy: the producer originally imported a dashboard helper that does not exist in the live-trading tree, so it was rewritten to an inline temp-plus-replace write to keep the two deployment trees independent."
-      ]
+      ],
+      "group": "earlier"
     }
   ],
   "skills": [
@@ -293,52 +362,70 @@
       "category": "Languages",
       "items": [
         "Python",
-        "JavaScript (ES2020)",
-        "TypeScript",
+        "C",
+        "C++",
+        "MATLAB",
+        "JavaScript / TypeScript",
         "PowerShell",
         "Bash"
       ]
     },
     {
-      "category": "Web / API",
+      "category": "Hardware",
       "items": [
-        "FastAPI",
-        "Jinja2",
-        "HTML5 / CSS3",
-        "REST"
+        "KiCad (schematic to fabricated PCB)",
+        "LTspice / Multisim",
+        "MATLAB / Simulink",
+        "Arduino and Raspberry Pi",
+        "I2C / SPI / UART",
+        "Oscilloscope, soldering and board assembly"
       ]
     },
     {
-      "category": "Data / Quant",
+      "category": "Engineering",
       "items": [
-        "pandas",
-        "NumPy",
-        "MetaTrader 5 API",
-        "Probabilistic Sharpe / Deflated Sharpe"
+        "Digital systems design",
+        "Microcontrollers",
+        "Circuit design and analysis",
+        "Signal processing"
+      ]
+    },
+    {
+      "category": "Research",
+      "items": [
+        "Systematic review methodology",
+        "Statistical hypothesis testing",
+        "Bootstrapped / deflated Sharpe ratio",
+        "IEEE technical writing"
       ]
     },
     {
       "category": "Tooling",
       "items": [
-        "pytest",
-        "pyright",
-        "Playwright",
         "Git",
-        "GitHub Actions"
+        "pytest",
+        "pandas / NumPy",
+        "pyright",
+        "Playwright"
       ]
     },
     {
-      "category": "Infrastructure",
+      "category": "Web / Infrastructure",
       "items": [
-        "Windows Server",
-        "Tailscale Funnel",
-        "Scheduled Tasks",
-        "SQLite",
-        "LINE Messaging API"
+        "FastAPI",
+        "Jinja2",
+        "Linux and Windows server administration",
+        "Scheduled-job automation",
+        "SQLite"
       ]
     }
   ],
   "awards": [
+    {
+      "date": "2026-09",
+      "title": "President, Eta Kappa Nu (IEEE-HKN), VMI chapter, 2026-27",
+      "where": "VMI"
+    },
     {
       "date": "2026-05",
       "title": "OGA Representative, Hotel Company -- new-cadet orientation lead",
@@ -372,7 +459,7 @@
     {
       "date": "2024-04",
       "title": "Commendation from the Chief of Defence Forces",
-      "where": "US Reserve Command HQ"
+      "where": "Royal Thai Armed Forces"
     },
     {
       "date": "2024-01",
@@ -381,8 +468,8 @@
     },
     {
       "date": "2022-05",
-      "title": "Selected #1 of 348 for the army study-in-US programme",
-      "where": "Royal Thai Army Cadet School"
+      "title": "Selected first of the class for the Royal Thai Army's overseas study programme to the United States",
+      "where": "Chulachomklao Royal Military Academy (CRMA)"
     },
     {
       "date": "2022-02",
@@ -400,33 +487,42 @@
       "where": "AFAPS"
     }
   ],
-  "footer_note": "Last updated: 2026-07-17. Content here is a public summary; the formal resume is available on request.",
+  "footer_note": "Last updated: 2026-10-07. Content here is a public summary; the formal CV is available on request.",
   "grad_school": {
-    "headline": "Graduate school -- ECE / quantitative methods",
-    "tagline": "Academic record, research interests, and references.",
+    "headline": "Graduate school -- MS Electrical Engineering, Fall 2027",
+    "tagline": "Academic record, research direction, publications, and references.",
     "purpose": "This page is a focused single-view for graduate-school admissions readers. The same content lives across /portfolio/about, /portfolio/education, and /portfolio/projects, but here it is reorganised around the questions an admissions reader asks first: what is the academic record, what is the research direction, and who can vouch for the work.",
     "sections": [
       {
         "title": "Academic record (VMI)",
-        "body": "Bachelor of Science in Electrical and Computer Engineering, Institute Honors Program of Virginia Military Institute, Class of 2027. Overall GPA 3.79 / Major GPA 4.00. Term GPA 4.00 in Year 2 Term 1 and Year 2 Term 2 (both all-A semesters). Term GPA 3.81 in Year 3 Term 1, Term GPA 3.70 in Year 3 Term 2. Coursework spans Discrete Mathematics, Digital Systems Design, Electrical Circuit Analysis, Computer Architecture, Microcontrollers, Electronics, Signal & System Analysis, Modern Physics I, Nuclear Reactor Engineering."
+        "body": "Bachelor of Science in Electrical and Computer Engineering, Institute Honors Program of Virginia Military Institute, Class of 2027. Overall GPA 3.81 / Major GPA 4.00. Term GPA 4.00 in Year 2 Term 1 and Year 2 Term 2 (both all-A semesters). Term GPA 3.81 in Year 3 Term 1, Term GPA 3.70 in Year 3 Term 2. Coursework: Signal & System Analysis, Computer Architecture, Digital Systems Design, Microcontrollers, Electronics, Probability & Statistics for Engineers, Discrete Mathematics, Differential Equations; Senior Design Capstone (EE-421X, in progress)."
       },
       {
         "title": "Honors and competitions",
-        "body": "Tau Beta Pi (Engineering Honor Society, Virginia Chapter) -- inducted Nov 2025. IEEE SoutheastCon 2026 -- top 7 of 40 teams, Undergraduate Circuit Design (Alabama, Mar 2026). Tau Beta Pi Conference -- VMI representative (Mar 2026). OGA Representative, Hotel Company -- new-cadet orientation lead (May 2026). Commendation from the Chief of Defence Forces at the US Reserve Command HQ (Apr 2024). VMI Institute Honors Program scholarship since Jul 2024. Selected first of 348 cadets at the Royal Thai Army Cadet School for the army's study-in-US programme (May 2022). Honorable Mention, 20th National Physics Olympiad (Dec 2021)."
+        "body": "President, Eta Kappa Nu (IEEE-HKN), VMI chapter (2026 -- 2027). Tau Beta Pi (Engineering Honor Society, Virginia Chapter) -- inducted Nov 2025; VMI representative, Tau Beta Pi Convention (Mar 2026). IEEE SoutheastCon 2026 -- top 7 of 40 teams, Undergraduate Circuit Design (Alabama, Mar 2026). OGA Representative, Hotel Company (May 2026 -- present). Commendation from the Chief of Defence Forces, Royal Thai Armed Forces (Apr 2024). VMI Institute Honors Program and Honors Scholarship (2024 -- present). Selected first of the class at Chulachomklao Royal Military Academy for the Royal Thai Army's overseas study programme to the United States (2022). Honourable Mention, 20th Thailand National Physics Olympiad (Dec 2021)."
       },
       {
         "title": "Research direction",
-        "body": "Quantitative methods applied to financial time series: pre-registered hypotheses, walk-forward out-of-sample validation, probabilistic Sharpe and deflated Sharpe gates, block-bootstrap confidence intervals. Companion literature review followed a PRISMA-style protocol across 63 IEEE papers with a multi-dimensional taxonomy. Adjacent interests: digital signal processing, control systems applied to high-frequency decision making.",
+        "body": "Secure and embedded systems, with a focus on post-quantum cryptographic engineering for resource-constrained devices. Current research: a systematic mapping of quantum-resistant blockchain security with Dr. Efat Fathalla (VMI ECE) -- first-author paper accepted at IEEE UEMCON 2026, a second under revision at Computers (MDPI), and a third manuscript in preparation from the Institute Honors thesis. Earlier independent work applied the same pre-registration discipline to statistical validation of hypotheses on financial time series.",
         "items": [
-          "Pre-registered hypotheses + held-out OOS validation",
-          "Block-bootstrap lower-bound Sharpe + PSR + DSR with multiple-testing haircut",
-          "Bias auditing (lookahead, fill realism, profit concentration, overfit)",
-          "Cost realism -- broker-verified spread / commission / slippage cross-checked against live demo execution"
+          "Pre-registered review protocol with a full search log (76+ queries) -- corpus rebuildable from the log",
+          "Idempotent Python pipeline: build / append / repair / categorise",
+          "Hardware: KiCad schematic-to-fabricated PCB; microcontroller firmware; oscilloscope debugging",
+          "Statistics: bootstrapped lower-bound Sharpe, deflated Sharpe, multiple-testing correction -- thresholds fixed before any experiment"
         ]
       },
       {
-        "title": "Statement of purpose (in preparation)",
-        "body": "A formal statement of purpose is in preparation. Email below for an early draft or for an in-person conversation."
+        "title": "Publications",
+        "items": [
+          "K. Mettasat and E. Fathalla. \"Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family.\" IEEE UEMCON 2026, Armonk, NY. Accepted; to appear in IEEE Xplore.",
+          "K. Mettasat, E. Fathalla and M. Azab. \"A Systematic Mapping of Quantum Threats and Defenses for Blockchain.\" Computers (MDPI). Under revision following first-round review.",
+          "K. Mettasat and E. Fathalla. Post-quantum-secure blockchain architecture -- manuscript arising from the Institute Honors thesis. In preparation, 2027."
+        ],
+        "body": ""
+      },
+      {
+        "title": "Statement of purpose",
+        "body": "Applying for MS programs in Electrical Engineering for Fall 2027. Statement of purpose and transcript available on request by email."
       },
       {
         "title": "References",
@@ -435,13 +531,20 @@
     ],
     "cta_links": [
       {
-        "label": "Email for transcript / SoP draft",
+        "label": "Email for transcript / statement of purpose",
         "href": "mailto:mettasatk27@vmi.edu"
       },
       {
-        "label": "Download portfolio as PDF",
-        "href": "/portfolio.pdf",
-        "note": "single-file CV"
+        "label": "ORCID 0009-0002-6260-8196",
+        "href": "https://orcid.org/0009-0002-6260-8196"
+      },
+      {
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/kanokpon-mettasat/"
+      },
+      {
+        "label": "Download one-page CV (PDF)",
+        "href": "/portfolio-cv.pdf"
       },
       {
         "label": "Full education page",
@@ -562,33 +665,34 @@
   "internship": {
     "headline": "Internship portfolio -- summer 2027 + 2028",
     "tagline": "What I can ship in 10-12 weeks, what I am open to, and how to reach me.",
-    "purpose": "This page is for technical-internship recruiters (SWE, ML, infra, quant-research). Goal: in two minutes a hiring manager can decide whether my profile fits their team's bench for the next intern slot. The /portfolio/recruit page is broader (full-time-recruit-focused); this one focuses on what an intern can deliver in a single summer.",
+    "purpose": "This page is for technical-internship recruiters (embedded, SWE, infra, research). Goal: in two minutes a hiring manager can decide whether my profile fits their team's bench for the next intern slot. The /portfolio/recruit page is broader (full-time-recruit-focused); this one focuses on what an intern can deliver in a single summer.",
     "sections": [
       {
         "title": "Shippable summer projects (what I have actually built)",
-        "body": "Three full-stack projects, all running today. Each was built in 4-8 weeks of focused effort and includes deployment + tests.",
+        "body": "Projects built in weeks, not semesters -- each includes deployment and tests.",
         "items": [
-          "FastAPI + Jinja2 dashboard with 12+ modules + ~679 tests + Tailscale Funnel deploy. See /portfolio/projects/dashboard.",
-          "LINE Official Account bot with multi-owner + daily SQLite snapshots + scheduler. See /portfolio/projects/line-bot.",
-          "Quantitative trading research framework with 60+ backtests + PRISMA literature review (SURI, 63 IEEE papers). See /portfolio/projects/quant and /portfolio/projects/suri."
+          "Officer Parker -- real-time voice agent (WebSocket speech-to-speech, Vercel serverless, mutation-tested guards). See /portfolio/projects/officer-parker.",
+          "Motion-triggered device -- KiCad schematic to fabricated PCB, Arduino-class firmware. See /portfolio/projects.",
+          "FastAPI + Jinja2 dashboard with 12+ modules + ~679 tests. See /portfolio/projects/dashboard.",
+          "LINE Official Account bot with multi-owner + daily SQLite snapshots + scheduler. See /portfolio/projects/line-bot."
         ]
       },
       {
         "title": "Tech I can show up productive on Day 1",
         "items": [
           "Python (FastAPI, pytest, pyright) -- production-shipped",
-          "Test-driven + subagent-driven development workflow",
-          "Windows + Linux ops (Tailscale, scheduled tasks, systemd-style restart loops)",
-          "Git + branch hygiene (SDD task-by-task commits + two-stage review)",
-          "JSON-first data design (schemas in code, validators in tests)"
+          "C / C++ on Arduino-class microcontrollers; KiCad",
+          "Test-driven development; mutation-tested guards",
+          "Linux + Windows ops (scheduled tasks, restart loops, fail-closed deploy scripts)",
+          "Git + branch hygiene (task-by-task commits + two-stage review)"
         ]
       },
       {
         "title": "Tech I am learning + open to",
         "items": [
-          "Rust (control-systems projects on the horizon)",
-          "PyTorch / JAX for the ML side of quant research",
-          "C / FPGA (Vivado) -- VMI ECE coursework feeds this",
+          "Post-quantum cryptography implementations on constrained devices (ML-KEM / ML-DSA)",
+          "FPGA (Vivado) -- VMI ECE coursework feeds this",
+          "Rust for embedded targets",
           "Distributed systems patterns (Kleppmann)"
         ]
       },
@@ -611,9 +715,12 @@
         "href": "https://github.com/gun321h-creator"
       },
       {
-        "label": "Download portfolio as PDF",
-        "href": "/portfolio.pdf",
-        "note": "single-file CV"
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/kanokpon-mettasat/"
+      },
+      {
+        "label": "Download one-page CV (PDF)",
+        "href": "/portfolio-cv.pdf"
       },
       {
         "label": "Full recruiter page",
@@ -704,21 +811,21 @@
         "title": "Top 5 skills",
         "body": "Skills graded by what shows up in shipped code, not what is on a CV. Each is exercised in at least one of the three projects below.",
         "items": [
-          "Python (FastAPI services, pytest, pyright; ~7k production LOC across dashboard + LINE bot)",
-          "Quant research tooling (pandas, MetaTrader 5 API, probabilistic Sharpe + deflated Sharpe gates)",
-          "Test-driven development (~679 dashboard tests; two-stage review discipline)",
-          "Windows ops (Tailscale Funnel, scheduled tasks, PowerShell deploy scripts)",
-          "API integrations (LINE Messaging API multi-owner; HTTP Basic Auth fail-closed)"
+          "Python (FastAPI services, pytest, pyright; production-shipped)",
+          "Embedded hardware (KiCad schematic-to-fabricated PCB, Arduino-class firmware, I2C / SPI / UART, oscilloscope debugging)",
+          "Statistical research tooling (pandas / NumPy, bootstrapped and deflated Sharpe gates, mutation-tested guards)",
+          "Real-time web (WebSocket speech-to-speech, AudioWorklet capture, Vercel serverless functions)",
+          "Ops (Linux and Windows server administration, scheduled-job automation, fail-closed deploy scripts)"
         ]
       },
       {
         "title": "Top 3 projects",
-        "body": "Each is real, shipped, and running today. Click through for deep-dives.",
+        "body": "Each is real and shipped. Click through for deep-dives.",
         "items": [
-          "Trading-research dashboard -- 12+ modules, ~679 tests, Tailscale Funnel public deploy. See /portfolio/projects/dashboard.",
-          "LINE Official Account bot -- multi-owner, daily SQLite snapshots, pre-alert dedupe, self-healing restart loop. See /portfolio/projects/line-bot.",
-          "Quantitative trading research framework -- 60+ backtests, walk-forward OOS, DSR/PSR gates. See /portfolio/projects/quant.",
-          "SURI -- PRISMA-style systematic literature review of 63 IEEE papers + multi-dimensional taxonomy. See /portfolio/projects/suri."
+          "Officer Parker -- real-time voice agent for mock US visa interviews; MIT-licensed, in production. See /portfolio/projects/officer-parker.",
+          "Statistical research platform for financial time series -- 60+ hypotheses, pre-registered thresholds, mutation-tested guards. See /portfolio/projects/quant.",
+          "SURI -- systematic mapping of quantum-resistant blockchain security; IEEE UEMCON 2026 paper accepted. See /portfolio/projects/suri.",
+          "Earlier software: trading-research dashboard and LINE Official Account bot. See /portfolio/projects."
         ]
       },
       {
@@ -745,9 +852,12 @@
         "href": "https://github.com/gun321h-creator"
       },
       {
-        "label": "Download portfolio as PDF",
-        "href": "/portfolio.pdf",
-        "note": "single-file CV"
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/kanokpon-mettasat/"
+      },
+      {
+        "label": "Download one-page CV (PDF)",
+        "href": "/portfolio-cv.pdf"
       },
       {
         "label": "Full projects list",
@@ -1891,5 +2001,31 @@
       "Any claim about what is tradeable. This is backtest research on historical price data. Nothing here is a recommendation, and no result on this page should be read as one."
     ],
     "falsification": "If the positive control fails, this page is withdrawn rather than defended. If any family listed here is later shown to clear the gate under a corrected implementation, that entry is retracted in place, dated, with the original text left visible rather than deleted."
-  }
+  },
+  "contact_linkedin": "https://www.linkedin.com/in/kanokpon-mettasat/",
+  "contact_orcid": "https://orcid.org/0009-0002-6260-8196",
+  "about_cv": "ECE cadet at Virginia Military Institute (Class of 2027, Institute Honors Program), applying to MS programs in Electrical Engineering for Fall 2027: secure and embedded systems, post-quantum cryptographic engineering for resource-constrained devices. Undergraduate researcher on quantum-resistant blockchain security (first-author paper accepted at IEEE UEMCON 2026; second under revision at Computers, MDPI). Hardware lead on a fabricated KiCad PCB; team lead at IEEE SoutheastCon 2026 (top seven of forty); sole developer of Officer Parker, a real-time voice agent. President, Eta Kappa Nu (IEEE-HKN), VMI, 2026-27.",
+  "publications": [
+    {
+      "authors": "K. Mettasat and E. Fathalla",
+      "title": "Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family",
+      "venue": "2026 IEEE 17th Annual Ubiquitous Computing, Electronics & Mobile Communication Conference (UEMCON), Armonk, New York",
+      "date": "Oct 2026",
+      "status": "Accepted; to appear in IEEE Xplore"
+    },
+    {
+      "authors": "K. Mettasat, E. Fathalla and M. Azab",
+      "title": "A Systematic Mapping of Quantum Threats and Defenses for Blockchain",
+      "venue": "Computers (MDPI), Special Issue on Intelligent Systems Security",
+      "date": "2026",
+      "status": "Under revision following first-round review"
+    },
+    {
+      "authors": "K. Mettasat and E. Fathalla",
+      "title": "Post-quantum-secure blockchain architecture (manuscript arising from the Institute Honors thesis)",
+      "venue": "",
+      "date": "2027",
+      "status": "In preparation"
+    }
+  ]
 }

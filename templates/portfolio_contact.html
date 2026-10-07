@@ -14,6 +14,19 @@
         GitHub: <a href="{{ p.contact_github }}" rel="me noopener" target="_blank">{{ p.contact_github }}</a>
       </p>
       {% endif %}
+      {% if p.contact_linkedin %}
+      <p class="contact-line">
+        LinkedIn: <a href="{{ p.contact_linkedin }}" rel="me noopener" target="_blank">{{ p.contact_linkedin }}</a>
+      </p>
+      {% endif %}
+      {% if p.contact_orcid %}
+      <p class="contact-line">
+        ORCID: <a href="{{ p.contact_orcid }}" rel="me noopener" target="_blank">{{ p.contact_orcid }}</a>
+      </p>
+      {% endif %}
+      <p class="contact-line">
+        One-page CV: <a href="/portfolio-cv.pdf">download PDF</a>
+      </p>
     </div>
     <p class="footer-note muted">{{ p.footer_note | safe }}</p>
   </section>

@@ -49,7 +49,10 @@
   <script type="module" src="/static/portfolio.js?v={{ build }}" defer></script>
 {% endblock %}
 {% block main_pane %}
-<div class="ide-page" data-page="{{ current_page_id }}">
+{# `data-page` moved to <body> in pixel_chrome_base.html -- portfolio.js reads
+   `document.body.dataset.page`, so on this div it was invisible to the script
+   and the view-source modal fell back to dumping the whole file. #}
+<div class="ide-page">
 
 {# Skip-to-content link for keyboard / screen-reader users (kept from v1.2 F3). #}
 <a class="skip-link" href="#main-editor">Skip to content</a>
@@ -112,12 +115,26 @@
     {% if p.contact_github %}
       <a class="github-link" href="{{ p.contact_github }}" rel="noopener" target="_blank">GitHub</a>
     {% endif %}
+    {% if p.contact_linkedin %}
+      <a class="github-link" href="{{ p.contact_linkedin }}" rel="noopener" target="_blank">LinkedIn</a>
+    {% endif %}
+    {% if p.contact_orcid %}
+      <a class="github-link" href="{{ p.contact_orcid }}" rel="noopener" target="_blank">ORCID</a>
+    {% endif %}
     {% if now %}
       <button class="now-playing" data-since="{{ now.since }}">&#9679; working on: {{ now.status }}</button>
     {% else %}
       <span class="ok">&#9679; online</span>
     {% endif %}
-    <button class="deploy" data-deploy-iso="2026-05-23T00:00:00Z">last deploy 2026-05-23</button>
+    {# Freshness claim. Was a hardcoded "last deploy 2026-05-23" that went
+       stale the day after it was typed. Now derived from portfolio.json's
+       mtime (portfolio.content_updated_iso), and the label says "content
+       updated" because that is what the timestamp actually measures -- the
+       app has no way to observe a deploy. If the timestamp is unreadable the
+       button is omitted: no claim beats a wrong one. #}
+    {% if content_updated %}
+      <button class="deploy" data-updated-iso="{{ content_updated }}">content updated {{ content_updated[:10] }}</button>
+    {% endif %}
   </footer>
 
   <!-- Cmd-K palette (hidden) -->

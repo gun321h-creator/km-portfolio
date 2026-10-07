@@ -185,8 +185,74 @@
     </g>
   </g>
 
+  {% elif _id == 'officer-parker' %}
+  {# microphone + live waveform: a voice interview in progress #}
+  <g>
+    <rect x="276" y="62" width="48" height="84" rx="24" fill="#46617E"/>
+    <rect x="290" y="76" width="20" height="52" rx="10" fill="#2C3E52"/>
+    <path d="M258 128 a42 42 0 0 0 84 0" fill="none" stroke="#D4A947" stroke-width="5" stroke-linecap="round"/>
+    <line x1="300" y1="170" x2="300" y2="192" stroke="#D4A947" stroke-width="5" stroke-linecap="round"/>
+    <line x1="278" y1="192" x2="322" y2="192" stroke="#D4A947" stroke-width="5" stroke-linecap="round"/>
+    <g stroke="#EDE4D3" stroke-opacity="0.7" stroke-width="5" stroke-linecap="round" class="th-wave">
+      <line x1="150" y1="118" x2="150" y2="134"/>
+      <line x1="172" y1="104" x2="172" y2="148"/>
+      <line x1="194" y1="96" x2="194" y2="156"/>
+      <line x1="216" y1="110" x2="216" y2="142"/>
+      <line x1="384" y1="110" x2="384" y2="142"/>
+      <line x1="406" y1="96" x2="406" y2="156"/>
+      <line x1="428" y1="104" x2="428" y2="148"/>
+      <line x1="450" y1="118" x2="450" y2="134"/>
+    </g>
+  </g>
+
+  {% elif _id == 'southeastcon' %}
+  {# combinational logic: two gates feeding a chip, built against the clock #}
+  <g fill="none" stroke="#46617E" stroke-width="6" stroke-linejoin="round">
+    <path d="M196 70 h40 a26 26 0 0 1 0 52 h-40 z"/>
+    <path d="M196 124 h40 a26 26 0 0 1 0 52 h-40 z"/>
+    <line x1="166" y1="84" x2="196" y2="84"/><line x1="166" y1="108" x2="196" y2="108"/>
+    <line x1="166" y1="138" x2="196" y2="138"/><line x1="166" y1="162" x2="196" y2="162"/>
+    <line x1="262" y1="96" x2="300" y2="96"/><line x1="262" y1="150" x2="300" y2="150"/>
+  </g>
+  <rect x="300" y="78" width="96" height="90" rx="6" fill="#2C3E52" stroke="#D4A947" stroke-width="4"/>
+  <g stroke="#D4A947" stroke-width="4" stroke-linecap="round">
+    <line x1="396" y1="96" x2="430" y2="96"/><line x1="396" y1="123" x2="430" y2="123"/><line x1="396" y1="150" x2="430" y2="150"/>
+  </g>
+  <circle cx="348" cy="123" r="16" fill="none" stroke="#D4A947" stroke-width="4"/>
+  <line x1="348" y1="123" x2="348" y2="111" stroke="#D4A947" stroke-width="4" stroke-linecap="round"/>
+  <line x1="348" y1="123" x2="357" y2="128" stroke="#D4A947" stroke-width="4" stroke-linecap="round"/>
+
+  {% elif _id == 'capstone-sock' %}
+  {# wearable sensor sock: sock outline with sensor nodes #}
+  <g>
+    <path d="M262 52 h60 v84 c0 22 14 36 36 44 l44 16 c16 6 18 30 0 36 h-110 c-24 0 -34 -14 -34 -36 z" fill="#2C3E52" stroke="#46617E" stroke-width="5" stroke-linejoin="round"/>
+    <rect x="262" y="52" width="60" height="22" fill="#46617E"/>
+    <g fill="#D4A947" class="th-pulse">
+      <circle cx="292" cy="112" r="6"/><circle cx="300" cy="156" r="6"/><circle cx="346" cy="196" r="6"/><circle cx="386" cy="208" r="6"/>
+    </g>
+    <path d="M292 112 L300 156 L346 196 L386 208" fill="none" stroke="#D4A947" stroke-width="2.5" stroke-dasharray="5 5"/>
+  </g>
+
+  {% elif _id == 'ee382-pcb' %}
+  {# fabricated PCB: board outline, traces, chip, mounting holes #}
+  <g>
+    <rect x="170" y="56" width="260" height="128" rx="8" fill="#2C3E52" stroke="#46617E" stroke-width="5"/>
+    <g fill="#14100D" stroke="#D4A947" stroke-width="2.5">
+      <circle cx="186" cy="72" r="5"/><circle cx="414" cy="72" r="5"/><circle cx="186" cy="168" r="5"/><circle cx="414" cy="168" r="5"/>
+    </g>
+    <rect x="274" y="96" width="52" height="48" rx="3" fill="#14100D" stroke="#D4A947" stroke-width="4"/>
+    <g stroke="#D4A947" stroke-width="3" fill="none" stroke-linecap="round">
+      <path d="M274 108 h-30 l-14 -14 h-30"/><path d="M274 132 h-30 l-14 14 h-30"/>
+      <path d="M326 108 h30 l14 -14 h30"/><path d="M326 132 h30 l14 14 h30"/>
+      <path d="M300 96 v-14 l-16 -10"/><path d="M300 144 v14 l16 10"/>
+    </g>
+    <g fill="#D4A947">
+      <circle cx="200" cy="94" r="3.5"/><circle cx="200" cy="146" r="3.5"/><circle cx="400" cy="94" r="3.5"/><circle cx="400" cy="146" r="3.5"/>
+    </g>
+  </g>
+
   {% else %}
-  {# fallback for a future 9th project: brand medallion #}
+  {# fallback for a future project without a crafted thumb: brand medallion #}
   <g>
     <circle cx="300" cy="120" r="52" fill="none" stroke="#46617E" stroke-width="6"/>
     <circle cx="300" cy="120" r="30" fill="none" stroke="#D4A947" stroke-width="5"/>

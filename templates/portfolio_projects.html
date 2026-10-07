@@ -6,12 +6,23 @@
 
   {# Polish pass 2026-07-17: warm orientation line so a non-technical visitor
      knows what they are looking at within five seconds. #}
-  <p class="gc-page-lede">Eight real, running systems — built nights and weekends
-  around cadet life. Every card opens in plain words first (what it is, why it
+  <p class="gc-page-lede">Research, hardware and shipped software — built around
+  cadet life. Every card opens in plain words first (what it is, why it
   matters), then goes technical for the engineers.
   <span class="th">อ่านง่ายก่อน แล้วค่อยลงลึกแบบวิศวกร</span></p>
 
+  {% set _ns = namespace(earlier_shown=false) %}
   {% for proj in p.projects %}
+    {# 2026-10-07: the six pre-2026 systems sit under one "Earlier work"
+       divider (portfolio.json projects[i].group == "earlier"); the CV-v5
+       set leads. Data-driven -- no project order is hardcoded here. #}
+    {% if proj.group == 'earlier' and not _ns.earlier_shown %}
+      {% set _ns.earlier_shown = true %}
+      <div class="gc-divider" role="separator"></div>
+      <h2 class="filesep" id="earlier-work">Earlier work <span class="fs-crumb">ผลงานก่อนหน้า</span></h2>
+      <p class="gc-page-lede">Software systems from 2025 -- 2026, still running. Kept
+      for the engineering record; the research and hardware work above is current.</p>
+    {% endif %}
     {# Compute anchor ID per spec decision 15: #dashboard, #line-bot, #quant.
        proj.__id is "proj-dashboard" / "proj-linebot" / "proj-quant"; strip
        the "proj-" prefix and translate "linebot" -> "line-bot". #}
@@ -34,6 +45,13 @@
           {% for s in proj.stack %}<span class="chip">{{ s }}</span>{% endfor %}
         </div>
         {% if proj.scale %}<div class="proj-scale">// {{ proj.scale }}</div>{% endif %}
+        {# 2026-10-07: outbound links (live demo / public source) when the
+           project has any. Only Officer Parker does today. #}
+        {% if proj.links %}
+          <p class="proj-links">
+            {% for l in proj.links %}<a class="proj-deep-dive-link" href="{{ l.href }}" rel="noopener" target="_blank">{{ l.label }} &nearr;</a>{% if not loop.last %} &middot; {% endif %}{% endfor %}
+          </p>
+        {% endif %}
         {# v1.3 E3: deep-dive link at bottom of card. #}
         {% if proj.deep_dive_route %}
           <a class="proj-deep-dive-link" href="{{ proj.deep_dive_route }}">Read deep-dive &rarr;</a>

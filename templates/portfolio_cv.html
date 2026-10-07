@@ -55,8 +55,10 @@
                    Arial, sans-serif;
       /* 10.5pt body -- comfortable for print, dense enough to fit one
          page after the 6 sections below. */
-      font-size: 10.5pt;
-      line-height: 1.4;
+      /* 2026-10-07: 9.6pt / 1.32 -- the Publications section joined the
+         page; the previous 10.5pt / 1.4 spilled a quarter page onto page 2. */
+      font-size: 9.6pt;
+      line-height: 1.32;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
@@ -74,8 +76,8 @@
 
     .cv-header {
       border-bottom: 2px solid var(--rule);
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .cv-name {
@@ -108,7 +110,7 @@
     /* --- Section headings ----------------------------------------- */
 
     .cv-section {
-      margin: 10px 0 4px;
+      margin: 7px 0 3px;
     }
 
     .cv-section h2 {
@@ -158,7 +160,7 @@
     /* --- Projects ------------------------------------------------- */
 
     .cv-project {
-      margin: 0 0 6px;
+      margin: 0 0 4px;
     }
 
     .cv-project-title {
@@ -187,16 +189,16 @@
       color: var(--chip-ink);
       border: 1px solid var(--rule);
       border-radius: 0;
-      padding: 1px 6px;
-      font-size: 9pt;
+      padding: 0 5px;
+      font-size: 8.3pt;
       font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
     }
 
     /* --- Footer --------------------------------------------------- */
 
     .cv-footer {
-      margin-top: 10px;
-      padding-top: 6px;
+      margin-top: 6px;
+      padding-top: 4px;
       border-top: 1px solid var(--rule);
       font-size: 9pt;
       color: var(--muted);
@@ -224,15 +226,26 @@
         <span>{{ p.contact_email }}</span>
         <span>{{ p.contact_location }}</span>
         {% if p.contact_github %}
-        <span>GitHub: gun321h-creator</span>
+        {# Link text derived from the same data as the href, so the printed
+           CV can never show one profile while linking to another. #}
+        <span><a href="{{ p.contact_github }}">{{ p.contact_github | replace('https://', '') }}</a></span>
+        {% endif %}
+        {% if p.contact_linkedin %}
+        <span><a href="{{ p.contact_linkedin }}">{{ p.contact_linkedin | replace('https://www.', '') | replace('https://', '') | trim('/') }}</a></span>
+        {% endif %}
+        {% if p.contact_orcid %}
+        <span><a href="{{ p.contact_orcid }}">ORCID {{ p.contact_orcid | replace('https://orcid.org/', '') }}</a></span>
         {% endif %}
       </p>
     </header>
 
     {# ----- 2. About ----------------------------------------------- #}
+    {# 2026-10-07: the site's About is now several paragraphs long; the
+       one-page CV prints the compact `about_cv` (same facts, no prose) and
+       falls back to `about` if the short form is ever removed. #}
     <section class="cv-section cv-about">
       <h2>About</h2>
-      <p>{{ p.about | safe }}</p>
+      <p>{{ (p.about_cv or p.about) | safe }}</p>
     </section>
 
     {# ----- 3. Education ------------------------------------------- #}
@@ -244,13 +257,36 @@
         {{ vmi.degree_or_program }}
         <span class="cv-edu-meta">({{ vmi.dates }})</span>
       </p>
+      {# GPA is pulled from data/portfolio.json (education[0].details) rather
+         than typed here. A hardcoded "Overall GPA 3.6" sat in this bullet
+         while every other surface rendered the data file's 3.79 -- the CV and
+         the resume contradicted each other for any recruiter who read both.
+         Reading the same string the other pages read makes that undriftable. #}
+      {% set _ns = namespace(gpa=None) %}
+      {% for _d in vmi.details or [] %}
+        {% if _ns.gpa is none and _d.startswith('Overall GPA') %}
+          {% set _ns.gpa = _d %}
+        {% endif %}
+      {% endfor %}
       <ul>
-        <li>Honors Program; Dean's List; Overall GPA 3.6 / Major GPA 4.00.</li>
-        <li>Tau Beta Pi -- Engineering Honor Society, Virginia Chapter (Nov 2025).</li>
+        <li>Institute Honors Program; Dean's List{% if _ns.gpa %}; {{ _ns.gpa }}{% endif %}.</li>
+        <li>President, Eta Kappa Nu (IEEE-HKN), VMI chapter (2026 -- 2027); Tau Beta Pi, Virginia Chapter (Nov 2025).</li>
         <li>IEEE SoutheastCon 2026 -- top 7 of 40 teams, Undergraduate Circuit Design (Mar 2026).</li>
-        <li>Royal Thai Army Cadet School, Class 74 -- selected #1 of 348 for the army's study-in-US program (May 2022).</li>
+        <li>Chulachomklao Royal Military Academy (CRMA), Class 74 -- selected first of the class for the Royal Thai Army's overseas study programme to the United States (2022).</li>
       </ul>
     </section>
+
+    {# ----- 3b. Publications --------------------------------------- #}
+    {% if p.publications %}
+    <section class="cv-section">
+      <h2>Publications</h2>
+      <ul>
+        {% for pub in p.publications[:2] %}
+        <li>{{ pub.authors }}. &ldquo;{{ pub.title }}.&rdquo;{% if pub.venue %} <em>{{ pub.venue }}</em>,{% endif %} {{ pub.date }}. {{ pub.status }}.</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
 
     {# ----- 4. Projects -------------------------------------------- #}
     <section class="cv-section">
@@ -258,10 +294,11 @@
       {% for proj in p.projects[:3] %}
       <div class="cv-project">
         <span class="cv-project-title">{{ proj.title }}.</span>
-        <span class="cv-project-summary">{{ proj.summary | safe }}</span>
+        {# 2026-10-07: compact `summary_cv` keeps the CV to one page; falls back to the card summary. #}
+        <span class="cv-project-summary">{{ (proj.summary_cv or proj.summary) | safe }}</span>
         {% if proj.stack %}
         <ul class="cv-chips">
-          {% for tag in proj.stack[:5] %}
+          {% for tag in proj.stack[:4] %}
           <li class="cv-chip">{{ tag }}</li>
           {% endfor %}
         </ul>

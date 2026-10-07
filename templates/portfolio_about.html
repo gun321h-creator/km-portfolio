@@ -8,6 +8,25 @@
     <p class="md-body">{{ p.about | safe }}</p>
   </section>
 
+  {% if p.publications %}
+  <div class="gc-divider" role="separator"></div>
+  <section id="publications" data-tab="about">
+    <h2 class="filesep">Publications <span class="fs-crumb">ผลงานตีพิมพ์</span></h2>
+    <ol class="awards-list">
+      {% for pub in p.publications %}
+        <li class="awards-item">
+          <span class="awards-date">{{ pub.date }}</span>
+          <span class="awards-title">{{ pub.authors }}. &ldquo;{{ pub.title }}.&rdquo;{% if pub.venue %} <em>{{ pub.venue }}</em>.{% endif %}</span>
+          <span class="awards-where">{{ pub.status }}</span>
+        </li>
+      {% endfor %}
+    </ol>
+    {% if p.contact_orcid %}
+    <p class="muted">ORCID: <a href="{{ p.contact_orcid }}" rel="me noopener" target="_blank">{{ p.contact_orcid | replace('https://', '') }}</a></p>
+    {% endif %}
+  </section>
+  {% endif %}
+
   {% if p.skills %}
   <div class="gc-divider" role="separator"></div>
   <section id="skills" data-tab="about">

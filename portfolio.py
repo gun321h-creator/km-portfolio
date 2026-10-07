@@ -21,7 +21,7 @@ import functools
 import html
 import json
 import re
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -37,24 +37,34 @@ PORTFOLIO_LATEST_MD_PATH = ROOT / "data" / "portfolio_latest.md"
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 _CODE_RE = re.compile(r"`([^`]+?)`")
 
+# 2026-10-07 refresh: projects[] now leads with the CV v5 / LinkedIn set
+# (Officer Parker, research platform, SURI, SoutheastCon, capstone, EE-382
+# PCB) and the six earlier systems follow under "Earlier work"
+# (projects[i]["group"] == "earlier"). Order MUST match projects[] order in
+# portfolio.json; every tuple below is index-aligned with it.
 _PROJECT_IDS = (
-    "proj-dashboard",
-    "proj-linebot",
+    "proj-officer-parker",
     "proj-quant",
     "proj-suri",
-    # Phase B (public deploy): deep-dive pages for the 4 projects added in
-    # Phase A. Order MUST match projects[] order in portfolio.json (verified:
-    # idx 4-7 = Money Compass, Edge Factory, Karaoke, Trading Journal).
+    "proj-southeastcon",
+    "proj-capstone-sock",
+    "proj-ee382-pcb",
+    "proj-dashboard",
+    "proj-linebot",
     "proj-money-compass",
     "proj-edge-factory",
     "proj-karaoke",
     "proj-journal",
 )
 _PROJECT_FILENAMES = (
+    "officer-parker/app.js",
+    "research-platform/README.md",
+    "suri/README.md",
+    "southeastcon-2026.md",
+    "capstone-ee421x.md",
+    "ee382-pcb.kicad_sch",
     "dashboard.ts",
     "line-bot.py",
-    "quant-research/README.md",
-    "suri/README.md",
     "money-compass.py",
     "edge-factory.py",
     "karaoke-web.ts",
@@ -91,12 +101,25 @@ _PROJECT_SVGS = (
     None,
     None,
     None,
+    # 2026-10-07: four new CV-v5 projects, no illustration asset either.
+    None,
+    None,
+    None,
+    None,
 )
+# None = list-only project (card on /portfolio/projects, no deep-dive page).
+# SoutheastCon / capstone / EE-382 carry only the CV-verified paragraph; a
+# deep-dive would have to be written from memory, so they stay list-only
+# until GUN supplies the material.
 _PROJECT_DEEP_DIVE_SLUGS = (
-    "dashboard",
-    "line-bot",
+    "officer-parker",
     "quant",
     "suri",
+    None,
+    None,
+    None,
+    "dashboard",
+    "line-bot",
     "money-compass",
     "edge-factory",
     "karaoke",
@@ -119,7 +142,9 @@ _REQUIRED_KEYS = (
 # `_render_inline` so `**bold**` becomes `<strong>` in the template.
 # Everything else uses Jinja's default auto-escape and is rendered
 # verbatim.
-_INLINE_STRING_TOP_FIELDS = ("about", "tagline", "footer_note")
+# 2026-10-07: `about_cv` (one-page CV short form) joins the set -- the CV
+# template renders it with `| safe`, so it MUST be escape-by-construction here.
+_INLINE_STRING_TOP_FIELDS = ("about", "about_cv", "tagline", "footer_note")
 
 
 class PortfolioContentError(RuntimeError):
@@ -180,9 +205,12 @@ def _render_top_inline_fields(doc: dict) -> None:
 
 
 def _render_project_summaries(doc: dict) -> None:
+    # Every project string the templates mark `| safe` goes through the
+    # sanitizer: `summary` (card + deep-dive) and `summary_cv` (one-page CV).
     for proj in doc["projects"]:
-        if isinstance(proj.get("summary"), str):
-            proj["summary"] = _render_inline(proj["summary"])
+        for key in ("summary", "summary_cv"):
+            if isinstance(proj.get(key), str):
+                proj[key] = _render_inline(proj[key])
 
 
 def _attach_project_meta(doc: dict) -> None:
@@ -205,11 +233,10 @@ def _attach_project_meta(doc: dict) -> None:
         # Both are index-aligned with _PROJECT_IDS; a 4th+ project that ships
         # without an SVG renders without one (template gates on truthy value).
         proj["svg_illustration"] = _PROJECT_SVGS[i] if i < len(_PROJECT_SVGS) else None
-        proj["deep_dive_route"] = (
-            f"/portfolio/projects/{_PROJECT_DEEP_DIVE_SLUGS[i]}"
-            if i < len(_PROJECT_DEEP_DIVE_SLUGS)
-            else None
+        slug = (
+            _PROJECT_DEEP_DIVE_SLUGS[i] if i < len(_PROJECT_DEEP_DIVE_SLUGS) else None
         )
+        proj["deep_dive_route"] = f"/portfolio/projects/{slug}" if slug else None
 
 
 _VALID_PAGE_IDS = (
@@ -220,6 +247,8 @@ _VALID_PAGE_IDS = (
     "contact",
     # v1.3 E3: per-project deep-dive pages share one template
     # (portfolio_project_detail.html); the page_id selects which project.
+    # 2026-10-07: Officer Parker deep-dive.
+    "proj-officer-parker",
     "proj-dashboard",
     "proj-linebot",
     "proj-quant",
@@ -369,6 +398,34 @@ def load_portfolio_changelog() -> list[dict[str, Any]]:
     if not isinstance(entries, list):
         return []
     return [e for e in entries if isinstance(e, dict) and "date" in e and "file" in e]
+
+
+def content_updated_iso() -> str | None:
+    """UTC ISO-8601 timestamp of the last change to the published content.
+
+    Derived from portfolio.json's mtime -- the file every page renders from.
+    Replaces a hardcoded "last deploy 2026-05-23" in the footer that was
+    months stale and could only ever be updated by hand.
+
+    Why mtime and not a date inside the data: the changelog is hand-written
+    and had already fallen behind the file it describes, so trusting it would
+    reproduce the same class of wrong claim. mtime is written by whatever
+    actually changed the content -- an edit locally, the checkout on the
+    deploy host.
+
+    NOT lru_cached: the value must change when the file does, and a stat()
+    per page render is negligible. Returns None if the file cannot be
+    stat()'d, so the caller can drop the claim rather than invent one.
+    """
+    try:
+        st = PORTFOLIO_JSON_PATH.stat()
+    except OSError:
+        return None
+    return (
+        datetime.fromtimestamp(st.st_mtime, tz=timezone.utc)
+        .replace(microsecond=0)
+        .isoformat()
+    )
 
 
 @functools.lru_cache(maxsize=1)

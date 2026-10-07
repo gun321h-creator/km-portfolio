@@ -40,12 +40,12 @@
       <a class="home-card" href="/portfolio/education" data-page-id="education">
         <span class="corner" aria-hidden="true"></span>
         <span class="home-card-title">Education</span>
-        <span class="home-card-desc">Six schools, two countries &mdash; top of the class.</span>
+        <span class="home-card-desc">{{ p.education | length }} schools, two countries &mdash; top of the class.</span>
       </a>
       <a class="home-card" href="/portfolio/projects" data-page-id="projects">
         <span class="corner" aria-hidden="true"></span>
         <span class="home-card-title">Projects</span>
-        <span class="home-card-desc">Eight real systems &mdash; see what they do.</span>
+        <span class="home-card-desc">Research, hardware, shipped software &mdash; see what they do.</span>
       </a>
     </div>
     <p class="home-audience-links">
@@ -80,8 +80,15 @@
       <a href="mailto:{{ p.contact_email }}" class="email">{{ p.contact_email }}</a>
       <span class="muted"> &middot; {{ p.contact_location }}</span>
     </p>
+    <p class="md-body home-profile-links">
+      {% if p.contact_github %}<a href="{{ p.contact_github }}" rel="me noopener" target="_blank">GitHub</a>{% endif %}
+      {% if p.contact_linkedin %}<span class="muted"> &middot; </span><a href="{{ p.contact_linkedin }}" rel="me noopener" target="_blank">LinkedIn</a>{% endif %}
+      {% if p.contact_orcid %}<span class="muted"> &middot; </span><a href="{{ p.contact_orcid }}" rel="me noopener" target="_blank">ORCID</a>{% endif %}
+    </p>
     <p class="home-pdf-link">
-      <a href="/portfolio.pdf" download>Download as PDF</a>
+      <a href="/portfolio-cv.pdf" download>Download one-page CV (PDF)</a>
+      <span class="muted"> &middot; </span>
+      <a href="/portfolio.pdf" download>Full portfolio (PDF)</a>
     </p>
   </section>
 {% endblock %}

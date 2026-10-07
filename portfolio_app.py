@@ -166,6 +166,10 @@ def _render_portfolio_page(request: Request, page_id: str) -> Response:
             "p": content,
             "changelog": portfolio_mod.load_portfolio_changelog(),
             "now": portfolio_mod.load_portfolio_now(),
+            # Footer freshness. Derived from portfolio.json's mtime; None when
+            # it cannot be read, in which case the footer states nothing at all
+            # (the previous hardcoded "last deploy 2026-05-23" was months off).
+            "content_updated": portfolio_mod.content_updated_iso(),
             "latest_md": latest_md,
             "latest_md_rendered": latest_md_rendered,
             "latest_md_mtime": latest_md_mtime,
@@ -191,6 +195,8 @@ _PAGE_ROUTES = {
     "/education": "education",
     "/projects": "projects",
     "/contact": "contact",
+    # 2026-10-07: Officer Parker deep-dive (CV v5 lead project).
+    "/projects/officer-parker": "proj-officer-parker",
     "/projects/dashboard": "proj-dashboard",
     "/projects/line-bot": "proj-linebot",
     "/projects/quant": "proj-quant",
@@ -253,6 +259,7 @@ def http_exception_handler(request: Request, exc: StarletteHTTPException) -> Res
             "p": content,
             "changelog": portfolio_mod.load_portfolio_changelog(),
             "now": portfolio_mod.load_portfolio_now(),
+            "content_updated": portfolio_mod.content_updated_iso(),
             "current_page_id": "404",
             "requested_path": request.url.path,
             "chrome": EMPTY_CHROME,

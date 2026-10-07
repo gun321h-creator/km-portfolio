@@ -16,8 +16,8 @@
   <h2 class="filesep">Education <span class="fs-crumb">การศึกษา</span></h2>
 
   <p class="edu-lede">
-    From a Bangkok classroom to an honors engineering program in Virginia --
-    six schools, two countries, one through-line: finish first, then go further.
+    From a Thai military academy to an honors engineering program in Virginia --
+    {{ p.education | length }} schools, two countries, one through-line: finish first, then go further.
   </p>
 
   {# Legacy anchor IDs ('vmi', 'cu-boulder', 'rta-cadet') are preserved for
@@ -61,7 +61,10 @@
     <details class="edu-card" open>
       <summary class="edu-summary">
         <span class="edu-summary-institution">Honors, awards, leadership ({{ p.awards | length }})</span>
-        <span class="edu-summary-dates">2021 -- 2026</span>
+        {# Year range derived from the data, order-independent; entries
+           without a string date are ignored rather than 500ing the page. #}
+        {% set _yrs = p.awards | map(attribute='date') | select('string') | map('truncate', 4, True, '') | list %}
+        {% if _yrs %}<span class="edu-summary-dates">{{ _yrs | min }} -- {{ _yrs | max }}</span>{% endif %}
       </summary>
       <ol class="awards-list">
         {% for a in p.awards %}

@@ -271,10 +271,14 @@ function wireDeployClick() {
       onDocClick = null;
     }
     if (pop) { pop.remove(); pop = null; return; }
-    const iso = btn.getAttribute("data-deploy-iso") || "unknown";
+    // `data-updated-iso` is the mtime of the content file (server-rendered).
+    // The attribute and the wording both used to say "deploy" while carrying
+    // a hand-typed constant; the app cannot observe a deploy, so the popover
+    // now reports only what the timestamp actually is.
+    const iso = btn.getAttribute("data-updated-iso") || "unknown";
     pop = document.createElement("div");
     pop.className = "deploy-pop";
-    pop.textContent = "Deployed at " + iso;
+    pop.textContent = "Content updated " + iso;
     Object.assign(pop.style, {
       position: "fixed", bottom: "32px", right: "16px",
       background: "#171310", border: "1px solid rgba(212,169,71,0.4)",

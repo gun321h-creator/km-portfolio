@@ -26,6 +26,11 @@
       {% if current_project.deep_dive_intro %}
         <p class="proj-detail-intro">{{ current_project.deep_dive_intro }}</p>
       {% endif %}
+      {% if current_project.links %}
+        <p class="proj-links">
+          {% for l in current_project.links %}<a class="proj-deep-dive-link" href="{{ l.href }}" rel="noopener" target="_blank">{{ l.label }} &nearr;</a>{% if not loop.last %} &middot; {% endif %}{% endfor %}
+        </p>
+      {% endif %}
 
       {% if current_project.architecture %}
         <h2 class="section-subhead">Architecture</h2>
