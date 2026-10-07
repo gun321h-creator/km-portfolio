@@ -4,6 +4,13 @@
     {
       "date": "2026-10-07",
       "file": "portfolio.json",
+      "added": 1,
+      "removed": 9,
+      "note": "content: SoutheastCon team of four (was three); PA block drops private mailbox + LINE id, keeps US phone"
+    },
+    {
+      "date": "2026-10-07",
+      "file": "portfolio.json",
       "added": 290,
       "removed": 154,
       "note": "content refresh -- CV v5 project set (Officer Parker, research platform, SURI, SoutheastCon, capstone, EE-382 PCB) leads; earlier systems grouped; LinkedIn/ORCID links; publications; GPA 3.81"

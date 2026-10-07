@@ -160,7 +160,7 @@
     {
       "title": "IEEE SoutheastCon 2026 -- Undergraduate Circuit Design (team lead)",
       "plain": "A circuit-design competition where the problem is handed out that morning and the board has to work by the afternoon.",
-      "summary": "Team lead and principal designer. Designed, built and tested a digital circuit -- combinational logic with a microcontroller -- on site from a problem released that morning, under a half-day limit, leading a team of three. Top seven of forty teams from universities across the southeastern United States (Alabama, Mar 2026).",
+      "summary": "Team lead and principal designer. Designed, built and tested a digital circuit -- combinational logic with a microcontroller -- on site from a problem released that morning, under a half-day limit, leading a team of four. Top seven of forty teams from universities across the southeastern United States (Alabama, Mar 2026).",
       "stack": [
         "Combinational logic",
         "Microcontroller",
@@ -775,10 +775,6 @@
     ],
     "cta_links": [
       {
-        "label": "Email -- gun321h@hotmail.com",
-        "href": "mailto:gun321h@hotmail.com"
-      },
-      {
         "label": "Download PA-fit CV (PDF)",
         "href": "/portfolio_pa.pdf",
         "note": "single-page PDF"
@@ -795,10 +791,6 @@
       {
         "label": "Phone -- +1 720-774-8898",
         "href": "tel:+17207748898"
-      },
-      {
-        "label": "LINE -- kanokpon008",
-        "href": "https://line.me/ti/p/~kanokpon008"
       }
     ]
   },
