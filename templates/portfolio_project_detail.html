@@ -15,7 +15,7 @@
 
       <a class="back-link" href="/portfolio/projects">&larr; Back to projects</a>
 
-      <div class="proj-detail-thumb">{{ thumbs.thumb(current_project.__id) }}</div>
+      <div class="proj-detail-thumb">{{ thumbs.thumb(current_project.__id, current_project.__photo) }}</div>
 
       <h1 class="proj-detail-title">{{ current_project.title }}</h1>
       {# Plain-language callout first — a non-engineer gets the project in one

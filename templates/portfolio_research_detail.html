@@ -1,0 +1,66 @@
+{% extends "portfolio_base.html" %}
+
+{# 2026-10-27: one page per research item (route /portfolio/research/<slug>;
+   unknown slug 404s in the renderer before this template is reached). #}
+
+{% block main %}
+  {% set it = current_research %}
+  <section id="research-detail" data-tab="research" class="proj-detail">
+    <h2 class="filesep">Research <span class="fs-crumb">{{ it.date }}</span></h2>
+    <a class="back-link" href="/portfolio/research#{{ it.category }}">&larr; Back to research</a>
+
+    <h1 class="proj-detail-title">{{ it.title }}</h1>
+    <p class="res-authors">{{ it.authors }}</p>
+    <p class="res-venue">{{ it.venue }}</p>
+    <p class="res-meta">{{ it.status }}{% if it.doi %} &middot; DOI <a href="https://doi.org/{{ it.doi }}" rel="noopener" target="_blank">{{ it.doi }}</a>{% endif %}</p>
+
+    {% if it.links %}
+      <p class="proj-links">
+        {% for l in it.links %}<a class="proj-deep-dive-link" href="{{ l.href }}" rel="noopener" target="_blank">{{ l.label }} &nearr;</a>{% if not loop.last %} &middot; {% endif %}{% endfor %}
+      </p>
+    {% endif %}
+
+    <p class="proj-detail-plain">{{ it.summary }}</p>
+
+    {% for img in it.__images %}
+      <figure class="proj-thumb proj-photo res-figure">
+        <img src="{{ img.src }}" alt="{{ img.alt }}" class="fit-{{ img.fit }}" loading="lazy" decoding="async">
+        {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+      </figure>
+    {% endfor %}
+
+    {% if it.highlights %}
+      <h2 class="section-subhead">Key findings</h2>
+      <ul class="lessons-list">
+        {% for h in it.highlights %}<li>{{ h }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if it.abstract %}
+      <h2 class="section-subhead">Abstract</h2>
+      <p class="proj-detail-body">{{ it.abstract }}</p>
+    {% endif %}
+
+    {% if it.keywords %}
+      <ul class="skill-list">
+        {% for k in it.keywords %}<li class="skill-tag">{{ k }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if it.note %}<p class="muted">{{ it.note }}</p>{% endif %}
+
+    {% if it.bibtex %}
+      <h2 class="section-subhead">Cite</h2>
+      <pre class="ascii-arch">{{ it.bibtex }}</pre>
+    {% endif %}
+
+    {% if it.__related %}
+      <h2 class="section-subhead">Related</h2>
+      <ul class="lessons-list">
+        {% for rel in it.__related %}<li><a href="{{ rel.route }}">{{ rel.title }}</a></li>{% endfor %}
+      </ul>
+    {% endif %}
+
+    <a class="back-link" href="/portfolio/research">&larr; All research</a>
+  </section>
+{% endblock %}

@@ -16,11 +16,12 @@
       {% for pub in p.publications %}
         <li class="awards-item">
           <span class="awards-date">{{ pub.date }}</span>
-          <span class="awards-title">{{ pub.authors }}. &ldquo;{{ pub.title }}.&rdquo;{% if pub.venue %} <em>{{ pub.venue }}</em>.{% endif %}</span>
+          <span class="awards-title">{{ pub.authors }}. &ldquo;{{ pub.title }}.&rdquo;{% if pub.venue %} <em>{{ pub.venue }}</em>.{% endif %}{% if pub.doi %} <a href="https://doi.org/{{ pub.doi }}" rel="noopener" target="_blank">doi:{{ pub.doi }}</a>{% endif %}</span>
           <span class="awards-where">{{ pub.status }}</span>
         </li>
       {% endfor %}
     </ol>
+    {% if p.research %}<p><a class="proj-deep-dive-link" href="/portfolio/research">Papers, talks and figures &rarr;</a></p>{% endif %}
     {% if p.contact_orcid %}
     <p class="muted">ORCID: <a href="{{ p.contact_orcid }}" rel="me noopener" target="_blank">{{ p.contact_orcid | replace('https://', '') }}</a></p>
     {% endif %}
@@ -43,4 +44,23 @@
     </div>
   </section>
   {% endif %}
+
+  {# 2026-10-27: photo galleries (portfolio.json life_at_vmi / off_duty,
+     resolved to shipped files in static/personal/ by portfolio.py). #}
+  {% for key, title, th in [("__life_at_vmi", "Life at VMI", "ชีวิตนักเรียนนายร้อย"), ("__off_duty", "Off duty", "นอกเวลางาน")] %}
+    {% if p[key] %}
+    <div class="gc-divider" role="separator"></div>
+    <section id="{{ 'life-at-vmi' if key == '__life_at_vmi' else 'off-duty' }}" data-tab="about">
+      <h2 class="filesep">{{ title }} <span class="fs-crumb">{{ th }}</span></h2>
+      <div class="photo-grid">
+        {% for img in p[key] %}
+          <figure class="proj-thumb proj-photo">
+            <img src="{{ img.src }}" alt="{{ img.alt }}" class="fit-{{ img.fit }}" loading="lazy" decoding="async">
+            {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+          </figure>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  {% endfor %}
 {% endblock %}

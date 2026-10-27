@@ -1,0 +1,42 @@
+{% extends "portfolio_base.html" %}
+
+{# 2026-10-27: research hub. Categories + items come from portfolio.json
+   "research" (grouped in portfolio._attach_research_meta); every card links
+   to its own /portfolio/research/<slug> page. #}
+
+{% block main %}
+  {% set r = p.research %}
+  <h2 class="filesep">Research <span class="fs-crumb">งานวิจัย</span></h2>
+  {% if r %}
+    <p class="gc-page-lede">{{ r.intro }}</p>
+
+    <nav class="res-cats" aria-label="Research categories">
+      {% for c in r.__categories %}
+        <a class="chip" href="#{{ c.key }}">{{ c.title }} <span class="res-count">{{ c.__items | length }}</span></a>
+      {% endfor %}
+    </nav>
+
+    {% for c in r.__categories %}
+      <div class="gc-divider" role="separator"></div>
+      <section id="{{ c.key }}" data-tab="research">
+        <h2 class="filesep">{{ c.title }} <span class="fs-crumb">{{ c.th }}</span></h2>
+        <div class="res-grid">
+          {% for it in c.__items %}
+            <a class="res-card" href="{{ it.__route }}">
+              {% if it.__images %}
+                <img class="res-card-img fit-{{ it.__images[0].fit }}" src="{{ it.__images[0].src }}" alt="{{ it.__images[0].alt }}" loading="lazy" decoding="async">
+              {% endif %}
+              <span class="res-card-body">
+                <span class="res-meta">{{ it.date }} &middot; {{ it.status }}</span>
+                <span class="res-title">{{ it.title }}</span>
+                <span class="res-venue">{{ it.venue }}</span>
+                <span class="res-summary">{{ it.summary }}</span>
+                <span class="proj-deep-dive-link">Open &rarr;</span>
+              </span>
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

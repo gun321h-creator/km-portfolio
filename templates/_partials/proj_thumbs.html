@@ -7,8 +7,17 @@
    the parent card's :hover — transform/opacity only, and the global
    prefers-reduced-motion kill switches them all off. #}
 
-{% macro thumb(pid) %}
+{# 2026-10-27: a real photo (portfolio.py _resolve_photo — only set
+   when the file ships in static/projects/) wins over the crafted SVG. Not
+   aria-hidden: unlike the decorative SVG, a photo is evidence and carries alt. #}
+{% macro thumb(pid, photo=None) %}
 {% set _id = pid[5:] if pid.startswith('proj-') else pid %}
+{% if photo %}
+<figure class="proj-thumb proj-photo proj-thumb-{{ _id }}">
+  <img src="{{ photo.src }}" alt="{{ photo.alt }}" class="fit-{{ photo.fit }}" loading="lazy" decoding="async">
+  {% if photo.caption %}<figcaption>{{ photo.caption }}</figcaption>{% endif %}
+</figure>
+{% else %}
 <div class="proj-thumb proj-thumb-{{ _id }}" aria-hidden="true">
 <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" preserveAspectRatio="xMidYMid slice">
   <rect width="600" height="240" fill="#14100D"/>
@@ -261,4 +270,5 @@
   {% endif %}
 </svg>
 </div>
+{% endif %}
 {% endmacro %}

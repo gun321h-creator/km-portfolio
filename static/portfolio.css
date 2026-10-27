@@ -720,6 +720,44 @@ pre.code {
 .proj-block:hover .proj-thumb { border-color: var(--gold-dim); }
 .proj-thumb svg { width: 100%; height: auto; display: block; }
 .proj-detail-thumb .proj-thumb { max-width: 760px; margin: 8px 0 20px; }
+/* real project photo (2026-10-27): card = fixed 16:9 crop so the grid stays
+   even; deep-dive page shows the whole uncropped photo. */
+.proj-photo { line-height: normal; }
+.proj-photo img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+.proj-detail-thumb .proj-photo img { aspect-ratio: auto; height: auto; }
+.proj-photo figcaption {
+  padding: 8px 12px; font-size: 12px; color: var(--ivory-mut);
+  border-top: 1px solid var(--gold-faint);
+}
+
+/* ── research hub + galleries (2026-10-27) ─────────────────────────── */
+.res-cats { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+.res-cats .chip { text-decoration: none; }
+.res-count { color: var(--gold); margin-left: 4px; }
+.res-grid, .photo-grid {
+  display: grid; gap: 18px; margin: 14px 0;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+.res-card {
+  display: flex; flex-direction: column; text-decoration: none; color: inherit;
+  background: var(--panel); border: 1px solid var(--gold-faint);
+  transition: border-color 0.2s ease;
+}
+.res-card:hover, .res-card:focus-visible { border-color: var(--gold-dim); }
+.res-card-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+.proj-photo img.fit-contain, .res-card-img.fit-contain { object-fit: contain; background: var(--panel-2); }
+.res-card-body { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px; }
+.res-meta { font-size: 12px; color: var(--gold-dim); }
+.res-title { font-weight: 600; color: var(--ivory); line-height: 1.35; }
+.res-venue { font-size: 13px; color: var(--ivory-mut); font-style: italic; }
+.res-summary { font-size: 14px; color: var(--ivory-soft); }
+.res-authors { color: var(--ivory-soft); margin: 4px 0; }
+.res-figure { max-width: 760px; margin: 8px 0 20px; }
+.res-figure img { aspect-ratio: auto; height: auto; }
+
+.photo-grid .proj-photo { margin: 0; }
+.photo-grid .proj-photo img { aspect-ratio: 4 / 3; object-position: center 30%; }
+.res-card-img { object-position: center 30%; }
 
 /* thumbnail micro-interactions — parent-card hover drives each glyph.
    transform-box: fill-box keeps SVG transform origins local to the shape. */

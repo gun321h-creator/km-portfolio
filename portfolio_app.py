@@ -138,6 +138,8 @@ def _render_portfolio_page(request: Request, page_id: str) -> Response:
         template_name = "portfolio_reading.html"
     elif page_id.startswith("proj-"):
         template_name = "portfolio_project_detail.html"
+    elif page_id.startswith("res-"):
+        template_name = "portfolio_research_detail.html"
     else:
         template_name = f"portfolio_{page_id}.html"
 
@@ -147,6 +149,12 @@ def _render_portfolio_page(request: Request, page_id: str) -> Response:
             if isinstance(proj, dict) and proj.get("__id") == page_id:
                 current_project = proj
                 break
+
+    current_research = None
+    if page_id.startswith("res-"):
+        current_research = portfolio_mod.research_item(content, page_id[4:])
+        if current_research is None:
+            raise StarletteHTTPException(status_code=404)
 
     audience = None
     if page_id == "grad-school":
@@ -175,6 +183,7 @@ def _render_portfolio_page(request: Request, page_id: str) -> Response:
             "latest_md_mtime": latest_md_mtime,
             "current_page_id": page_id,
             "current_project": current_project,
+            "current_research": current_research,
             "audience": audience,
             "chrome": EMPTY_CHROME,
         },
@@ -195,6 +204,7 @@ _PAGE_ROUTES = {
     "/education": "education",
     "/projects": "projects",
     "/contact": "contact",
+    "/research": "research",
     # 2026-10-07: Officer Parker deep-dive (CV v5 lead project).
     "/projects/officer-parker": "proj-officer-parker",
     "/projects/dashboard": "proj-dashboard",
@@ -238,6 +248,17 @@ def _register_page_routes() -> None:
 
 
 _register_page_routes()
+
+
+# 2026-10-27: one page per research item, slugs come from portfolio.json.
+# Unknown slug -> styled 404 (raised inside the renderer).
+@app.get(
+    "/portfolio/research/{slug}",
+    response_class=HTMLResponse,
+    include_in_schema=False,
+)
+def portfolio_research_item(request: Request, slug: str) -> Response:
+    return _render_portfolio_page(request, f"res-{slug}")
 
 
 @app.exception_handler(StarletteHTTPException)

@@ -33,7 +33,7 @@
         <span class="corner" aria-hidden="true"></span>
         {# Polish pass 2026-07-17: crafted inline-SVG thumbnail per project
            (replaces the removed PNG paths — zero requests, zero 404 risk). #}
-        {{ thumbs.thumb(proj.__id) }}
+        {{ thumbs.thumb(proj.__id, proj.__photo) }}
         <h3 class="proj-title">{{ proj.title }}</h3>
         {# Plain-language line FIRST (everyday analogy for any visitor),
            technical summary second. Data-driven via portfolio.json "plain". #}

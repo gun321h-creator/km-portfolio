@@ -169,7 +169,12 @@
       ],
       "scale": "Top seven of forty teams; Mar 2026",
       "link": null,
-      "link_label": null
+      "link_label": null,
+      "photo": {
+        "file": "southeastcon.jpg",
+        "alt": "Kanokpon Mettasat and three other competitors holding their breadboard circuit at IEEE SoutheastCon 2026.",
+        "caption": "Undergraduate Circuit Design, IEEE SoutheastCon 2026."
+      }
     },
     {
       "title": "Senior Design Capstone (EE-421X) -- wearable sensor sock",
@@ -198,7 +203,12 @@
       ],
       "scale": "Spring 2026; sole designer of the electronics; board fabricated and hand-assembled",
       "link": null,
-      "link_label": null
+      "link_label": null,
+      "photo": {
+        "file": "ee382-scope.jpg",
+        "alt": "Keysight oscilloscope showing a 5 V square wave at about 50 percent duty cycle on channel 1.",
+        "caption": "Bench check of a digital signal on the oscilloscope, EE-382, Spring 2026."
+      }
     },
     {
       "title": "Trading-research dashboard",
@@ -2008,9 +2018,10 @@
     {
       "authors": "K. Mettasat, E. Fathalla and M. Azab",
       "title": "A Systematic Mapping of Quantum Threats and Defenses for Blockchain",
-      "venue": "Computers (MDPI), Special Issue on Intelligent Systems Security",
+      "venue": "Computers (MDPI), vol. 15, no. 11, art. 743",
       "date": "Oct 2026",
-      "status": "Accepted; in press"
+      "status": "Published; open access",
+      "doi": "10.3390/computers15110743"
     },
     {
       "authors": "K. Mettasat and E. Fathalla",
@@ -2018,6 +2029,205 @@
       "venue": "",
       "date": "2027",
       "status": "In preparation"
+    }
+  ],
+  "research": {
+    "intro": "Peer-reviewed papers, conference talks and work in progress from my undergraduate research with Dr. Efat Fathalla (VMI ECE) on quantum-resistant blockchain security. Each item opens its own page with the full record.",
+    "categories": [
+      {
+        "key": "journal",
+        "title": "Journal articles",
+        "th": "บทความวารสาร"
+      },
+      {
+        "key": "conference",
+        "title": "Conference papers",
+        "th": "เปเปอร์งานประชุม"
+      },
+      {
+        "key": "talk",
+        "title": "Talks",
+        "th": "การนำเสนอ"
+      },
+      {
+        "key": "progress",
+        "title": "Thesis & work in progress",
+        "th": "งานที่กำลังทำ"
+      }
+    ],
+    "items": [
+      {
+        "slug": "mdpi-computers-2026",
+        "category": "journal",
+        "title": "A Systematic Mapping of Quantum Threats and Defenses for Blockchain",
+        "authors": "K. Mettasat, E. Fathalla and M. Azab",
+        "venue": "Computers (MDPI), vol. 15, no. 11, art. 743",
+        "date": "Oct 2026",
+        "status": "Published 22 Oct 2026 -- open access (CC BY 4.0)",
+        "doi": "10.3390/computers15110743",
+        "summary": "Mapped 387 peer-reviewed studies (2018-2026) on quantum-resistant blockchain and graded how far each one was actually tested: only 1.3% reach a public testnet.",
+        "abstract": "Quantum computing poses distinct risks to blockchain security: Shor’s algorithm threatens signatures associated with exposed public keys, while Grover’s algorithm reduces the security margin of hash-based mechanisms. This systematic mapping study examines quantum-resistant blockchain defenses and the evidence supporting their practical use. A total of 387 peer-reviewed primary studies published between 2018 and 2026 were identified through IEEE Xplore, the MDPI journal collection, and citation searching, and classified by contribution type and evidence maturity. The findings show that post-quantum cryptographic constructions dominate the literature (56.1%), followed by quantum-native designs (26.6%) and hybrid migration approaches (13.7%). Despite substantial research on these defenses, only 16.0% of the studies report real-platform laboratory experiments, and 1.3% reach public-testnet evaluation. Hybrid migration studies demonstrate greater progress toward platform-level evaluation than other defense categories, but practical validation remains limited. These findings highlight the gap between proposed quantum-resistant mechanisms and their evaluation under realistic blockchain conditions, emphasizing the need for reproducible system-level testing and migration strategies addressing interoperability, governance, and operational continuity.",
+        "keywords": [
+          "blockchain",
+          "post-quantum cryptography",
+          "quantum computing",
+          "cryptographic migration",
+          "systematic mapping study",
+          "evidence maturity"
+        ],
+        "highlights": [
+          "387 primary studies, 2018-2026",
+          "56.1% post-quantum constructions, 26.6% quantum-native, 13.7% hybrid migration",
+          "16.0% report real-platform laboratory experiments",
+          "1.3% reach public-testnet evaluation"
+        ],
+        "images": [
+          {
+            "file": "mdpi-evidence-maturity.png",
+            "alt": "Bar chart of the highest evidence-maturity level reported by the 387 studies: 115 theoretical, 16 software prototype, 90 cryptographic benchmark, 99 blockchain simulation, 62 real-platform laboratory experiment, 5 public-testnet evaluation.",
+            "caption": "Figure 8(a) of the article. © 2026 the authors, CC BY 4.0.",
+            "fit": "contain"
+          }
+        ],
+        "links": [
+          {
+            "label": "Read the article (DOI)",
+            "href": "https://doi.org/10.3390/computers15110743"
+          }
+        ],
+        "bibtex": "@article{mettasat2026mapping,\n  author  = {Mettasat, Kanokpon and Fathalla, Efat and Azab, Mohamed},\n  title   = {A Systematic Mapping of Quantum Threats and Defenses for Blockchain},\n  journal = {Computers},\n  year    = {2026},\n  volume  = {15},\n  number  = {11},\n  pages   = {743},\n  doi     = {10.3390/computers15110743}\n}",
+        "related": [
+          "uemcon-2026",
+          "honors-thesis"
+        ]
+      },
+      {
+        "slug": "uemcon-2026",
+        "category": "conference",
+        "title": "Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family",
+        "authors": "K. Mettasat and E. Fathalla",
+        "venue": "2026 IEEE 17th Annual Ubiquitous Computing, Electronics & Mobile Communication Conference (UEMCON), Armonk, New York",
+        "date": "Oct 2026",
+        "status": "Accepted and presented; to appear in IEEE Xplore",
+        "summary": "Asks which quantum-resistant designs for blockchain have actually been built and measured, not only proposed -- organised by cryptographic family.",
+        "note": "Abstract and figures will be added once the paper is live in IEEE Xplore.",
+        "images": [
+          {
+            "file": "uemcon-banner.jpg",
+            "alt": "Kanokpon Mettasat beside the IEEE UEMCON 2026 banner at the IBM Louis V. Gerstner, Jr. Center for Learning.",
+            "caption": "IEEE UEMCON 2026, Armonk, New York."
+          }
+        ],
+        "links": [],
+        "related": [
+          "talk-uemcon-2026",
+          "mdpi-computers-2026"
+        ]
+      },
+      {
+        "slug": "talk-uemcon-2026",
+        "category": "talk",
+        "title": "Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family",
+        "authors": "K. Mettasat (presenter), with E. Fathalla",
+        "venue": "IEEE UEMCON 2026 -- IBM Louis V. Gerstner, Jr. Center for Learning, Armonk, New York",
+        "date": "Oct 2026",
+        "status": "Presented in person",
+        "summary": "Conference talk presenting the UEMCON paper.",
+        "images": [
+          {
+            "file": "uemcon-talk.jpg",
+            "alt": "Kanokpon Mettasat presenting at a lectern; the slide reads 'Quantum attacks hit both cryptographic pillars of blockchain'.",
+            "caption": "Presenting at IEEE UEMCON 2026."
+          }
+        ],
+        "links": [],
+        "related": [
+          "uemcon-2026",
+          "talk-surf-2026"
+        ]
+      },
+      {
+        "slug": "talk-surf-2026",
+        "category": "talk",
+        "title": "Post-Quantum Digital Signatures for Blockchain: A Systematic Mapping and Comparative Evaluation",
+        "authors": "K. Mettasat (presenter), with E. Fathalla",
+        "venue": "Southern Conference Undergraduate Research Forum (SURF) 2026 -- Wofford College, Spartanburg, South Carolina",
+        "date": "10 Oct 2026",
+        "status": "Presented in person -- representing VMI",
+        "summary": "Represented VMI at the SoCon undergraduate research forum alongside students from the other Southern Conference schools.",
+        "images": [
+          {
+            "file": "surf-title.jpg",
+            "alt": "Title slide of the SURF 2026 talk on screen with Kanokpon Mettasat at the lectern.",
+            "caption": "Title slide, SURF 2026 at Wofford College."
+          },
+          {
+            "file": "surf-talk.jpg",
+            "alt": "Kanokpon Mettasat in VMI uniform presenting at SURF 2026.",
+            "caption": "Presenting at SURF 2026."
+          }
+        ],
+        "links": [],
+        "related": [
+          "talk-uemcon-2026",
+          "mdpi-computers-2026"
+        ]
+      },
+      {
+        "slug": "honors-thesis",
+        "category": "progress",
+        "title": "Post-quantum-secure blockchain architecture",
+        "authors": "K. Mettasat and E. Fathalla",
+        "venue": "Institute Honors thesis, Virginia Military Institute",
+        "date": "2027",
+        "status": "In progress -- manuscript in preparation",
+        "summary": "Institute Honors thesis building on the mapping study; a journal manuscript is in preparation.",
+        "images": [],
+        "links": [],
+        "related": [
+          "mdpi-computers-2026"
+        ]
+      }
+    ]
+  },
+  "life_at_vmi": [
+    {
+      "file": "vmi-parade-ground.jpg",
+      "alt": "Kanokpon Mettasat in VMI full-dress uniform on the Parade Ground.",
+      "caption": "On the VMI Parade Ground."
+    },
+    {
+      "file": "vmi-drill.jpg",
+      "alt": "Kanokpon Mettasat demonstrating rifle drill to a group of cadets.",
+      "caption": "Rifle drill instruction."
+    },
+    {
+      "file": "vmi-podium.jpg",
+      "alt": "Kanokpon Mettasat speaking at a Virginia Military Institute podium.",
+      "caption": "Speaking at a VMI ceremony."
+    },
+    {
+      "file": "vmi-thai-army.jpg",
+      "alt": "Kanokpon Mettasat with fellow Thai cadets and Royal Thai Army officers at VMI.",
+      "caption": "With Royal Thai Army officers at VMI."
+    }
+  ],
+  "off_duty": [
+    {
+      "file": "lol-flex-diamond.jpg",
+      "alt": "League of Legends profile showing Flex 5v5 rank Diamond IV.",
+      "caption": "League of Legends -- Flex 5v5 Diamond IV (Oct 2026).",
+      "fit": "contain"
+    },
+    {
+      "file": "lake-como.jpg",
+      "alt": "Kanokpon Mettasat by the lake at Como, Italy.",
+      "caption": "Lake Como, Italy."
+    },
+    {
+      "file": "skiing.jpg",
+      "alt": "Kanokpon Mettasat lying in the snow in ski gear.",
+      "caption": "Learning to ski."
     }
   ]
 }

@@ -213,6 +213,97 @@ def _render_project_summaries(doc: dict) -> None:
                 proj[key] = _render_inline(proj[key])
 
 
+STATIC_DIR = ROOT / "static"
+_PHOTO_SUBDIRS = ("projects", "research", "personal")
+_PHOTO_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*\.(jpg|jpeg|png|webp)$")
+_SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+
+
+def _resolve_photo(spec: Any, subdir: str) -> dict | None:
+    """Real photo for a template, or None so the caller falls back/skips.
+
+    2026-10-27: portfolio.json photo = {"file", "alt", "caption"?}. Returned
+    only when the file actually ships in static/<subdir>/ -- the 2026-07-17
+    lesson (PNG paths that 404'd in the public build) is why existence is
+    checked here, not trusted from the data. Bare lowercase filenames only:
+    no path separators, so the data file cannot point outside that dir.
+    """
+    if subdir not in _PHOTO_SUBDIRS or not isinstance(spec, dict):
+        return None
+    name = spec.get("file")
+    alt = spec.get("alt")
+    if not isinstance(name, str) or not _PHOTO_NAME_RE.match(name):
+        return None
+    if not isinstance(alt, str) or not alt.strip():
+        return None
+    path = STATIC_DIR / subdir / name
+    if not path.is_file():
+        return None
+    caption = spec.get("caption")
+    return {
+        # mtime query busts the browser cache when a photo is replaced in place
+        "src": f"/static/{subdir}/{name}?v={int(path.stat().st_mtime)}",
+        "alt": alt.strip(),
+        "caption": caption.strip()
+        if isinstance(caption, str) and caption.strip()
+        else None,
+        # "contain" = never crop (screenshots/charts whose text must stay legible)
+        "fit": "contain" if spec.get("fit") == "contain" else "cover",
+    }
+
+
+def _resolve_photos(specs: Any, subdir: str) -> list[dict]:
+    if not isinstance(specs, list):
+        return []
+    return [p for p in (_resolve_photo(s, subdir) for s in specs) if p]
+
+
+def _attach_research_meta(doc: dict) -> None:
+    """2026-10-27 research hub: per-item route + shipped images + resolved
+    `related` links, and per-category grouping so the hub template stays dumb.
+    Items with a bad slug or unknown category are dropped, not 500ed."""
+    research = doc.get("research")
+    if not isinstance(research, dict):
+        return
+    cats = [
+        c
+        for c in research.get("categories", [])
+        if isinstance(c, dict) and isinstance(c.get("key"), str)
+    ]
+    keys = {c["key"] for c in cats}
+    items = [
+        it
+        for it in research.get("items", [])
+        if isinstance(it, dict)
+        and isinstance(it.get("slug"), str)
+        and _SLUG_RE.match(it["slug"])
+        and it.get("category") in keys
+    ]
+    by_slug = {it["slug"]: it for it in items}
+    for it in items:
+        it["__route"] = f"/portfolio/research/{it['slug']}"
+        it["__images"] = _resolve_photos(it.get("images"), "research")
+    for it in items:
+        it["__related"] = [
+            {"title": by_slug[s]["title"], "route": by_slug[s]["__route"]}
+            for s in it.get("related", [])
+            if s in by_slug and s != it["slug"]
+        ]
+    for c in cats:
+        c["__items"] = [it for it in items if it["category"] == c["key"]]
+    research["__categories"] = [c for c in cats if c["__items"]]
+    research["__by_slug"] = by_slug
+    doc["__life_at_vmi"] = _resolve_photos(doc.get("life_at_vmi"), "personal")
+    doc["__off_duty"] = _resolve_photos(doc.get("off_duty"), "personal")
+
+
+def research_item(doc: dict, slug: str) -> dict | None:
+    research = doc.get("research")
+    if not isinstance(research, dict):
+        return None
+    return research.get("__by_slug", {}).get(slug)
+
+
 def _attach_project_meta(doc: dict) -> None:
     """Inject `__id` + `__filename` on each project dict so the template
     can render them without parallel Jinja list literals.
@@ -233,6 +324,7 @@ def _attach_project_meta(doc: dict) -> None:
         # Both are index-aligned with _PROJECT_IDS; a 4th+ project that ships
         # without an SVG renders without one (template gates on truthy value).
         proj["svg_illustration"] = _PROJECT_SVGS[i] if i < len(_PROJECT_SVGS) else None
+        proj["__photo"] = _resolve_photo(proj.get("photo"), "projects")
         slug = (
             _PROJECT_DEEP_DIVE_SLUGS[i] if i < len(_PROJECT_DEEP_DIVE_SLUGS) else None
         )
@@ -245,6 +337,9 @@ _VALID_PAGE_IDS = (
     "education",
     "projects",
     "contact",
+    # 2026-10-27: research hub; per-item pages are "res-<slug>" (data-driven,
+    # validated in slice_for_view_source against the loaded research items).
+    "research",
     # v1.3 E3: per-project deep-dive pages share one template
     # (portfolio_project_detail.html); the page_id selects which project.
     # 2026-10-07: Officer Parker deep-dive.
@@ -312,6 +407,27 @@ def slice_for_view_source(doc: dict[str, Any], page_id: str) -> str:
         return json.dumps({"education": doc.get("education", [])}, indent=2)
     if page_id == "projects":
         return json.dumps({"projects": doc.get("projects", [])}, indent=2)
+    if page_id == "research" or page_id.startswith("res-"):
+        research = doc.get("research") or {}
+        clean = [
+            {k: v for k, v in it.items() if not k.startswith("__")}
+            for it in research.get("__by_slug", {}).values()
+        ]
+        if page_id == "research":
+            return json.dumps(
+                {
+                    "categories": [
+                        {k: v for k, v in c.items() if not k.startswith("__")}
+                        for c in research.get("categories", [])
+                    ],
+                    "items": clean,
+                },
+                indent=2,
+            )
+        for it in clean:
+            if f"res-{it['slug']}" == page_id:
+                return json.dumps(it, indent=2)
+        raise ValueError(f"unknown page_id: {page_id!r}")
     if page_id == "contact":
         return json.dumps(
             {
@@ -381,6 +497,7 @@ def load_portfolio_content() -> dict[str, Any]:
     _render_top_inline_fields(doc)
     _render_project_summaries(doc)
     _attach_project_meta(doc)
+    _attach_research_meta(doc)
     return doc
 
 
