@@ -6,25 +6,18 @@
   <section id="hero" class="gc-hero" aria-label="Introduction">
     <img class="gc-mandala" src="/static/brand/mandala.svg" alt="" aria-hidden="true" width="640" height="640" fetchpriority="high" decoding="async">
     <div class="gc-hero-inner">
-      <p class="gc-overline">Gilded Circuit <span class="th">&middot; ลายรดน้ำ &times; ลายวงจร</span></p>
       {% set _name_parts = p.name.split(' ', 1) %}
       <h1 class="gc-h1">{{ _name_parts[0] }}{% if _name_parts | length > 1 %}<br><span class="gold">{{ _name_parts[1] }}</span>{% endif %}</h1>
-      <p class="gc-hero-th">วิศวกรไฟฟ้าและคอมพิวเตอร์ &middot; ลายกนกไทยที่กลายเป็นลายวงจร</p>
-      {# Polish pass 2026-07-17: warm 5-second orientation for a stranger —
-         who this is and why to care, before any technical detail. #}
-      <p class="gc-hero-warm">Hello — I'm Gun. A Thai army cadet on a five-year
-      scholarship in the US, studying engineering with honors, and I love
-      building software people can actually use. Everything on this site is
-      real and running.</p>
-      <p class="gc-hero-sub">{{ p.tagline | safe }}{% for line in p.hero_subtitle_lines %} &middot; {{ line }}{% endfor %}</p>
-      {# Stale hardcoded "GPA: overall 3.6" note removed 2026-07-17 -- it
-         contradicted the correct 3.79 in p.hero_subtitle_lines one line up.
-         Single source of truth = portfolio.json. #}
+      {# 2026-10-27 competitor research: identity in faculty vocabulary first
+         (name -> research area -> credentials -> CTAs). The Gilded Circuit
+         etymology note now lives on /portfolio/about. #}
+      <p class="gc-hero-identity">{{ p.tagline | safe }}</p>
+      <p class="gc-hero-sub">{% for line in p.hero_subtitle_lines %}{% if not loop.first %} &middot; {% endif %}{{ line }}{% endfor %}</p>
       <div class="gc-cta">
-        <a class="gc-btn fill" href="/portfolio/projects">View Projects</a>
-        <a class="gc-btn" href="/portfolio/contact">Contact</a>
+        <a class="gc-btn fill" href="/portfolio/research">Research</a>
+        <a class="gc-btn" href="/portfolio-cv.pdf">CV (PDF)</a>
+        <a class="gc-btn" href="/portfolio/projects">Projects</a>
       </div>
-      <p class="gc-name-note">The mark is literal: <b>กนก (kanok)</b> — the first word of the name — means <b>gold</b>, and names the Thai flame ornament itself.</p>
     </div>
   </section>
 
@@ -35,8 +28,40 @@
     <h2 class="filesep">At a glance <span class="fs-crumb">ภาพรวม</span></h2>
     {{ ui.strip(p.highlights, 'proj-stats-wide') }}
   </section>
-  <div class="gc-divider" role="separator"></div>
   {% endif %}
+
+  {% set _pubs = p.publications | selectattr('slug') | list %}
+  {% if _pubs %}
+  <section id="selected-publications" aria-label="Selected publications">
+    <h2 class="filesep">Selected publications <span class="fs-crumb">ผลงานตีพิมพ์</span></h2>
+    <ol class="pub-list">
+      {% for pub in _pubs %}
+        {% set _a = pub.authors.split('K. Mettasat') %}
+        <li class="pub-item">
+          <span class="pub-venue">{{ pub.venue_short }}</span>
+          <div class="pub-body">
+            <a class="pub-title" href="/portfolio/research/{{ pub.slug }}">{{ pub.title }}</a>
+            <span class="pub-authors">{{ _a[0] }}{% if _a | length > 1 %}<strong>K. Mettasat</strong>{{ _a[1:] | join('K. Mettasat') }}{% endif %}</span>
+            <span class="pub-status">{{ pub.status }}</span>
+            <span class="pub-links"><a href="/portfolio/research/{{ pub.slug }}">Details</a>{% if pub.doi %} &middot; <a href="https://doi.org/{{ pub.doi }}" rel="noopener" target="_blank">DOI</a>{% endif %}</span>
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
+
+  {% if p.news %}
+  <section id="news" aria-label="News">
+    <h2 class="filesep">News <span class="fs-crumb">ข่าวล่าสุด</span></h2>
+    <ul class="news-list">
+      {% for n in p.news %}
+        <li class="news-item"><span class="news-date">{{ n.date }}</span><span class="news-text">{% if n.href %}<a href="{{ n.href }}">{{ n.text }}</a>{% else %}{{ n.text }}{% endif %}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  <div class="gc-divider" role="separator"></div>
 
   <section id="home-cards">
     <h2 class="filesep">Explore <span class="fs-crumb">สำรวจ</span></h2>
@@ -75,21 +100,6 @@
       <span class="sep">&middot;</span>
       <a href="/portfolio/grad-school">grad school</a>
     </p>
-    <p class="home-audience-links">
-      More: <a href="/portfolio/blog">notes</a>
-      <span class="sep">&middot;</span>
-      <a href="/portfolio/reading">reading list</a>
-      <span class="sep">&middot;</span>
-      <a href="/portfolio/null-registry">null registry</a>
-    </p>
-  </section>
-
-  <div class="gc-divider" role="separator"></div>
-
-  <!-- F2 commit grid (rendered by JS if data present) -->
-  <section id="activity">
-    <h2 class="filesep">Build activity <span class="fs-crumb">recent commits</span></h2>
-    <div class="commit-grid-mount" data-src="/portfolio-activity.json" data-mtime=""></div>
   </section>
 
   <div class="gc-divider" role="separator"></div>

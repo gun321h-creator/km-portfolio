@@ -37,94 +37,42 @@ PORTFOLIO_LATEST_MD_PATH = ROOT / "data" / "portfolio_latest.md"
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 _CODE_RE = re.compile(r"`([^`]+?)`")
 
-# 2026-10-07 refresh: projects[] now leads with the CV v5 / LinkedIn set
-# (Officer Parker, research platform, SURI, SoutheastCon, capstone, EE-382
-# PCB) and the six earlier systems follow under "Earlier work"
-# (projects[i]["group"] == "earlier"). Order MUST match projects[] order in
-# portfolio.json; every tuple below is index-aligned with it.
-_PROJECT_IDS = (
-    "proj-officer-parker",
-    "proj-quant",
-    "proj-suri",
-    "proj-southeastcon",
-    "proj-capstone-sock",
-    "proj-ee382-pcb",
-    "proj-dashboard",
-    "proj-linebot",
-    "proj-money-compass",
-    "proj-edge-factory",
-    "proj-karaoke",
-    "proj-journal",
+# 2026-10-27: per-project id / filename / deep-dive slug keyed by the
+# project's TITLE PREFIX, not its list position. The positional tuples this
+# replaces silently re-pointed every card and deep-dive the moment the
+# projects were reordered (research-first). Reordering projects[] in
+# portfolio.json is now safe; renaming a title must keep its prefix.
+# Slug None = list-only project (card on /portfolio/projects, no deep-dive):
+# SoutheastCon / capstone / EE-382 carry only the CV-verified paragraph and
+# stay list-only until GUN supplies the material.
+# 2026-08-09 provenance note kept: no headline performance statistic belongs
+# in this table or its comments.
+_PROJECT_META = (
+    # (title prefix, element id, sidebar filename, deep-dive slug)
+    ("Officer Parker", "proj-officer-parker", "officer-parker/app.js", "officer-parker"),
+    ("Statistical research platform", "proj-quant", "research-platform/README.md", "quant"),
+    ("SURI --", "proj-suri", "suri/README.md", "suri"),
+    ("IEEE SoutheastCon", "proj-southeastcon", "southeastcon-2026.md", None),
+    ("Senior Design Capstone", "proj-capstone-sock", "capstone-ee421x.md", None),
+    ("Motion-triggered novelty device", "proj-ee382-pcb", "ee382-pcb.kicad_sch", None),
+    ("Trading-research dashboard", "proj-dashboard", "dashboard.ts", "dashboard"),
+    ("LINE Official Account bot", "proj-linebot", "line-bot.py", "line-bot"),
+    ("Money Compass", "proj-money-compass", "money-compass.py", "money-compass"),
+    ("Edge Factory", "proj-edge-factory", "edge-factory.py", "edge-factory"),
+    ("Live web karaoke", "proj-karaoke", "karaoke-web.ts", "karaoke"),
+    ("Trading Journal", "proj-journal", "trading-journal.py", "trading-journal"),
 )
-_PROJECT_FILENAMES = (
-    "officer-parker/app.js",
-    "research-platform/README.md",
-    "suri/README.md",
-    "southeastcon-2026.md",
-    "capstone-ee421x.md",
-    "ee382-pcb.kicad_sch",
-    "dashboard.ts",
-    "line-bot.py",
-    "money-compass.py",
-    "edge-factory.py",
-    "karaoke-web.ts",
-    "trading-journal.py",
-)
-# v1.3 (E3 + B5): static illustration + deep-dive route per project.
-# Index-aligned with _PROJECT_IDS so a future 4th project that lands without
-# a matching asset simply renders without one (the template uses {% if %}).
-# v1.6 Wave B-office: dashboard entry is a real /office Playwright PNG
-# (1200x800) captured via scripts/capture_office_screenshot.py; the
-# original dashboard.svg is preserved on disk as a fallback.
-# v1.6 Wave B-quant: real equity-curve PNG (rendered by
-# scripts/render_quant_equity_chart.py from a daily breakout candidate's
-# trade CSV). Replaces the v1.3 hand-drawn SVG placeholder; the .svg file is
-# retained on disk for reference but no longer linked.
-# 2026-08-09: the performance figure that used to sit in this comment was
-# removed. It was a research-stage number that never went through the cost
-# audit, and this file is published -- an unaudited figure in public source
-# undercuts the retraction the site now carries. Do not reinstate a headline
-# statistic here; the provenance is what this comment is for.
-_PROJECT_SVGS = (
-    # 2026-07-17: the three illustration PNGs were never shipped in the
-    # PUBLIC build (no static/projects/ dir) -- every page load logged three
-    # 404s and showed broken-image icons. None => template renders the card
-    # without an image ({% if %} gate). Restore paths only when the assets
-    # actually ship in this repo.
-    None,
-    None,
-    None,
-    None,
-    # Phase B: no illustration asset for idx 4-7 yet; template gates on a
-    # truthy value so None renders the deep-dive without an image.
-    None,
-    None,
-    None,
-    None,
-    # 2026-10-07: four new CV-v5 projects, no illustration asset either.
-    None,
-    None,
-    None,
-    None,
-)
-# None = list-only project (card on /portfolio/projects, no deep-dive page).
-# SoutheastCon / capstone / EE-382 carry only the CV-verified paragraph; a
-# deep-dive would have to be written from memory, so they stay list-only
-# until GUN supplies the material.
-_PROJECT_DEEP_DIVE_SLUGS = (
-    "officer-parker",
-    "quant",
-    "suri",
-    None,
-    None,
-    None,
-    "dashboard",
-    "line-bot",
-    "money-compass",
-    "edge-factory",
-    "karaoke",
-    "trading-journal",
-)
+_PROJECT_IDS = tuple(m[1] for m in _PROJECT_META)
+
+
+def _project_meta(title: Any) -> tuple[str, str, str | None] | None:
+    if not isinstance(title, str):
+        return None
+    for prefix, pid, fname, slug in _PROJECT_META:
+        if title.startswith(prefix):
+            return pid, fname, slug
+    return None
+
 
 _REQUIRED_KEYS = (
     "name",
@@ -341,18 +289,14 @@ def _attach_project_meta(doc: dict) -> None:
     for i, proj in enumerate(doc.get("projects", [])):
         if not isinstance(proj, dict):
             continue
-        proj["__id"] = _PROJECT_IDS[i] if i < len(_PROJECT_IDS) else f"proj-{i}"
-        proj["__filename"] = (
-            _PROJECT_FILENAMES[i] if i < len(_PROJECT_FILENAMES) else f"file-{i}.md"
-        )
-        # v1.3 E3 + B5: deep-dive route + per-project SVG illustration.
-        # Both are index-aligned with _PROJECT_IDS; a 4th+ project that ships
-        # without an SVG renders without one (template gates on truthy value).
-        proj["svg_illustration"] = _PROJECT_SVGS[i] if i < len(_PROJECT_SVGS) else None
+        meta = _project_meta(proj.get("title"))
+        pid, fname, slug = meta if meta else (f"proj-{i}", f"file-{i}.md", None)
+        proj["__id"] = pid
+        proj["__filename"] = fname
+        # 2026-07-17: illustration PNGs never shipped in the public build;
+        # crafted SVG thumbs + real photos (__photo) replace them.
+        proj["svg_illustration"] = None
         proj["__photo"] = _resolve_photo(proj.get("photo"), "projects")
-        slug = (
-            _PROJECT_DEEP_DIVE_SLUGS[i] if i < len(_PROJECT_DEEP_DIVE_SLUGS) else None
-        )
         proj["deep_dive_route"] = f"/portfolio/projects/{slug}" if slug else None
 
 

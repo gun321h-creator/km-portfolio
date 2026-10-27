@@ -59,7 +59,7 @@
     <div class="gc-divider" role="separator"></div>
     <section id="{{ 'life-at-vmi' if key == '__life_at_vmi' else 'off-duty' }}" data-tab="about">
       <h2 class="filesep">{{ title }} <span class="fs-crumb">{{ th }}</span></h2>
-      <div class="photo-grid">
+      <div class="photo-grid{% if key == '__off_duty' %} photo-grid-sm{% endif %}">
         {% for img in p[key] %}
           <figure class="proj-thumb proj-photo">
             <img src="{{ img.src }}" alt="{{ img.alt }}" class="fit-{{ img.fit }}" loading="lazy" decoding="async">
@@ -70,4 +70,11 @@
     </section>
     {% endif %}
   {% endfor %}
+
+  {# Colophon: the Gilded Circuit story moved here from the home hero. #}
+  <p class="about-colophon">
+    <span class="gold">Gilded Circuit</span> &middot; ลายรดน้ำ &times; ลายวงจร &mdash;
+    the site's mark is literal: <b>กนก (kanok)</b>, the first word of my name, means <b>gold</b>
+    and names the Thai flame ornament itself, redrawn here as circuit traces.
+  </p>
 {% endblock %}

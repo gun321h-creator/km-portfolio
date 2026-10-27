@@ -79,8 +79,6 @@
         <a href="/portfolio/research" data-page-id="research" class="gc-link{% if current_page_id == 'research' or current_page_id.startswith('res-') %} active{% endif %}"{% if current_page_id == 'research' %} aria-current="page"{% endif %}><img class="gc-via" src="/static/brand/via.svg" alt="">Research</a>
         <a href="/portfolio/contact" data-page-id="contact" class="gc-link{% if current_page_id == 'contact' %} active{% endif %}"{% if current_page_id == 'contact' %} aria-current="page"{% endif %}><img class="gc-via" src="/static/brand/via.svg" alt="">Contact</a>
         <span class="gc-nav-spacer"></span>
-        <button class="tab-source" aria-label="View page source data">{ } source</button>
-        <span class="titlebar"><button class="kbd-hint" type="button" title="Command palette (Ctrl+K)"><kbd>Ctrl</kbd>+<kbd>K</kbd></button></span>
       </nav>
     </div>
   </header>
@@ -89,26 +87,10 @@
     {% block main %}{% endblock %}
   </main>
 
-  {# ── Recent updates (was the "Agent" sidebar changelog) ─────────── #}
-  {% if changelog %}
-  <section class="gc-changelog" aria-label="Recent updates">
-    <h2 class="gc-sec"><img src="/static/brand/via.svg" alt="">Recent updates <span class="gc-sec-th">&middot; อัปเดตล่าสุด</span></h2>
-    <ul class="changelog">
-      {% for e in changelog[:4] %}
-        <li>
-          <span class="cl-date">{{ e.date }}</span>
-          <span class="cl-file">{{ e.file }}</span>
-          {% if e.added is not none and e.removed is not none %}
-            <span class="cl-delta">+{{ e.added }} -{{ e.removed }}</span>
-          {% endif %}
-          {% if e.note %}<div class="cl-note">{{ e.note }}</div>{% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  </section>
-  {% endif %}
+  {# 2026-10-27: the commit changelog footer was removed (competitor research:
+     dev metadata reads as unfinished to faculty). News lives on the home page. #}
 
-  <noscript><p class="noscript-hint">JavaScript is off -- the command palette and activity grid stay hidden; every page still works as a plain link.</p></noscript>
+  <noscript><p class="noscript-hint">JavaScript is off -- the command palette stays hidden; every page still works as a plain link.</p></noscript>
 
   {# ── Footer (kept JS hooks: .statusbar .now-playing / .deploy / .github-link) ── #}
   <footer class="statusbar">

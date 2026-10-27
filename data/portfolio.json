@@ -4,7 +4,7 @@
   "tagline": "Electrical & Computer Engineering, Institute Honors Program -- post-quantum cryptography & blockchain security research",
   "hero_subtitle_lines": [
     "Virginia Military Institute, Class of 2027",
-    "Overall GPA 3.81 / Major GPA 4.00 -- Institute Honors Program"
+    "Overall GPA 3.81 / Major GPA 4.00"
   ],
   "contact_email": "mettasatk27@vmi.edu",
   "contact_location": "Lexington, VA",
@@ -94,65 +94,6 @@
   ],
   "projects": [
     {
-      "title": "Officer Parker -- real-time voice agent for mock US visa interviews",
-      "plain": "Practise a US visa interview out loud with an AI consular officer who already has your own form on screen -- and catches every place your answers stop matching it.",
-      "summary": "Browser voice agent that runs a two-minute mock US visa interview end to end: 24 kHz PCM capture, a speech-to-speech WebSocket session, and a structured report generated from the transcript. Grounded in the applicant's own DS-160 answers so the agent can surface contradictions between what was filed and what is said -- a check a generic mock-interview tool cannot make. Sole author of the architecture, front end, serverless functions, deployment and submission video. Submitted to the AssemblyAI Voice Agent Hackathon (Sep 2026); MIT-licensed and running in production.",
-      "stack": [
-        "JavaScript",
-        "Web Audio (AudioWorklet, 24 kHz PCM)",
-        "WebSocket speech-to-speech",
-        "Vercel serverless functions",
-        "AssemblyAI"
-      ],
-      "scale": "Sole developer, Aug -- Sep 2026; zero runtime dependencies; guard tests for the honesty constraint and the client-side rate limiter, each verified against a mutation battery",
-      "link": "https://officer-parker.vercel.app",
-      "link_label": "Live demo",
-      "links": [
-        {
-          "label": "Live demo",
-          "href": "https://officer-parker.vercel.app"
-        },
-        {
-          "label": "Source on GitHub (MIT)",
-          "href": "https://github.com/gun321h-creator/visa-coach"
-        }
-      ],
-      "deep_dive_intro": "Officer Parker turns a mock interview into something with a right answer. The applicant files a short DS-160, then faces a consular officer who already has that form on screen -- by voice, in real time. The agent's job is not to make conversation; it is to find where the person diverges from their own paperwork, which is what a real consular window does.",
-      "architecture": "A static front end (index.html, app.js, persona.js, worklet.js) captures 24 kHz PCM through an AudioWorklet and streams it over a speech-to-speech WebSocket session. Two Vercel serverless functions back it: token.js mints the short-lived session token and report.js scores the transcript into a structured report; both share lib/guard.js for a same-origin check and a per-IP rate limit. The applicant's DS-160 answers are handed to the officer persona as fenced, untrusted data, so contradictions between the form and the spoken answers are detected from the record rather than imagined. A sample replay (demo-session.js) runs the whole interview and report with no microphone, no socket and no API call, so judges and reviewers can see it without granting mic access.",
-      "architecture_diagram": "  browser (static)                       Vercel functions\n+-----------------------+   token    +------------------+\n| DS-160 intake (form)  |<---------->| api/token.js     |\n| AudioWorklet 24 kHz   |            +------------------+\n| WebSocket s2s session |   report   +------------------+\n| transcript -> report  |<---------->| api/report.js    |\n+-----------+-----------+            +---------+--------+\n            |                                  |\n            v                                  v\n   demo-session.js (replay,         lib/guard.js (same-origin\n   no mic / socket / API)            + per-IP rate limit)\n",
-      "lessons": [
-        "Ground the agent in the applicant's own filed data and the interview acquires a right answer: the officer looks for divergence from the form, not for conversational quality.",
-        "The honesty constraint is a test, not a prompt. The report rewriter may not invent facts, and that guard is asserted by tests verified against a mutation battery.",
-        "Rate limits belong on both sides: a same-origin check plus per-IP limiter on the serverless functions, and a client-side limiter locked to the measured free-tier throttle window."
-      ],
-      "summary_cv": "Browser voice agent: 24 kHz PCM capture, speech-to-speech WebSocket session, structured report from the transcript, grounded in the applicant's own DS-160 so contradictions surface. Sole developer; AssemblyAI Voice Agent Hackathon (Sep 2026); MIT-licensed, in production."
-    },
-    {
-      "title": "Statistical research platform for financial time series",
-      "plain": "A home-built science lab for testing ideas about market data: every hypothesis has to clear statistical thresholds that were fixed before the experiment ran.",
-      "summary": "Independent project, 2025 -- present. A Python research stack -- data pipeline, event-driven simulator with realistic transaction costs, telemetry -- bound to statistical acceptance thresholds registered before any experiment ran (bootstrapped lower-bound Sharpe ratio, deflated Sharpe ratio, multiple-testing correction). Over sixty hypotheses tested and rejected by the data rather than by discretion; automated audits for look-ahead and optimistic fills, and mutation-tested guards on the execution path.",
-      "stack": [
-        "Python",
-        "pandas / NumPy",
-        "Event-driven simulator",
-        "Block bootstrap",
-        "pytest + mutation testing"
-      ],
-      "scale": "60+ hypotheses tested; companion systematic mapping (SURI) on the literature side",
-      "link": null,
-      "link_label": null,
-      "deep_dive_intro": "A pre-registered research platform for evaluating hypotheses about financial time series without fooling itself. Every claim is gated by statistical lower bounds fixed before the experiment, every candidate is tested out-of-sample on a held-out window, and the execution path carries mutation-tested guards.",
-      "architecture": "Strategy modules under BOT/research_backtests/strategies/ each declare one family (entry, exit, sizing). A shared cost model applies broker-verified spread, commission, and slippage before any metric is computed. The runner sweeps capital and risk-per-trade grids, then computes block-bootstrap lower-bound Sharpe (SR_LB), Probabilistic Sharpe Ratio (PSR), and Deflated Sharpe Ratio (DSR) over the trade series; promotion is gated on all three statistics jointly, with a multiple-testing haircut (exact thresholds are pre-registered internally). A separate bias auditor inspects each candidate for lookahead, same-bar fills, profit concentration, and overfit. A companion systematic mapping (SURI) applies the same pre-registration discipline to the literature.",
-      "architecture_diagram": "   data/*.csv           strategies/         shared/\n+--------------+    +----------------+    +---------------+\n| multi-asset  |--->| 60+ backtests  |--->| cost model    |\n| OHLCV data   |    | (family/file)  |    | (broker $/lot)|\n+--------------+    +-------+--------+    +------+--------+\n                            |                    |\n                            v                    v\n                    +-------+--------------------+----+\n                    | bias auditor                    |\n                    | (lookahead, fill, concentration)|\n                    +---------------+-----------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | SR_LB / PSR / DSR gates |\n                       +------------+------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | CANDIDATE / KILL label  |\n                       +-------------------------+\n",
-      "lessons": [
-        "Sharpe-lower-bound is leverage-invariant; CAGR is leverage-illusion. Ranking by SR_LB and choosing sizing after edge selection avoided multiple tail-driven false positives that ranked top by CAGR.",
-        "A same-day daily feature is lookahead in an intraday strategy: a carry-trend candidate looked PF 2.58 pre-audit and collapsed to PF 1.00 once the daily close was lagged. The bug-class rule now lives as a sacred rule.",
-        "Broker reality beats research defaults: forcing one micro-lot fill on every symbol surfaced a $6/lot round-turn commission that the research cost model had under-estimated by 5-8x for some pairs.",
-        "A tail-driven candidate cannot be forward-validated in human timeframes: if ~89% of the edge is in the top 1.5% of campaigns, 12 forward windows give ~84% probability of a zero-tail outcome -- a useful prior to retire the family early rather than wait years."
-      ],
-      "summary_cv": "Python research stack bound to acceptance thresholds registered before any experiment ran (bootstrapped lower-bound Sharpe, deflated Sharpe, multiple-testing correction); 60+ hypotheses rejected by the data; mutation-tested guards."
-    },
-    {
       "title": "SURI -- Systematic mapping of quantum-resistant blockchain security",
       "plain": "I mapped what the research world knows about quantum computers threatening blockchains -- following a protocol written down before the search began, so anyone can rebuild the same map.",
       "summary": "Undergraduate research with Dr. Efat Fathalla (VMI ECE), 2025 -- present. A systematic mapping of quantum-resistant blockchain security: 387 peer-reviewed primary studies (2018-2026) selected from more than 6,500 records under a PRISMA 2020 protocol, then classified by contribution type and evidence maturity. The review pipeline is implemented in Python as idempotent build / append / repair / categorise stages, so the whole corpus can be rebuilt from the search log after any protocol amendment. A mid-study reclassification was reconciled by correcting the earlier categorisation rather than defending it, and documented in the protocol record. Output so far: a first-author paper accepted at IEEE UEMCON 2026 (Armonk, NY) and a second paper published open access in Computers (MDPI).",
@@ -231,20 +172,6 @@
       }
     },
     {
-      "title": "Senior Design Capstone (EE-421X) -- wearable sensor sock",
-      "plain": "A year-long team project to design and build a sock with sensors in it, run the way a real engineering programme is run: requirements first, then design, then build.",
-      "summary": "Team member, Aug 2026 -- May 2027. Team project run as a formal systems-engineering process; contributed to the System Requirements Document and the September requirements review (concept of operations, functional block diagram, threshold and objective requirements); design and build follow.",
-      "stack": [
-        "Systems-engineering process",
-        "System Requirements Document",
-        "Concept of operations",
-        "Functional block diagram"
-      ],
-      "scale": "Aug 2026 -- May 2027; requirements review Sep 2026; design and build in progress",
-      "link": null,
-      "link_label": null
-    },
-    {
       "title": "Motion-triggered novelty device (EE-382) -- schematic to fabricated PCB",
       "plain": "A small gadget that senses light, sound and motion and plays audio back -- I designed the circuit board from scratch, had it manufactured and soldered it by hand.",
       "summary": "Hardware lead, EE-382 Entrepreneurship for ECE, Spring 2026. Sole designer of the electronics: schematic and printed circuit board in KiCad, sent to fabrication, hand-assembled, and firmware for an Arduino-class microcontroller fusing light, sound and motion sensing to trigger audio playback. Debugged sensor and audio paths on the oscilloscope; teammates carried customer discovery and the business case.",
@@ -263,6 +190,80 @@
         "alt": "Keysight oscilloscope showing a 5 V square wave at about 50 percent duty cycle on channel 1.",
         "caption": "Bench check of a digital signal on the oscilloscope, EE-382, Spring 2026."
       }
+    },
+    {
+      "title": "Senior Design Capstone (EE-421X) -- wearable sensor sock",
+      "plain": "A year-long team project to design and build a sock with sensors in it, run the way a real engineering programme is run: requirements first, then design, then build.",
+      "summary": "Team member, Aug 2026 -- May 2027. Team project run as a formal systems-engineering process; contributed to the System Requirements Document and the September requirements review (concept of operations, functional block diagram, threshold and objective requirements); design and build follow.",
+      "stack": [
+        "Systems-engineering process",
+        "System Requirements Document",
+        "Concept of operations",
+        "Functional block diagram"
+      ],
+      "scale": "Aug 2026 -- May 2027; requirements review Sep 2026; design and build in progress",
+      "link": null,
+      "link_label": null
+    },
+    {
+      "title": "Officer Parker -- real-time voice agent for mock US visa interviews",
+      "plain": "Practise a US visa interview out loud with an AI consular officer who already has your own form on screen -- and catches every place your answers stop matching it.",
+      "summary": "Browser voice agent that runs a two-minute mock US visa interview end to end: 24 kHz PCM capture, a speech-to-speech WebSocket session, and a structured report generated from the transcript. Grounded in the applicant's own DS-160 answers so the agent can surface contradictions between what was filed and what is said -- a check a generic mock-interview tool cannot make. Sole author of the architecture, front end, serverless functions, deployment and submission video. Submitted to the AssemblyAI Voice Agent Hackathon (Sep 2026); MIT-licensed and running in production.",
+      "stack": [
+        "JavaScript",
+        "Web Audio (AudioWorklet, 24 kHz PCM)",
+        "WebSocket speech-to-speech",
+        "Vercel serverless functions",
+        "AssemblyAI"
+      ],
+      "scale": "Sole developer, Aug -- Sep 2026; zero runtime dependencies; guard tests for the honesty constraint and the client-side rate limiter, each verified against a mutation battery",
+      "link": "https://officer-parker.vercel.app",
+      "link_label": "Live demo",
+      "links": [
+        {
+          "label": "Live demo",
+          "href": "https://officer-parker.vercel.app"
+        },
+        {
+          "label": "Source on GitHub (MIT)",
+          "href": "https://github.com/gun321h-creator/visa-coach"
+        }
+      ],
+      "deep_dive_intro": "Officer Parker turns a mock interview into something with a right answer. The applicant files a short DS-160, then faces a consular officer who already has that form on screen -- by voice, in real time. The agent's job is not to make conversation; it is to find where the person diverges from their own paperwork, which is what a real consular window does.",
+      "architecture": "A static front end (index.html, app.js, persona.js, worklet.js) captures 24 kHz PCM through an AudioWorklet and streams it over a speech-to-speech WebSocket session. Two Vercel serverless functions back it: token.js mints the short-lived session token and report.js scores the transcript into a structured report; both share lib/guard.js for a same-origin check and a per-IP rate limit. The applicant's DS-160 answers are handed to the officer persona as fenced, untrusted data, so contradictions between the form and the spoken answers are detected from the record rather than imagined. A sample replay (demo-session.js) runs the whole interview and report with no microphone, no socket and no API call, so judges and reviewers can see it without granting mic access.",
+      "architecture_diagram": "  browser (static)                       Vercel functions\n+-----------------------+   token    +------------------+\n| DS-160 intake (form)  |<---------->| api/token.js     |\n| AudioWorklet 24 kHz   |            +------------------+\n| WebSocket s2s session |   report   +------------------+\n| transcript -> report  |<---------->| api/report.js    |\n+-----------+-----------+            +---------+--------+\n            |                                  |\n            v                                  v\n   demo-session.js (replay,         lib/guard.js (same-origin\n   no mic / socket / API)            + per-IP rate limit)\n",
+      "lessons": [
+        "Ground the agent in the applicant's own filed data and the interview acquires a right answer: the officer looks for divergence from the form, not for conversational quality.",
+        "The honesty constraint is a test, not a prompt. The report rewriter may not invent facts, and that guard is asserted by tests verified against a mutation battery.",
+        "Rate limits belong on both sides: a same-origin check plus per-IP limiter on the serverless functions, and a client-side limiter locked to the measured free-tier throttle window."
+      ],
+      "summary_cv": "Browser voice agent: 24 kHz PCM capture, speech-to-speech WebSocket session, structured report from the transcript, grounded in the applicant's own DS-160 so contradictions surface. Sole developer; AssemblyAI Voice Agent Hackathon (Sep 2026); MIT-licensed, in production."
+    },
+    {
+      "title": "Statistical research platform for financial time series",
+      "plain": "A home-built science lab for testing ideas about market data: every hypothesis has to clear statistical thresholds that were fixed before the experiment ran.",
+      "summary": "Independent project, 2025 -- present. A Python research stack -- data pipeline, event-driven simulator with realistic transaction costs, telemetry -- bound to statistical acceptance thresholds registered before any experiment ran (bootstrapped lower-bound Sharpe ratio, deflated Sharpe ratio, multiple-testing correction). Over sixty hypotheses tested and rejected by the data rather than by discretion; automated audits for look-ahead and optimistic fills, and mutation-tested guards on the execution path.",
+      "stack": [
+        "Python",
+        "pandas / NumPy",
+        "Event-driven simulator",
+        "Block bootstrap",
+        "pytest + mutation testing"
+      ],
+      "scale": "60+ hypotheses tested; companion systematic mapping (SURI) on the literature side",
+      "link": null,
+      "link_label": null,
+      "deep_dive_intro": "A pre-registered research platform for evaluating hypotheses about financial time series without fooling itself. Every claim is gated by statistical lower bounds fixed before the experiment, every candidate is tested out-of-sample on a held-out window, and the execution path carries mutation-tested guards.",
+      "architecture": "Strategy modules under BOT/research_backtests/strategies/ each declare one family (entry, exit, sizing). A shared cost model applies broker-verified spread, commission, and slippage before any metric is computed. The runner sweeps capital and risk-per-trade grids, then computes block-bootstrap lower-bound Sharpe (SR_LB), Probabilistic Sharpe Ratio (PSR), and Deflated Sharpe Ratio (DSR) over the trade series; promotion is gated on all three statistics jointly, with a multiple-testing haircut (exact thresholds are pre-registered internally). A separate bias auditor inspects each candidate for lookahead, same-bar fills, profit concentration, and overfit. A companion systematic mapping (SURI) applies the same pre-registration discipline to the literature.",
+      "architecture_diagram": "   data/*.csv           strategies/         shared/\n+--------------+    +----------------+    +---------------+\n| multi-asset  |--->| 60+ backtests  |--->| cost model    |\n| OHLCV data   |    | (family/file)  |    | (broker $/lot)|\n+--------------+    +-------+--------+    +------+--------+\n                            |                    |\n                            v                    v\n                    +-------+--------------------+----+\n                    | bias auditor                    |\n                    | (lookahead, fill, concentration)|\n                    +---------------+-----------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | SR_LB / PSR / DSR gates |\n                       +------------+------------+\n                                    |\n                                    v\n                       +------------+------------+\n                       | CANDIDATE / KILL label  |\n                       +-------------------------+\n",
+      "lessons": [
+        "Sharpe-lower-bound is leverage-invariant; CAGR is leverage-illusion. Ranking by SR_LB and choosing sizing after edge selection avoided multiple tail-driven false positives that ranked top by CAGR.",
+        "A same-day daily feature is lookahead in an intraday strategy: a carry-trend candidate looked PF 2.58 pre-audit and collapsed to PF 1.00 once the daily close was lagged. The bug-class rule now lives as a sacred rule.",
+        "Broker reality beats research defaults: forcing one micro-lot fill on every symbol surfaced a $6/lot round-turn commission that the research cost model had under-estimated by 5-8x for some pairs.",
+        "A tail-driven candidate cannot be forward-validated in human timeframes: if ~89% of the edge is in the top 1.5% of campaigns, 12 forward windows give ~84% probability of a zero-tail outcome -- a useful prior to retire the family early rather than wait years."
+      ],
+      "summary_cv": "Python research stack bound to acceptance thresholds registered before any experiment ran (bootstrapped lower-bound Sharpe, deflated Sharpe, multiple-testing correction); 60+ hypotheses rejected by the data; mutation-tested guards.",
+      "group": "earlier"
     },
     {
       "title": "Trading-research dashboard",
@@ -459,7 +460,6 @@
       "items": [
         "Systematic review methodology",
         "Statistical hypothesis testing",
-        "Bootstrapped / deflated Sharpe ratio",
         "IEEE technical writing"
       ]
     },
@@ -551,7 +551,7 @@
       "where": "AFAPS"
     }
   ],
-  "footer_note": "Last updated: 2026-10-07. Content here is a public summary; the formal CV is available on request.",
+  "footer_note": "Last updated: 2026-10-27. The one-page CV is linked from every page.",
   "grad_school": {
     "headline": "Graduate school -- MS Electrical Engineering, Fall 2027",
     "tagline": "Academic record, research direction, publications, and references.",
@@ -578,7 +578,7 @@
       {
         "title": "Publications",
         "items": [
-          "K. Mettasat and E. Fathalla. \"Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family.\" IEEE UEMCON 2026, Armonk, NY. Accepted; to appear in IEEE Xplore.",
+          "K. Mettasat and E. Fathalla. \"Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family.\" IEEE UEMCON 2026, Armonk, NY. Accepted and presented; to appear in IEEE Xplore.",
           "K. Mettasat, E. Fathalla and M. Azab. \"A Systematic Mapping of Quantum Threats and Defenses for Blockchain.\" Computers (MDPI), vol. 15, no. 11, art. 743, 2026. Open access.",
           "K. Mettasat and E. Fathalla. Post-quantum-secure blockchain architecture -- manuscript arising from the Institute Honors thesis. In preparation, 2027."
         ],
@@ -2067,7 +2067,9 @@
       "title": "Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family",
       "venue": "2026 IEEE 17th Annual Ubiquitous Computing, Electronics & Mobile Communication Conference (UEMCON), Armonk, New York",
       "date": "Oct 2026",
-      "status": "Accepted; to appear in IEEE Xplore"
+      "status": "Accepted and presented; to appear in IEEE Xplore",
+      "venue_short": "IEEE UEMCON '26",
+      "slug": "uemcon-2026"
     },
     {
       "authors": "K. Mettasat, E. Fathalla and M. Azab",
@@ -2075,7 +2077,9 @@
       "venue": "Computers (MDPI), vol. 15, no. 11, art. 743",
       "date": "Oct 2026",
       "status": "Published; open access",
-      "doi": "10.3390/computers15110743"
+      "doi": "10.3390/computers15110743",
+      "venue_short": "MDPI Computers '26",
+      "slug": "mdpi-computers-2026"
     },
     {
       "authors": "K. Mettasat and E. Fathalla",
@@ -2320,5 +2324,37 @@
       "value": "1st",
       "label": "of 348 Army cadets, AFAPS"
     }
+  ],
+  "news": [
+    {
+      "date": "22 Oct 2026",
+      "text": "Journal paper published, open access, in Computers (MDPI).",
+      "href": "/portfolio/research/mdpi-computers-2026"
+    },
+    {
+      "date": "Oct 2026",
+      "text": "Presented my first-author paper at IEEE UEMCON 2026, Armonk, New York.",
+      "href": "/portfolio/research/talk-uemcon-2026"
+    },
+    {
+      "date": "10 Oct 2026",
+      "text": "Research talk at the Southern Conference Undergraduate Research Forum (SURF), Wofford College.",
+      "href": "/portfolio/research/talk-surf-2026"
+    },
+    {
+      "date": "Mar 2026",
+      "text": "Team lead, IEEE SoutheastCon 2026 Undergraduate Circuit Design: top 7 of 40 teams.",
+      "href": "/portfolio/projects#southeastcon"
+    },
+    {
+      "date": "Nov 2025",
+      "text": "Inducted into Tau Beta Pi, the engineering honor society (Virginia Chapter).",
+      "href": "/portfolio/education#vmi"
+    }
+  ],
+  "cv_projects": [
+    "Officer Parker",
+    "Statistical research platform",
+    "SURI --"
   ]
 }

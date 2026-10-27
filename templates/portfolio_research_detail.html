@@ -21,6 +21,7 @@
     {% endif %}
 
     <p class="proj-detail-plain">{{ it.summary }}</p>
+    {% if it.role %}<p class="role-line"><span class="role-label">My role</span> {{ it.role }}</p>{% endif %}
 
     {% for img in it.__images %}
       <figure class="proj-thumb proj-photo res-figure">

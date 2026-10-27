@@ -291,7 +291,12 @@
     {# ----- 4. Projects -------------------------------------------- #}
     <section class="cv-section">
       <h2>Projects</h2>
-      {% for proj in p.projects[:3] %}
+      {# 2026-10-27: the web grid was reordered research-first; the CV keeps its
+         own explicit list (portfolio.json cv_projects, title prefixes) so a
+         page reorder can never silently change the submitted CV. #}
+      {% set _cv = [] %}
+      {% for t in (p.cv_projects or []) %}{% for proj in p.projects if proj.title.startswith(t) %}{% set _ = _cv.append(proj) %}{% endfor %}{% endfor %}
+      {% for proj in (_cv or p.projects[:3]) %}
       <div class="cv-project">
         <span class="cv-project-title">{{ proj.title }}.</span>
         {# 2026-10-07: compact `summary_cv` keeps the CV to one page; falls back to the card summary. #}

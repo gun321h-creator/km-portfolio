@@ -48,6 +48,7 @@
         {% if proj.plain %}
           <p class="proj-plain"><span class="pp-mark" aria-hidden="true">&#10022;</span>{{ proj.plain }}</p>
         {% endif %}
+        {% if proj.role %}<p class="role-line"><span class="role-label">My role</span> {{ proj.role }}</p>{% endif %}
         <p class="proj-summary">{{ proj.summary | safe }}</p>
         <div class="chips">
           {% for s in proj.stack %}<span class="chip">{{ s }}</span>{% endfor %}

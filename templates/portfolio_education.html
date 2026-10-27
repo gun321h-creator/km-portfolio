@@ -119,19 +119,4 @@
   </section>
   {% endif %}
 
-  <div class="gc-divider" role="separator"></div>
-  <section id="edu-latest" data-tab="education" data-mtime="{{ latest_md_mtime or '' }}">
-    <h2 class="filesep">Latest term
-      {% if latest_md %}<span class="fs-new">&#9679; new</span>{% endif %}
-      <span class="fs-crumb">อัปเดตเทอมล่าสุด</span>
-    </h2>
-    {% if latest_md %}
-      <div class="md-body">{{ latest_md_rendered | safe }}</div>
-    {% else %}
-      <p class="md-placeholder">
-        Awaiting next-term update -- this section renders automatically when new
-        term data lands.
-      </p>
-    {% endif %}
-  </section>
 {% endblock %}
