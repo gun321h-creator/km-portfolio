@@ -116,7 +116,7 @@
         "Included is not the same as identified: the number that anchors every claim is the 387 studies that survive screening, not the 6,500+ records first identified -- and the flow diagram has to show where every other record went.",
         "Relevance and role are separate axes. Conflating them -- the tempting extra 'Type: Core / Supporting / Context' column -- created false agreement in coding decisions and was removed after the first audit."
       ],
-      "summary_cv": "Undergraduate research with Dr. Efat Fathalla (VMI ECE): systematic mapping of 387 studies under a PRISMA 2020 protocol; idempotent Python pipeline rebuilds the corpus from the search log. Published in Computers (MDPI) 2026; second paper accepted at IEEE UEMCON 2026.",
+      "summary_cv": "Undergraduate research with Dr. Efat Fathalla (VMI ECE): systematic mapping of 387 studies under a PRISMA 2020 protocol; idempotent Python pipeline rebuilds the corpus from the search log.",
       "links": [
         {
           "href": "/portfolio/research/mdpi-computers-2026",
@@ -189,7 +189,8 @@
         "file": "ee382-scope.jpg",
         "alt": "Keysight oscilloscope showing a 5 V square wave at about 50 percent duty cycle on channel 1.",
         "caption": "Bench check of a digital signal on the oscilloscope, EE-382, Spring 2026."
-      }
+      },
+      "summary_cv": "Hardware lead, EE-382 (Spring 2026): sole designer of the electronics -- KiCad schematic and PCB, fabricated and hand-assembled; Arduino-class firmware fusing light, sound and motion sensing to trigger audio; debugged on the oscilloscope."
     },
     {
       "title": "Senior Design Capstone (EE-421X) -- wearable sensor sock",
@@ -2202,7 +2203,8 @@
         "related": [
           "uemcon-2026",
           "talk-surf-2026"
-        ]
+        ],
+        "venue_short": "IEEE UEMCON 2026, Armonk, NY"
       },
       {
         "slug": "talk-surf-2026",
@@ -2229,7 +2231,8 @@
         "related": [
           "talk-uemcon-2026",
           "mdpi-computers-2026"
-        ]
+        ],
+        "venue_short": "SURF 2026, Wofford College"
       },
       {
         "slug": "honors-thesis",
@@ -2353,8 +2356,8 @@
     }
   ],
   "cv_projects": [
-    "Officer Parker",
-    "Statistical research platform",
-    "SURI --"
+    "SURI --",
+    "Motion-triggered novelty device",
+    "Officer Parker"
   ]
 }

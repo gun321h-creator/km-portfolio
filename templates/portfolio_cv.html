@@ -133,6 +133,7 @@
     }
 
     .cv-section li { margin: 0 0 2px; }
+    .cv-talks { margin: 3px 0 0; }
 
     /* --- About ---------------------------------------------------- */
 
@@ -285,6 +286,12 @@
         <li>{{ pub.authors }}. &ldquo;{{ pub.title }}.&rdquo;{% if pub.venue %} <em>{{ pub.venue }}</em>,{% endif %} {{ pub.date }}. {{ pub.status }}.</li>
         {% endfor %}
       </ul>
+      {# 2026-10-27: talks line so the CV matches the research hub. #}
+      {% set _talks = (p.research['items'] if p.research else []) | selectattr('category', 'equalto', 'talk') | list %}
+      {% if _talks %}
+      <p class="cv-talks"><strong>Talks (presenter):</strong>
+        {% for t in _talks %}{{ t.venue_short or t.venue.split(' -- ')[0] }} ({{ t.date }}){% if not loop.last %}; {% endif %}{% endfor %}.</p>
+      {% endif %}
     </section>
     {% endif %}
 
