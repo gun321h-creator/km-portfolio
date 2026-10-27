@@ -150,7 +150,8 @@
           "value": "1.3%",
           "label": "reach a public testnet"
         }
-      ]
+      ],
+      "role": "First author and project lead: led the work from start to finish."
     },
     {
       "title": "IEEE SoutheastCon 2026 -- Undergraduate Circuit Design (team lead)",
@@ -169,7 +170,8 @@
         "file": "southeastcon.jpg",
         "alt": "Kanokpon Mettasat and three other competitors holding their breadboard circuit at IEEE SoutheastCon 2026.",
         "caption": "Undergraduate Circuit Design, IEEE SoutheastCon 2026."
-      }
+      },
+      "role": "Team lead of the VMI circuit-design competition team."
     },
     {
       "title": "Motion-triggered novelty device (EE-382) -- schematic to fabricated PCB",
@@ -204,7 +206,8 @@
       ],
       "scale": "Aug 2026 -- May 2027; requirements review Sep 2026; design and build in progress",
       "link": null,
-      "link_label": null
+      "link_label": null,
+      "role": "Team administration: background research and project documentation."
     },
     {
       "title": "Officer Parker -- real-time voice agent for mock US visa interviews",
@@ -2158,7 +2161,8 @@
         "related": [
           "uemcon-2026",
           "honors-thesis"
-        ]
+        ],
+        "role": "First author and project lead: led the work from start to finish."
       },
       {
         "slug": "uemcon-2026",
@@ -2181,7 +2185,8 @@
         "related": [
           "talk-uemcon-2026",
           "mdpi-computers-2026"
-        ]
+        ],
+        "role": "First author and project lead: led the work from start to finish."
       },
       {
         "slug": "talk-uemcon-2026",
