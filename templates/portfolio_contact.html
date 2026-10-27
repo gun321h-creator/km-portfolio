@@ -1,32 +1,64 @@
 {% extends "portfolio_base.html" %}
 
+{# 2026-10-27: contact as a grid of gold-ringed cards (same medallion as the
+   education crests). Icons are generic inline SVG -- no brand artwork, no
+   extra requests. Every link still comes from portfolio.json. #}
+
+{% macro icon(kind) %}
+  <span class="edu-crest contact-medal" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      {% if kind == 'mail' %}<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>
+      {% elif kind == 'pin' %}<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>
+      {% elif kind == 'code' %}<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>
+      {% elif kind == 'in' %}<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V16M8 7.5v.01M12 16v-3.2a2.3 2.3 0 0 1 4.6 0V16M12 10.5V16"/>
+      {% elif kind == 'id' %}<circle cx="12" cy="12" r="9"/><path d="M9 8.5v7M12 8.5h1.6a3.5 3.5 0 0 1 0 7H12z"/>
+      {% else %}<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 15.5h5M10 8.5h2"/>
+      {% endif %}
+    </svg>
+  </span>
+{% endmacro %}
+
 {% block main %}
   <section id="contact" data-tab="contact">
     <h2 class="filesep">Contact <span class="fs-crumb">ติดต่อ</span></h2>
-    <div class="gc-contact-card">
-      <span class="corner" aria-hidden="true"></span>
-      <p class="gc-contact-line">
-        <a href="mailto:{{ p.contact_email }}" class="email">{{ p.contact_email }}</a>
-      </p>
-      <p class="gc-contact-line muted">{{ p.contact_location }}</p>
+    <p class="gc-page-lede">Email is the fastest way to reach me. The links below go to my code, my professional profile, and my research record.</p>
+    <div class="contact-grid">
+      <a class="contact-card contact-card-primary" href="mailto:{{ p.contact_email }}">
+        {{ icon('mail') }}
+        <span class="contact-label">Email</span>
+        <span class="contact-value email">{{ p.contact_email }}</span>
+      </a>
+      <div class="contact-card">
+        {{ icon('pin') }}
+        <span class="contact-label">Based in</span>
+        <span class="contact-value">{{ p.contact_location }}</span>
+      </div>
       {% if p.contact_github %}
-      <p class="contact-line">
-        GitHub: <a href="{{ p.contact_github }}" rel="me noopener" target="_blank">{{ p.contact_github }}</a>
-      </p>
+      <a class="contact-card" href="{{ p.contact_github }}" rel="me noopener" target="_blank">
+        {{ icon('code') }}
+        <span class="contact-label">GitHub</span>
+        <span class="contact-value">{{ p.contact_github | replace('https://', '') }}</span>
+      </a>
       {% endif %}
       {% if p.contact_linkedin %}
-      <p class="contact-line">
-        LinkedIn: <a href="{{ p.contact_linkedin }}" rel="me noopener" target="_blank">{{ p.contact_linkedin }}</a>
-      </p>
+      <a class="contact-card" href="{{ p.contact_linkedin }}" rel="me noopener" target="_blank">
+        {{ icon('in') }}
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value">{{ p.contact_linkedin | replace('https://www.', '') | replace('https://', '') }}</span>
+      </a>
       {% endif %}
       {% if p.contact_orcid %}
-      <p class="contact-line">
-        ORCID: <a href="{{ p.contact_orcid }}" rel="me noopener" target="_blank">{{ p.contact_orcid }}</a>
-      </p>
+      <a class="contact-card" href="{{ p.contact_orcid }}" rel="me noopener" target="_blank">
+        {{ icon('id') }}
+        <span class="contact-label">ORCID</span>
+        <span class="contact-value">{{ p.contact_orcid | replace('https://', '') }}</span>
+      </a>
       {% endif %}
-      <p class="contact-line">
-        One-page CV: <a href="/portfolio-cv.pdf">download PDF</a>
-      </p>
+      <a class="contact-card" href="/portfolio-cv.pdf">
+        {{ icon('doc') }}
+        <span class="contact-label">One-page CV</span>
+        <span class="contact-value">Download PDF</span>
+      </a>
     </div>
     <p class="footer-note muted">{{ p.footer_note | safe }}</p>
   </section>

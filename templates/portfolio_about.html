@@ -1,10 +1,17 @@
 {% extends "portfolio_base.html" %}
+{% import "_partials/stat_strip.html" as ui %}
 
 {% block main %}
   <section id="about" data-tab="about">
     <h2 class="filesep">About <span class="fs-crumb">เกี่ยวกับ</span></h2>
-    <h1 class="md-h1">{{ p.name }}</h1>
-    <p class="md-sub muted">{{ p.tagline | safe }}{% for line in p.hero_subtitle_lines %} &middot; {{ line }}{% endfor %}</p>
+    <div class="about-head">
+      {{ ui.medallion("/static/personal/vmi-podium.jpg", "Kanokpon Mettasat speaking at a VMI ceremony", size="about-medal", photo=True, pos="center 22%") }}
+      <div>
+        <h1 class="md-h1">{{ p.name }}</h1>
+        <p class="md-sub muted">{{ p.tagline | safe }}{% for line in p.hero_subtitle_lines %} &middot; {{ line }}{% endfor %}</p>
+      </div>
+    </div>
+    {{ ui.strip(p.highlights, 'proj-stats-wide') }}
     <p class="md-body">{{ p.about | safe }}</p>
   </section>
 

@@ -1,4 +1,5 @@
 {% extends "portfolio_base.html" %}
+{% import "_partials/stat_strip.html" as ui %}
 
 {# 2026-10-27: research hub. Categories + items come from portfolio.json
    "research" (grouped in portfolio._attach_research_meta); every card links
@@ -9,6 +10,7 @@
   <h2 class="filesep">Research <span class="fs-crumb">งานวิจัย</span></h2>
   {% if r %}
     <p class="gc-page-lede">{{ r.intro }}</p>
+    {{ ui.strip(r.stats, 'proj-stats-wide') }}
 
     <nav class="res-cats" aria-label="Research categories">
       {% for c in r.__categories %}

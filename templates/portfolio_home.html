@@ -1,4 +1,5 @@
 {% extends "portfolio_base.html" %}
+{% import "_partials/stat_strip.html" as ui %}
 
 {% block main %}
   {# ── Gilded Circuit hero: mandala backdrop + scrim + bilingual headline ── #}
@@ -29,24 +30,43 @@
 
   <div class="gc-divider" role="separator"></div>
 
+  {% if p.highlights %}
+  <section id="at-a-glance" aria-label="At a glance">
+    <h2 class="filesep">At a glance <span class="fs-crumb">ภาพรวม</span></h2>
+    {{ ui.strip(p.highlights, 'proj-stats-wide') }}
+  </section>
+  <div class="gc-divider" role="separator"></div>
+  {% endif %}
+
   <section id="home-cards">
     <h2 class="filesep">Explore <span class="fs-crumb">สำรวจ</span></h2>
     <div class="home-cards">
       <a class="home-card" href="/portfolio/about" data-page-id="about">
         <span class="corner" aria-hidden="true"></span>
+        {{ ui.medallion("/static/personal/vmi-podium.jpg", size="home-medal", photo=True, pos="center 22%") }}
         <span class="home-card-title">About</span>
         <span class="home-card-desc">The short story &mdash; cadet, engineer, builder.</span>
       </a>
       <a class="home-card" href="/portfolio/education" data-page-id="education">
         <span class="corner" aria-hidden="true"></span>
+        {{ ui.medallion("/static/crests/vmi.png", size="home-medal", photo=False, pos="") }}
         <span class="home-card-title">Education</span>
         <span class="home-card-desc">{{ p.education | length }} schools, two countries &mdash; top of the class.</span>
       </a>
       <a class="home-card" href="/portfolio/projects" data-page-id="projects">
         <span class="corner" aria-hidden="true"></span>
+        {{ ui.medallion("/static/projects/ee382-scope.jpg", size="home-medal", photo=True, pos="") }}
         <span class="home-card-title">Projects</span>
         <span class="home-card-desc">Research, hardware, shipped software &mdash; see what they do.</span>
       </a>
+      {% if p.research %}
+      <a class="home-card" href="/portfolio/research" data-page-id="research">
+        <span class="corner" aria-hidden="true"></span>
+        {{ ui.medallion("/static/research/uemcon-talk.jpg", size="home-medal", photo=True, pos="center 30%") }}
+        <span class="home-card-title">Research</span>
+        <span class="home-card-desc">Papers, talks and figures &mdash; one page per paper.</span>
+      </a>
+      {% endif %}
     </div>
     <p class="home-audience-links">
       Audience-specific: <a href="/portfolio/recruit">recruiters</a>

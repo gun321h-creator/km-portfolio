@@ -1111,3 +1111,58 @@ main.editor { animation: portfolio-fade-in 200ms ease-out; }
   .edu-crest-lg { width: 56px; height: 56px; }
   .edu-node-head { gap: 12px; }
 }
+
+/* ── 2026-10-27 site-wide polish: one visual vocabulary on every page ──
+   (gold-ringed medallions from the education crests, gold stat tiles from
+   the SURI deep-dive, card grids instead of one long column). */
+.proj-stats-wide { max-width: 980px; }
+.medallion-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* home */
+.home-cards { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+.home-card .home-medal { width: 56px; height: 56px; margin: 0 0 12px; }
+
+/* about */
+.about-head { display: flex; align-items: center; gap: 22px; margin: 0 0 6px; }
+.about-head .md-h1 { margin-top: 0; }
+.about-medal { width: 104px; height: 104px; }
+
+/* projects: two-column grid, numbered cards */
+.proj-grid {
+  display: grid; gap: 22px; margin: 0 0 26px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr));
+}
+.proj-grid .portfolio-project-card { display: flex; }
+.proj-grid .proj-block { margin: 0; max-width: none; width: 100%; display: flex; flex-direction: column; }
+.proj-grid .proj-block .proj-deep-dive-link:last-child { margin-top: auto; padding-top: 10px; align-self: flex-start; }
+.proj-num {
+  position: absolute; top: 12px; right: 18px; z-index: 1;
+  font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em;
+  color: var(--gold); background: var(--lacquer); border: 1px solid var(--gold-dim);
+  padding: 2px 8px;
+}
+
+/* contact: card grid with icon medallions */
+.contact-grid {
+  display: grid; gap: 16px; margin: 0 0 22px; max-width: 980px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+}
+.contact-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  padding: 20px; background: var(--panel); border: 1px solid var(--gold-faint);
+  color: var(--ivory); transition: border-color 0.15s, transform 0.15s;
+}
+a.contact-card:hover { border-color: var(--gold); transform: translateY(-2px); color: var(--ivory); }
+.contact-card-primary { border-color: var(--gold-dim); border-top: 2px solid var(--gold); }
+.contact-medal { width: 52px; height: 52px; margin: 0 0 10px; color: #3A2E1E; }
+.contact-medal svg { width: 52%; height: 52%; }
+.contact-label {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--gold-dim);
+}
+.contact-value { font-family: var(--thai); font-size: 0.95rem; color: var(--gold); overflow-wrap: anywhere; }
+
+@media (max-width: 560px) {
+  .about-head { gap: 14px; }
+  .about-medal { width: 76px; height: 76px; }
+}

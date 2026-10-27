@@ -11,18 +11,25 @@
   matters), then goes technical for the engineers.
   <span class="th">อ่านง่ายก่อน แล้วค่อยลงลึกแบบวิศวกร</span></p>
 
-  {% set _ns = namespace(earlier_shown=false) %}
+  {# 2026-10-27: cards sit in a two-column grid (one column on phones);
+     the "Earlier work" divider closes the first grid and opens a second. #}
+  {% set _ns = namespace(earlier_shown=false, n=0) %}
+  <div class="proj-grid">
   {% for proj in p.projects %}
     {# 2026-10-07: the six pre-2026 systems sit under one "Earlier work"
        divider (portfolio.json projects[i].group == "earlier"); the CV-v5
        set leads. Data-driven -- no project order is hardcoded here. #}
     {% if proj.group == 'earlier' and not _ns.earlier_shown %}
       {% set _ns.earlier_shown = true %}
+      {% set _ns.n = 0 %}
+  </div>
       <div class="gc-divider" role="separator"></div>
       <h2 class="filesep" id="earlier-work">Earlier work <span class="fs-crumb">ผลงานก่อนหน้า</span></h2>
       <p class="gc-page-lede">Software systems from 2025 -- 2026, still running. Kept
       for the engineering record; the research and hardware work above is current.</p>
+  <div class="proj-grid">
     {% endif %}
+    {% set _ns.n = _ns.n + 1 %}
     {# Compute anchor ID per spec decision 15: #dashboard, #line-bot, #quant.
        proj.__id is "proj-dashboard" / "proj-linebot" / "proj-quant"; strip
        the "proj-" prefix and translate "linebot" -> "line-bot". #}
@@ -31,6 +38,7 @@
     <section id="{{ _anchor }}" data-tab="projects" class="portfolio-project-card">
       <div class="proj-block">
         <span class="corner" aria-hidden="true"></span>
+        <span class="proj-num" aria-hidden="true">{{ '%02d' % _ns.n }}</span>
         {# Polish pass 2026-07-17: crafted inline-SVG thumbnail per project
            (replaces the removed PNG paths — zero requests, zero 404 risk). #}
         {{ thumbs.thumb(proj.__id, proj.__photo) }}
@@ -59,4 +67,5 @@
       </div>
     </section>
   {% endfor %}
+  </div>
 {% endblock %}

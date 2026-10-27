@@ -1,0 +1,17 @@
+{# 2026-10-27: shared headline-figure strip ({value, label} list) -- the
+   same gold tiles as the SURI deep-dive, reused on home / about / research
+   so every page shares one visual vocabulary. #}
+{% macro strip(stats, extra_class='') %}
+  {% if stats %}
+    <dl class="proj-stats {{ extra_class }}">
+      {% for s in stats %}<div class="proj-stat"><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div>{% endfor %}
+    </dl>
+  {% endif %}
+{% endmacro %}
+
+{# Round gold-ringed medallion: a photo (cover) or a crest/icon (contain). #}
+{% macro medallion(src, alt='', size='', photo=False, pos='') %}
+  <span class="edu-crest {{ size }}{% if photo %} medallion-photo{% endif %}"{% if not alt %} aria-hidden="true"{% endif %}>
+    <img src="{{ src }}" alt="{{ alt }}" loading="lazy" decoding="async"{% if pos %} style="object-position: {{ pos }}"{% endif %}>
+  </span>
+{% endmacro %}

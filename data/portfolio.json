@@ -2242,6 +2242,24 @@
           "mdpi-computers-2026"
         ]
       }
+    ],
+    "stats": [
+      {
+        "value": "1",
+        "label": "journal paper, open access"
+      },
+      {
+        "value": "1",
+        "label": "conference paper, IEEE UEMCON"
+      },
+      {
+        "value": "2",
+        "label": "research talks, 2026"
+      },
+      {
+        "value": "387",
+        "label": "studies in the systematic mapping"
+      }
     ]
   },
   "life_at_vmi": [
@@ -2284,5 +2302,23 @@
       "caption": "Learning to ski."
     }
   ],
-  "education_credits": "Crests via Wikimedia Commons. AFAPS emblem by Punrop, CC BY-SA 3.0; VMI, University of Colorado and CRMA marks are public domain and belong to their institutions."
+  "education_credits": "Crests via Wikimedia Commons. AFAPS emblem by Punrop, CC BY-SA 3.0; VMI, University of Colorado and CRMA marks are public domain and belong to their institutions.",
+  "highlights": [
+    {
+      "value": "4.00",
+      "label": "major GPA, Electrical & Computer Engineering"
+    },
+    {
+      "value": "2",
+      "label": "papers: one published, one accepted"
+    },
+    {
+      "value": "Top 7",
+      "label": "of 40 teams, IEEE SoutheastCon 2026"
+    },
+    {
+      "value": "1st",
+      "label": "of 348 Army cadets, AFAPS"
+    }
+  ]
 }
