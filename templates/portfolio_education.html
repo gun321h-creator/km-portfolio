@@ -30,29 +30,69 @@
   {% set _win_keys = ['Overall GPA', 'Tau Beta Pi', 'IEEE SoutheastCon',
                       '#1 of 348', 'Honors Program', 'Honors scholarship'] %}
 
+  {# 2026-10-27: crest journey strip -- oldest school first, each medallion
+     jumps to its timeline card. Only schools whose crest file ships render. #}
+  {% set _journey = p.education | selectattr('__crest') | list | reverse | list %}
+  {% if _journey %}
+    <ol class="edu-journey" aria-label="Schools in order">
+      {% for ed in _journey %}
+        {% set _i = p.education.index(ed) %}
+        <li class="edu-journey-step">
+          <a href="#{{ _legacy_ids[_i] if _i < _legacy_ids | length else 'edu-' ~ (_i + 1) }}">
+            <span class="edu-crest"><img src="{{ ed.__crest.src }}" alt="{{ ed.__crest.alt }}" loading="lazy" decoding="async"></span>
+            <span class="edu-journey-name">{{ ed.short or ed.institution }}</span>
+            <span class="edu-journey-year">{{ ed.dates[:8] }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ol>
+  {% endif %}
+
   <ol class="edu-timeline">
     {% for ed in p.education %}
       {% set _legacy = _legacy_ids[loop.index0] if loop.index0 < _legacy_ids | length else None %}
       {% set _sid = _legacy if _legacy else ('edu-' ~ loop.index) %}
+      {# Term GPAs + coursework render as chips (split in portfolio.py). #}
+      {% set _terms = ed.__terms or [] %}
+      {% set _course = ed.__coursework or [] %}
+      {% set _rest = ed.__milestones if ed.__milestones is defined else (ed.details or []) %}
       <li class="edu-node{% if loop.first %} edu-node-current{% endif %}" id="{{ _sid }}" data-tab="education/">
         <span class="edu-node-marker" aria-hidden="true"></span>
         <span class="edu-node-dates">{{ ed.dates }}</span>
         <div class="edu-node-card">
-          <h3 class="edu-node-institution">{{ ed.institution }}</h3>
-          <p class="edu-node-program">{{ ed.degree_or_program }}
-            <span class="edu-node-loc">&middot; {{ ed.location }}</span></p>
-          {% if ed.details %}
+          <div class="edu-node-head">
+            {% if ed.__crest %}<span class="edu-crest edu-crest-lg"><img src="{{ ed.__crest.src }}" alt="{{ ed.__crest.alt }}" loading="lazy" decoding="async"></span>{% endif %}
+            <div>
+              <h3 class="edu-node-institution">{{ ed.institution }}</h3>
+              <p class="edu-node-program">{{ ed.degree_or_program }}
+                <span class="edu-node-loc">&middot; {{ ed.location }}</span></p>
+            </div>
+          </div>
+          {% if _rest %}
             <ul class="edu-milestones">
-              {% for d in ed.details %}
+              {% for d in _rest %}
                 {% set _is_win = _win_keys | select('in', d) | list | length > 0 %}
                 <li class="edu-milestone{% if _is_win %} edu-win{% endif %}">{{ d }}</li>
               {% endfor %}
+            </ul>
+          {% endif %}
+          {% if _terms %}
+            <p class="edu-chip-label">Term GPAs</p>
+            <ul class="edu-chips">
+              {% for g in _terms %}<li class="edu-chip edu-chip-gpa"{% if g.note %} title="{{ g.note }}"{% endif %}><span class="edu-chip-term">{{ g.term }}</span> {{ g.gpa }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+          {% if _course %}
+            <p class="edu-chip-label">Coursework</p>
+            <ul class="edu-chips">
+              {% for c in _course %}<li class="edu-chip">{{ c }}</li>{% endfor %}
             </ul>
           {% endif %}
         </div>
       </li>
     {% endfor %}
   </ol>
+  {% if p.education_credits %}<p class="edu-credits">{{ p.education_credits }}</p>{% endif %}
 
   {% if p.awards %}
   <div class="gc-divider" role="separator"></div>

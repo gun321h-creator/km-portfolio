@@ -214,7 +214,7 @@ def _render_project_summaries(doc: dict) -> None:
 
 
 STATIC_DIR = ROOT / "static"
-_PHOTO_SUBDIRS = ("projects", "research", "personal")
+_PHOTO_SUBDIRS = ("projects", "research", "personal", "crests")
 _PHOTO_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*\.(jpg|jpeg|png|webp)$")
 _SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
@@ -258,6 +258,27 @@ def _resolve_photos(specs: Any, subdir: str) -> list[dict]:
     return [p for p in (_resolve_photo(s, subdir) for s in specs) if p]
 
 
+_TERM_GPA_RE = re.compile(r"^Term GPA (\d\.\d\d) \(Year (\d) Term (\d)(?:, ([^)]*))?\)$")
+
+
+def _split_education_details(ed: dict) -> None:
+    """2026-10-27 education page: term GPAs and the coursework line render as
+    chips, everything else stays a milestone bullet. Lines that don't match
+    the expected shape fall through as plain milestones (never dropped)."""
+    terms, course, rest = [], [], []
+    for d in ed.get("details") or []:
+        if not isinstance(d, str):
+            continue
+        m = _TERM_GPA_RE.match(d)
+        if m:
+            terms.append({"gpa": m[1], "term": f"Y{m[2]} T{m[3]}", "note": m[4]})
+        elif d.startswith("Coursework: ") and not course:
+            course = [c.strip() for c in re.split(r"[;,]\s*(?![^()]*\))", d[12:]) if c.strip()]
+        else:
+            rest.append(d)
+    ed["__terms"], ed["__coursework"], ed["__milestones"] = terms, course, rest
+
+
 def _attach_research_meta(doc: dict) -> None:
     """2026-10-27 research hub: per-item route + shipped images + resolved
     `related` links, and per-category grouping so the hub template stays dumb.
@@ -294,6 +315,10 @@ def _attach_research_meta(doc: dict) -> None:
     research["__categories"] = [c for c in cats if c["__items"]]
     research["__by_slug"] = by_slug
     doc["__life_at_vmi"] = _resolve_photos(doc.get("life_at_vmi"), "personal")
+    for ed in doc.get("education") or []:
+        if isinstance(ed, dict):
+            ed["__crest"] = _resolve_photo(ed.get("crest"), "crests")
+            _split_education_details(ed)
     doc["__off_duty"] = _resolve_photos(doc.get("off_duty"), "personal")
 
 
@@ -404,7 +429,13 @@ def slice_for_view_source(doc: dict[str, Any], page_id: str) -> str:
     if page_id == "about":
         return json.dumps({"about": doc.get("about", "")}, indent=2)
     if page_id == "education":
-        return json.dumps({"education": doc.get("education", [])}, indent=2)
+        clean = [
+            {k: v for k, v in ed.items() if not k.startswith("__")}
+            if isinstance(ed, dict)
+            else ed
+            for ed in doc.get("education", [])
+        ]
+        return json.dumps({"education": clean}, indent=2)
     if page_id == "projects":
         return json.dumps({"projects": doc.get("projects", [])}, indent=2)
     if page_id == "research" or page_id.startswith("res-"):

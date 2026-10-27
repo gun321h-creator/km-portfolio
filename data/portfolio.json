@@ -34,7 +34,12 @@
         "Commendation from the Chief of Defence Forces, Royal Thai Armed Forces (Apr 2024)",
         "Community service in Puerto Rico with the VMI Glee Club (Mar 2024)",
         "Coursework: Signal & System Analysis, Computer Architecture, Digital Systems Design, Microcontrollers, Electronics, Probability & Statistics for Engineers, Discrete Mathematics, Differential Equations; Senior Design Capstone (EE-421X, in progress)"
-      ]
+      ],
+      "crest": {
+        "file": "vmi.png",
+        "alt": "Virginia Military Institute logo"
+      },
+      "short": "VMI"
     },
     {
       "institution": "University of Colorado Boulder",
@@ -43,7 +48,12 @@
       "dates": "Aug 2022 -- May 2023",
       "details": [
         "Certificate of completion, English Programs"
-      ]
+      ],
+      "crest": {
+        "file": "cu-boulder.png",
+        "alt": "Seal of the University of Colorado"
+      },
+      "short": "CU"
     },
     {
       "institution": "Chulachomklao Royal Military Academy (CRMA) -- Class 74",
@@ -53,7 +63,12 @@
       "details": [
         "Selected first of the class for the Royal Thai Army's overseas study programme to the United States (May 2022)",
         "Section Leader, Section A.1 (EP)"
-      ]
+      ],
+      "crest": {
+        "file": "crma.png",
+        "alt": "Emblem of Chulachomklao Royal Military Academy"
+      },
+      "short": "CRMA"
     },
     {
       "institution": "Armed Forces Academies Preparatory School (AFAPS) -- Class 63",
@@ -69,7 +84,12 @@
         "Outstanding Youth in Physics -- Science Association of Thailand under Royal Patronage (Dec 2021)",
         "ALCPT silver medal + AFAPS completion certificate from the Commander-in-Chief (Feb 2022)",
         "Seven academic certificates of appreciation (Feb 2022)"
-      ]
+      ],
+      "crest": {
+        "file": "afaps.png",
+        "alt": "Emblem of the Armed Forces Academies Preparatory School, Thailand"
+      },
+      "short": "AFAPS"
     }
   ],
   "projects": [
@@ -2263,5 +2283,6 @@
       "alt": "Kanokpon Mettasat lying in the snow in ski gear.",
       "caption": "Learning to ski."
     }
-  ]
+  ],
+  "education_credits": "Crests via Wikimedia Commons. AFAPS emblem by Punrop, CC BY-SA 3.0; VMI, University of Colorado and CRMA marks are public domain and belong to their institutions."
 }
