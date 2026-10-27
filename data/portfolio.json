@@ -9,7 +9,7 @@
   "contact_email": "mettasatk27@vmi.edu",
   "contact_location": "Lexington, VA",
   "contact_github": "https://github.com/gun321h-creator",
-  "about": "Electrical and Computer Engineering cadet at **Virginia Military Institute** (Class of 2027, Institute Honors Program, major GPA 4.00), applying to MS programs in Electrical Engineering for Fall 2027 with a focus on **secure and embedded systems and post-quantum cryptographic engineering** for resource-constrained devices. Research: undergraduate researcher with Dr. Efat Fathalla (VMI ECE) on quantum-resistant blockchain security -- first-author paper accepted at **IEEE UEMCON 2026**, a second accepted at Computers (MDPI), and a third manuscript in preparation from the Institute Honors thesis. Engineering: hardware lead on a KiCad PCB from schematic to fabricated board; team lead at IEEE SoutheastCon 2026 Undergraduate Circuit Design (top seven of forty teams); sole developer of **Officer Parker**, a real-time voice agent for mock US visa interviews; senior design capstone on a wearable sensor sock. Independent work: a Python statistical research platform for financial time series, bound to acceptance thresholds registered before any experiment ran. Service: President of Eta Kappa Nu (IEEE-HKN) at VMI for 2026-27; math tutor in the VMI Open Mathematics Laboratory since 2024. Before VMI: Chulachomklao Royal Military Academy (Class 74) and the Armed Forces Academies Preparatory School, Thailand, where I ranked first of 348 Army cadets; selected first of the class for the Royal Thai Army's overseas study programme to the United States.",
+  "about": "Electrical and Computer Engineering cadet at **Virginia Military Institute** (Class of 2027, Institute Honors Program, major GPA 4.00), applying to MS programs in Electrical Engineering for Fall 2027 with a focus on **secure and embedded systems and post-quantum cryptographic engineering** for resource-constrained devices. Research: undergraduate researcher with Dr. Efat Fathalla (VMI ECE) on quantum-resistant blockchain security -- first-author paper accepted at **IEEE UEMCON 2026**, a second published in Computers (MDPI), and a third manuscript in preparation from the Institute Honors thesis. Engineering: hardware lead on a KiCad PCB from schematic to fabricated board; team lead at IEEE SoutheastCon 2026 Undergraduate Circuit Design (top seven of forty teams); sole developer of **Officer Parker**, a real-time voice agent for mock US visa interviews; senior design capstone on a wearable sensor sock. Independent work: a Python statistical research platform for financial time series, bound to acceptance thresholds registered before any experiment ran. Service: President of Eta Kappa Nu (IEEE-HKN) at VMI for 2026-27; math tutor in the VMI Open Mathematics Laboratory since 2024. Before VMI: Chulachomklao Royal Military Academy (Class 74) and the Armed Forces Academies Preparatory School, Thailand, where I ranked first of 348 Army cadets; selected first of the class for the Royal Thai Army's overseas study programme to the United States.",
   "education": [
     {
       "institution": "Virginia Military Institute",
@@ -135,27 +135,61 @@
     {
       "title": "SURI -- Systematic mapping of quantum-resistant blockchain security",
       "plain": "I mapped what the research world knows about quantum computers threatening blockchains -- following a protocol written down before the search began, so anyone can rebuild the same map.",
-      "summary": "Undergraduate research with Dr. Efat Fathalla (VMI ECE), 2025 -- present. A systematic mapping of quantum-resistant blockchain security: the literature was screened and classified against a pre-registered protocol with a full search log of 76+ queries, so the corpus is reproducible rather than curated by hand. The review pipeline is implemented in Python as idempotent build / append / repair / categorise stages, allowing the entire corpus to be rebuilt from the search log after any protocol amendment. A mid-study reclassification was reconciled by correcting the earlier categorisation rather than defending it, and documented in the protocol record. Output so far: a first-author paper accepted at IEEE UEMCON 2026 (Armonk, NY) and a second paper accepted at Computers (MDPI).",
+      "summary": "Undergraduate research with Dr. Efat Fathalla (VMI ECE), 2025 -- present. A systematic mapping of quantum-resistant blockchain security: 387 peer-reviewed primary studies (2018-2026) selected from more than 6,500 records under a PRISMA 2020 protocol, then classified by contribution type and evidence maturity. The review pipeline is implemented in Python as idempotent build / append / repair / categorise stages, so the whole corpus can be rebuilt from the search log after any protocol amendment. A mid-study reclassification was reconciled by correcting the earlier categorisation rather than defending it, and documented in the protocol record. Output so far: a first-author paper accepted at IEEE UEMCON 2026 (Armonk, NY) and a second paper published open access in Computers (MDPI).",
       "stack": [
-        "IEEE Xplore",
-        "Pre-registered protocol (PRISMA-style)",
-        "Multi-dimensional taxonomy",
-        "Coverage matrix",
+        "IEEE Xplore + MDPI",
+        "PRISMA 2020",
+        "Evidence-maturity scale (L0-L5)",
+        "Multi-label coding",
         "Python pipeline"
       ],
-      "scale": "63 included papers, 3 research questions, 5-category grid; search log of 76+ queries; two papers, both accepted",
+      "scale": "387 included studies from 6,500+ records; 2 research questions; 6-level evidence-maturity scale; two papers, one published and one accepted",
       "link": null,
       "link_label": null,
-      "deep_dive_intro": "SURI is a systematic mapping of the research at the intersection of blockchain security and quantum computing, run with a pre-registered protocol, a transparent search log, single-coder plus audit pass, and a coverage matrix so blind spots in the corpus fall out of the table. The first paper, \"Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family\", is accepted at IEEE UEMCON 2026; the second, \"A Systematic Mapping of Quantum Threats and Defenses for Blockchain\", is accepted at Computers (MDPI).",
-      "architecture": "A search log records every database query (IEEE Xplore under institutional access as the primary source, plus Google Scholar, arXiv, and three free standards/community sources -- NIST, IETF/CFRG, and the Bitcoin Improvement Proposals) with filters, hits, and selection reasons. PRISMA-style screening (title -> abstract -> full text) records inclusion and exclusion at every stage down to the 63 papers that enter synthesis. Each paper is placed in one of five primary corpus categories (Threat Models, PQC Constructions, Quantum-Native Designs, Hybrid Migrations, Benchmarks/Implementations) mapped onto the three research questions, and coded against a multi-dimensional taxonomy (threat type, affected target, mitigation, performance impact, privacy and usability, standards and governance). A coverage matrix renders the taxonomy as a table so thin quadrants -- for example only two threat-modelling papers against forty-five defence papers -- are visible at a glance. An idempotent Python pipeline (build -> append -> repair -> categorise -> PRISMA) regenerates the workbook and screening figure from source. Outputs: methodology, RQ map, taxonomy, coverage matrix, reference list, and search log.",
-      "architecture_diagram": "  IEEE Xplore + NIST     PRISMA screening        5-category grid -> 3 RQs\n+-------------------+   +------------------+   +----------------------+\n| search log        |-->| title screen     |-->| Threat Models  (RQ1) |\n| (database + query |   | abstract screen  |   | PQC Constructions    |\n|  + hits + reason) |   | full text screen |   | Quantum-Native   RQ2 |\n+-------------------+   +--------+---------+   | Hybrid Migrations    |\n                                 |             | Benchmarks     (RQ3) |\n                                 v             +----------+-----------+\n                        +--------+---------+              |\n                        | 63 included      |------------->+\n                        | papers           |              v\n                        +------------------+   +----------+-----------+\n                                               | coverage matrix      |\n                                               | (multi-dim taxonomy, |\n                                               |  blind-spot map)     |\n                                               +----------------------+\n",
+      "deep_dive_intro": "SURI is a systematic mapping of the research where blockchain security meets quantum computing. It asks two questions: which defences are being proposed, and how far each one has actually been tested. The first paper, \"Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family\", is accepted at IEEE UEMCON 2026; the second, \"A Systematic Mapping of Quantum Threats and Defenses for Blockchain\", is published in Computers (MDPI), vol. 15, art. 743.",
+      "architecture": "Records come from IEEE Xplore and the MDPI journal collection (5,174 records) plus citation searching (1,371). After duplicates and out-of-scope records are removed, 2,061 are screened by title and abstract and 512 are assessed for eligibility; 387 enter the synthesis (328 IEEE Xplore, 51 MDPI, 8 from citation searching), with every exclusion and its reason recorded in a PRISMA 2020 flow. Each study is coded for its primary contribution type (RQ1: post-quantum constructions, quantum-native designs, hybrid migration, threat analysis) and placed on a six-level evidence-maturity scale (RQ2: L0 theory, L1 software prototype, L2 cryptographic benchmark, L3 blockchain simulation, L4 real-platform experiment, L5 public testnet). An idempotent Python pipeline (build -> append -> repair -> categorise -> PRISMA) regenerates the workbook and the flow diagram from source.",
+      "architecture_diagram": "  IEEE Xplore + MDPI        PRISMA 2020 selection          classification\n+--------------------+   +-----------------------+   +---------------------------+\n| 5,174 database     |-->| 2,061 screened        |-->| contribution type (RQ1)   |\n|   records          |   |   (title + abstract)  |   |  PQC constructions  56.1% |\n| + 1,371 citation-  |   | 512 assessed in full  |   |  quantum-native     26.6% |\n|   search records   |   | 387 included          |   |  hybrid migration   13.7% |\n+--------------------+   +-----------+-----------+   |  threat analysis     3.6% |\n                                     |               +-------------+-------------+\n                                     v                             |\n                         +-----------+-----------+                 v\n                         | 328 IEEE | 51 MDPI    |   +---------------------------+\n                         | 8 citation searching  |   | evidence maturity (RQ2)   |\n                         +-----------------------+   | L0 theory ... L5 testnet  |\n                                                     | real platform (L4) 16.0%  |\n                                                     | public testnet (L5) 1.3%  |\n                                                     +---------------------------+\n",
       "lessons": [
-        "A flat keyword list cannot reveal blind spots. A multi-dimensional taxonomy plus a coverage matrix makes an imbalance like two threat-modelling papers against forty-five defence papers fall out of the table automatically, which is the whole point of doing the review.",
+        "Counting by maturity changes the story. Post-quantum constructions dominate the literature at 56.1%, yet only 16.0% of all studies run on a real blockchain platform and 1.3% reach a public testnet -- the gap only shows once every paper is placed on the same evidence scale.",
         "Search log discipline is load-bearing: without database / query / filter / hits-found / hits-selected / reason for every search, the review is not reproducible and reviewer #2 finds gaps you cannot justify.",
-        "Included is not the same as identified: the headline paper count is the synthesis pool after non-IEEE and survey papers are screened out, so the number that anchors every claim is 63, not the larger identified/screened set.",
+        "Included is not the same as identified: the number that anchors every claim is the 387 studies that survive screening, not the 6,500+ records first identified -- and the flow diagram has to show where every other record went.",
         "Relevance and role are separate axes. Conflating them -- the tempting extra 'Type: Core / Supporting / Context' column -- created false agreement in coding decisions and was removed after the first audit."
       ],
-      "summary_cv": "Undergraduate research with Dr. Efat Fathalla (VMI ECE): literature screened against a pre-registered protocol with a 76+ query search log; idempotent Python pipeline rebuilds the corpus from the log. Paper accepted at IEEE UEMCON 2026; second accepted at Computers (MDPI)."
+      "summary_cv": "Undergraduate research with Dr. Efat Fathalla (VMI ECE): systematic mapping of 387 studies under a PRISMA 2020 protocol; idempotent Python pipeline rebuilds the corpus from the search log. Published in Computers (MDPI) 2026; second paper accepted at IEEE UEMCON 2026.",
+      "links": [
+        {
+          "href": "/portfolio/research/mdpi-computers-2026",
+          "label": "Published paper"
+        },
+        {
+          "href": "https://doi.org/10.3390/computers15110743",
+          "label": "DOI"
+        }
+      ],
+      "photo": {
+        "file": "suri-evidence-maturity.png",
+        "alt": "Chart from the published paper showing how many of the 387 studies reach each evidence-maturity level, from theory to public testnet.",
+        "caption": "Evidence maturity across the 387 included studies. Computers 2026, 15, 743 (CC BY 4.0).",
+        "fit": "contain"
+      },
+      "stats": [
+        {
+          "value": "387",
+          "label": "studies included in the synthesis"
+        },
+        {
+          "value": "6,500+",
+          "label": "records identified and screened down"
+        },
+        {
+          "value": "16.0%",
+          "label": "tested on a real blockchain platform"
+        },
+        {
+          "value": "1.3%",
+          "label": "reach a public testnet"
+        }
+      ]
     },
     {
       "title": "IEEE SoutheastCon 2026 -- Undergraduate Circuit Design (team lead)",
@@ -513,7 +547,7 @@
       },
       {
         "title": "Research direction",
-        "body": "Secure and embedded systems, with a focus on post-quantum cryptographic engineering for resource-constrained devices. Current research: a systematic mapping of quantum-resistant blockchain security with Dr. Efat Fathalla (VMI ECE) -- first-author paper accepted at IEEE UEMCON 2026, a second accepted at Computers (MDPI), and a third manuscript in preparation from the Institute Honors thesis. Earlier independent work applied the same pre-registration discipline to statistical validation of hypotheses on financial time series.",
+        "body": "Secure and embedded systems, with a focus on post-quantum cryptographic engineering for resource-constrained devices. Current research: a systematic mapping of quantum-resistant blockchain security with Dr. Efat Fathalla (VMI ECE) -- first-author paper accepted at IEEE UEMCON 2026, a second published in Computers (MDPI), and a third manuscript in preparation from the Institute Honors thesis. Earlier independent work applied the same pre-registration discipline to statistical validation of hypotheses on financial time series.",
         "items": [
           "Pre-registered review protocol with a full search log (76+ queries) -- corpus rebuildable from the log",
           "Idempotent Python pipeline: build / append / repair / categorise",
@@ -525,7 +559,7 @@
         "title": "Publications",
         "items": [
           "K. Mettasat and E. Fathalla. \"Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family.\" IEEE UEMCON 2026, Armonk, NY. Accepted; to appear in IEEE Xplore.",
-          "K. Mettasat, E. Fathalla and M. Azab. \"A Systematic Mapping of Quantum Threats and Defenses for Blockchain.\" Computers (MDPI). Accepted, October 2026; in press.",
+          "K. Mettasat, E. Fathalla and M. Azab. \"A Systematic Mapping of Quantum Threats and Defenses for Blockchain.\" Computers (MDPI), vol. 15, no. 11, art. 743, 2026. Open access.",
           "K. Mettasat and E. Fathalla. Post-quantum-secure blockchain architecture -- manuscript arising from the Institute Honors thesis. In preparation, 2027."
         ],
         "body": ""
@@ -2006,7 +2040,7 @@
   },
   "contact_linkedin": "https://www.linkedin.com/in/kanokpon-mettasat/",
   "contact_orcid": "https://orcid.org/0009-0002-6260-8196",
-  "about_cv": "ECE cadet at Virginia Military Institute (Class of 2027, Institute Honors Program), applying to MS programs in Electrical Engineering for Fall 2027: secure and embedded systems, post-quantum cryptographic engineering for resource-constrained devices. Undergraduate researcher on quantum-resistant blockchain security (first-author paper accepted at IEEE UEMCON 2026; second accepted at Computers, MDPI). Hardware lead on a fabricated KiCad PCB; team lead at IEEE SoutheastCon 2026 (top seven of forty); sole developer of Officer Parker, a real-time voice agent. President, Eta Kappa Nu (IEEE-HKN), VMI, 2026-27.",
+  "about_cv": "ECE cadet at Virginia Military Institute (Class of 2027, Institute Honors Program), applying to MS programs in Electrical Engineering for Fall 2027: secure and embedded systems, post-quantum cryptographic engineering for resource-constrained devices. Undergraduate researcher on quantum-resistant blockchain security (first-author paper accepted at IEEE UEMCON 2026; second published in Computers, MDPI). Hardware lead on a fabricated KiCad PCB; team lead at IEEE SoutheastCon 2026 (top seven of forty); sole developer of Officer Parker, a real-time voice agent. President, Eta Kappa Nu (IEEE-HKN), VMI, 2026-27.",
   "publications": [
     {
       "authors": "K. Mettasat and E. Fathalla",

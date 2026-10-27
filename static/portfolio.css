@@ -1026,3 +1026,34 @@ main.editor { animation: portfolio-fade-in 200ms ease-out; }
   .audience-qr-cap p { color: #222; }
   .audience-qr-cap .aq-url { color: #444; }
 }
+
+/* 2026-10-27: headline-figure strip on a project deep-dive ("stats" field). */
+.proj-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+  gap: 12px;
+  margin: 20px 0 24px;
+  max-width: 760px;
+}
+.proj-stat {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--gold-faint);
+  border-top: 2px solid var(--gold);
+}
+.proj-stat dd {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--gold);
+}
+.proj-stat dt {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--ivory-mut);
+}

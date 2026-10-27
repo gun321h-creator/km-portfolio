@@ -23,6 +23,13 @@
       {% if current_project.plain %}
         <p class="proj-detail-plain">{{ current_project.plain }}</p>
       {% endif %}
+      {# Optional headline figures ("stats": [{value, label}]) -- data-driven,
+         rendered as a strip of tiles between the callout and the intro. #}
+      {% if current_project.stats %}
+        <dl class="proj-stats">
+          {% for s in current_project.stats %}<div class="proj-stat"><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div>{% endfor %}
+        </dl>
+      {% endif %}
       {% if current_project.deep_dive_intro %}
         <p class="proj-detail-intro">{{ current_project.deep_dive_intro }}</p>
       {% endif %}

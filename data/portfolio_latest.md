@@ -14,4 +14,4 @@
 - **May 2026 -- Research dashboard.** `FastAPI` + Jinja2 monitoring site with multiple pages: hub with a BKK/NY clock tower, project board with phase-locked Gantt rows, 30-agent organisation chart, pixel-art floor-plan view of active agents, and a decision-rules anchor page. Hard-restart deploy via PowerShell; reachable on a Tailscale Funnel URL. ~300+ tests.
 - **May 2026 -- /portfolio public personal-introduction page.** This page. `FastAPI` + Jinja2 with an IDE-shell layout, multi-route split, view-source modal, Cmd-K command palette, keyboard-driven `vim`-style navigation, and a 365-day commit-activity grid. ~120 tests on this surface alone.
 
-A companion literature review followed a **PRISMA-style protocol** across **63 IEEE papers** (May 2026), with a multi-dimensional taxonomy used to guide the 2026 research backlog.
+A companion systematic mapping followed a **PRISMA 2020 protocol** across **387 peer-reviewed studies**, published in *Computers* (MDPI) in 2026.
