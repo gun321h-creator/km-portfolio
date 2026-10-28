@@ -2202,6 +2202,12 @@
             "file": "uemcon-talk.jpg",
             "alt": "Kanokpon Mettasat presenting at a lectern; the slide reads 'Quantum attacks hit both cryptographic pillars of blockchain'.",
             "caption": "Presenting at IEEE UEMCON 2026."
+          },
+          {
+            "file": "uemcon-certificate.jpg",
+            "alt": "IEEE UEMCON 2026 Certificate of Presentation awarded to Kanokpon Mettasat (Virginia Military Institute) for the paper 'Post-Quantum Cryptography for Blockchain: A Systematic Mapping by Cryptographic Family', Session 5, 7-9 October 2026.",
+            "caption": "Certificate of Presentation -- Session 5, Ubiquitous and Pervasive Computing.",
+            "fit": "contain"
           }
         ],
         "links": [],
